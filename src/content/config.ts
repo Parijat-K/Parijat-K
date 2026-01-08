@@ -7,6 +7,7 @@ const cvCollection = defineCollection({
     personalInfo: z.object({
       name: z.string(),
       title: z.string(),
+      additionalTitles: z.array(z.string()).optional(),
       email: z.string().email(),
       phone: z.string().optional(),
       location: z.string().optional(),

@@ -1,7 +1,8 @@
 {
   "personalInfo": {
     "name": "Parijat Khan",
-    "title": "Solution Designer | Full-Stack Developer | Technology Enthusiast",
+    "title": "Solution Designer",
+    "additionalTitles": ["Full-Stack Developer", "Technology Enthusiast"],
     "email": "khanparijat@gmail.com",
     "phone": "+64 221046500",
     "location": "Wellington, New Zealand",

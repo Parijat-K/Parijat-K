@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 interface PersonalInfo {
   name: string;
   title: string;
+  additionalTitles?: string[];
   email: string;
   phone: string;
   location: string;
@@ -30,7 +31,7 @@ const profilePhoto = personalInfo.photoUrl
   <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
     <!-- Profile Photo (hidden in print) -->
     {profilePhoto && (
-      <div class="cv-photo no-print flex-shrink-0">
+      <div class="cv-photo no-print shrink-0">
         <Image
           src={profilePhoto.default}
           alt={`${personalInfo.name} profile photo`}
@@ -42,17 +43,22 @@ const profilePhoto = personalInfo.photoUrl
     )}
 
     <!-- Name and Title -->
-    <div class="flex-grow">
+    <div class="grow">
       <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-2">
         {personalInfo.name}
       </h1>
-      <p class="text-xl text-slate-600 font-medium mb-4">
+      <p class="text-xl text-slate-600 font-medium mb-1">
         {personalInfo.title}
       </p>
+      {personalInfo.additionalTitles && personalInfo.additionalTitles.length > 0 && (
+        <p class="text-lg text-slate-500 mb-4">
+          {personalInfo.additionalTitles.join(' | ')}
+        </p>
+      )}
     </div>
 
     <!-- Contact Info -->
-    <div class="flex-shrink-0 text-sm text-slate-700 space-y-2">
+    <div class="shrink-0 text-sm text-slate-700 space-y-2">
       <div class="flex items-center gap-2">
         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
