@@ -1,0 +1,116 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import ResearchHero from '../../components/research/ResearchHero.astro';
+import ResearchCard from '../../components/research/ResearchCard.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import Pagination from '../../components/ui/Pagination.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  // Load all research items
+  const researchItems = await getCollection('research');
+
+  // Sort by published date (newest first)
+  const sortedResearch = researchItems.sort((a, b) => {
+    return new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime();
+  });
+
+  return paginate(sortedResearch, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const researchItems = page.data;
+
+// Extract unique categories, types, and statuses for filters
+const allResearch = await getCollection('research');
+const categories = ['all', ...new Set(allResearch.map(item => item.data.category))];
+const types = ['all', ...new Set(allResearch.map(item => item.data.type))];
+const statuses = ['all', ...new Set(allResearch.map(item => item.data.status))];
+
+const filters = [
+  {
+    id: 'category',
+    label: 'Category',
+    options: categories.map(cat => ({ value: cat, label: cat.charAt(0).toUpperCase() + cat.slice(1) })),
+  },
+  {
+    id: 'type',
+    label: 'Type',
+    options: types.map(type => ({ value: type, label: type.charAt(0).toUpperCase() + type.slice(1) })),
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    options: statuses.map(status => ({ value: status, label: status.charAt(0).toUpperCase() + status.slice(1) })),
+  },
+];
+---
+
+<Layout
+  title={`Research Publications${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ''} - Alex Rivera`}
+  description="Academic research publications, papers, and thesis work in distributed systems, machine learning, and software engineering."
+>
+  <Navigation />
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <ResearchHero />
+
+    <!-- Filters -->
+    <FilterBar filters={filters} />
+
+    <!-- Results count -->
+    <p class="text-sm text-slate-600 mb-4">
+      Showing {page.start + 1}–{page.end + 1} of {page.total} publications
+    </p>
+
+    <!-- Research Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {researchItems.map((item) => (
+        <ResearchCard
+          slug={item.id}
+          title={item.data.title}
+          type={item.data.type}
+          authors={item.data.authors}
+          publishedDate={item.data.publishedDate}
+          abstract={item.data.abstract}
+          status={item.data.status}
+          venue={item.data.venue}
+          tags={item.data.tags}
+          pdfUrl={item.data.pdfUrl}
+          arxivUrl={item.data.arxivUrl}
+          githubUrl={item.data.githubUrl}
+          doi={item.data.doi}
+          category={item.data.category}
+        />
+      ))}
+    </div>
+
+    <!-- Pagination -->
+    {page.lastPage > 1 && (
+      <Pagination
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/research"
+        class="mb-8"
+      />
+    )}
+
+    <!-- Collaboration Footer -->
+    <div class="bg-indigo-50 rounded-lg p-8 text-center">
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">Interested in Collaboration?</h2>
+      <p class="text-slate-700 mb-6 max-w-2xl mx-auto">
+        I'm always open to research collaboration opportunities, particularly in distributed systems, machine learning infrastructure, and performance optimization.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a
+          href="mailto:alex.rivera@example.com"
+          class="px-6 py-3 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
+        >
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>

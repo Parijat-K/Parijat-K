@@ -1,0 +1,147 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+
+export async function getStaticPaths() {
+  const projectItems = await getCollection('projects');
+  return projectItems.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: CollectionEntry<'projects'>;
+}
+
+const { item } = Astro.props;
+const { Content } = await item.render();
+
+function formatDate(dateStr: string): string {
+  if (dateStr.toLowerCase() === 'present') return 'Present';
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
+const statusVariant = item.data.status === 'completed' ? 'success' : item.data.status === 'in-progress' ? 'warning' : 'secondary';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Projects', href: '/projects' },
+  { label: item.data.title },
+];
+---
+
+<Layout
+  title={`${item.data.title} - Projects`}
+  description={item.data.description}
+  type="article"
+>
+  <Navigation />
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} class="mb-6" />
+
+    <!-- Project Header -->
+    <article class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <!-- Status and Category -->
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-xs uppercase tracking-wide text-slate-500 font-medium">
+          {item.data.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+        </span>
+        <Badge text={item.data.status} variant={statusVariant} />
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-4xl font-bold text-slate-900 mb-4">
+        {item.data.title}
+      </h1>
+
+      <!-- Role and Date Range -->
+      <div class="flex flex-wrap items-center gap-4 mb-6">
+        {item.data.role && (
+          <p class="text-indigo-600 font-medium">{item.data.role}</p>
+        )}
+        <p class="text-slate-500">
+          {formatDate(item.data.startDate)} - {item.data.endDate ? formatDate(item.data.endDate) : 'Present'}
+        </p>
+      </div>
+
+      <!-- Description -->
+      <p class="text-xl text-slate-700 mb-6 leading-relaxed">
+        {item.data.description}
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-3 mb-8 pb-8 border-b border-slate-200">
+        {item.data.githubUrl && (
+          <Button href={item.data.githubUrl} variant="primary" ariaLabel="View code on GitHub">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            View Code
+          </Button>
+        )}
+
+        {item.data.demoUrl && (
+          <Button href={item.data.demoUrl} variant="secondary" ariaLabel="View live demo">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            Live Demo
+          </Button>
+        )}
+      </div>
+
+      <!-- Highlights -->
+      {item.data.highlights.length > 0 && (
+        <div class="mb-8 pb-8 border-b border-slate-200">
+          <h2 class="text-2xl font-bold text-slate-900 mb-4">Key Highlights</h2>
+          <ul class="space-y-3">
+            {item.data.highlights.map((highlight) => (
+              <li class="flex items-start gap-3 text-slate-700">
+                <svg class="w-6 h-6 mt-0.5 text-indigo-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>{highlight}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <!-- Full Content -->
+      <div class="prose prose-slate max-w-none mb-8">
+        <Content />
+      </div>
+
+      <!-- Technology Stack -->
+      <div class="pt-8 border-t border-slate-200">
+        <h3 class="text-lg font-bold text-slate-900 mb-4">Technology Stack</h3>
+        <div class="flex flex-wrap gap-2">
+          {item.data.technologies.map((tech) => (
+            <span class="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-md font-mono text-sm font-medium">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    </article>
+
+    <!-- Back to Projects -->
+    <div class="text-center">
+      <Button href="/projects" variant="ghost">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to All Projects
+      </Button>
+    </div>
+  </main>
+</Layout>

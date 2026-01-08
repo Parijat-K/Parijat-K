@@ -1,0 +1,73 @@
+---
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  publishedDate: string;
+  author: string;
+  tags: string[];
+  category: string;
+  featured?: boolean;
+}
+
+const {
+  slug,
+  title,
+  description,
+  publishedDate,
+  author,
+  tags,
+  category,
+  featured = false,
+} = Astro.props;
+
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+---
+
+<Card class={`p-6 h-full flex flex-col ${featured ? 'ring-2 ring-indigo-600' : ''}`} data-filter-item data-category={category}>
+  <!-- Featured Badge -->
+  {featured && (
+    <div class="mb-3">
+      <Badge text="Featured" variant="primary" />
+    </div>
+  )}
+
+  <!-- Title -->
+  <h3 class="text-xl font-bold text-slate-900 mb-2">
+    <a href={`/blog/${slug}`} class="hover:text-indigo-600 transition-colors">
+      {title}
+    </a>
+  </h3>
+
+  <!-- Meta -->
+  <div class="flex items-center gap-3 text-sm text-slate-600 mb-3">
+    <span>{author}</span>
+    <span>•</span>
+    <time datetime={publishedDate}>{formatDate(publishedDate)}</time>
+  </div>
+
+  <!-- Description -->
+  <p class="text-slate-700 mb-4 line-clamp-3 flex-grow">
+    {description}
+  </p>
+
+  <!-- Tags -->
+  <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-200">
+    {tags.slice(0, 3).map((tag) => (
+      <span class="text-xs px-2 py-1 bg-slate-100 text-slate-700 rounded">
+        #{tag}
+      </span>
+    ))}
+    {tags.length > 3 && (
+      <span class="text-xs px-2 py-1 text-slate-500">
+        +{tags.length - 3} more
+      </span>
+    )}
+  </div>
+</Card>

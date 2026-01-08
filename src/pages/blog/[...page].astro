@@ -1,0 +1,112 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import BlogHero from '../../components/blog/BlogHero.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import Pagination from '../../components/ui/Pagination.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  // Load all published blog posts
+  const blogItems = await getCollection('blog', ({ data }) => !data.draft);
+
+  // Sort by published date (newest first)
+  const sortedPosts = blogItems.sort((a, b) => {
+    return new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime();
+  });
+
+  return paginate(sortedPosts, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const blogItems = page.data;
+
+// Separate featured posts (only on first page)
+const featuredPosts = page.currentPage === 1 ? blogItems.filter(post => post.data.featured) : [];
+const regularPosts = page.currentPage === 1 ? blogItems.filter(post => !post.data.featured) : blogItems;
+
+// Extract unique categories for filters
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const categories = ['all', ...new Set(allPosts.map(item => item.data.category))];
+
+const filters = [
+  {
+    id: 'category',
+    label: 'Category',
+    options: categories.map(cat => ({
+      value: cat,
+      label: cat.charAt(0).toUpperCase() + cat.slice(1)
+    })),
+  },
+];
+---
+
+<Layout
+  title={`Technical Blog${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ''} - Alex Rivera`}
+  description="Insights and learnings from building distributed systems, optimizing performance, and solving engineering challenges at scale."
+>
+  <Navigation />
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <BlogHero />
+
+    <!-- Filters -->
+    <FilterBar filters={filters} />
+
+    <!-- Results count -->
+    <p class="text-sm text-slate-600 mb-4">
+      Showing {page.start + 1}–{page.end + 1} of {page.total} posts
+    </p>
+
+    <!-- Featured Posts (only on page 1) -->
+    {featuredPosts.length > 0 && (
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">Featured Posts</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredPosts.map((post) => (
+            <BlogCard
+              slug={post.id}
+              title={post.data.title}
+              description={post.data.description}
+              publishedDate={post.data.publishedDate}
+              author={post.data.author}
+              tags={post.data.tags}
+              category={post.data.category}
+              featured={true}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- All Posts -->
+    <div class="mb-8">
+      {page.currentPage === 1 && <h2 class="text-2xl font-bold text-slate-900 mb-6">All Posts</h2>}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {regularPosts.map((post) => (
+          <BlogCard
+            slug={post.id}
+            title={post.data.title}
+            description={post.data.description}
+            publishedDate={post.data.publishedDate}
+            author={post.data.author}
+            tags={post.data.tags}
+            category={post.data.category}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    {page.lastPage > 1 && (
+      <Pagination
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/blog"
+        class="mb-8"
+      />
+    )}
+  </main>
+</Layout>

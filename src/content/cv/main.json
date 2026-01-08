@@ -1,0 +1,141 @@
+{
+  "personalInfo": {
+    "name": "Alex Rivera",
+    "title": "Senior Software Engineer & Researcher",
+    "email": "alex.rivera@example.com",
+    "phone": "+1 (555) 123-4567",
+    "location": "San Francisco, CA",
+    "linkedin": "https://linkedin.com/in/alexrivera",
+    "github": "https://github.com/alexrivera",
+    "website": "https://alexrivera.dev",
+    "photoUrl": "/images/profile-photo.jpg"
+  },
+  "summary": "Senior software engineer with 8+ years of experience building scalable distributed systems and conducting research in machine learning infrastructure. Passionate about bridging the gap between academic research and production engineering, with a track record of reducing system latency by 60% and improving resource utilization by 40% through innovative architectural solutions.",
+  "experience": [
+    {
+      "id": "exp-1",
+      "company": "Tech Corp",
+      "position": "Senior Software Engineer",
+      "location": "San Francisco, CA",
+      "startDate": "2021-03",
+      "endDate": "Present",
+      "description": "Leading development of real-time analytics platform serving 10M+ daily active users",
+      "achievements": [
+        "Reduced query latency by 60% through distributed caching architecture using Redis and ClickHouse",
+        "Mentored team of 5 engineers in microservices best practices and cloud-native development",
+        "Designed and implemented gRPC-based service mesh for internal APIs, improving inter-service communication by 40%",
+        "Led migration to Kubernetes, reducing infrastructure costs by 35% while improving scalability"
+      ],
+      "technologies": ["Go", "Kubernetes", "Redis", "PostgreSQL", "gRPC", "Apache Kafka"]
+    },
+    {
+      "id": "exp-2",
+      "company": "Innovation Labs",
+      "position": "Software Engineer",
+      "location": "Palo Alto, CA",
+      "startDate": "2019-01",
+      "endDate": "2021-02",
+      "description": "Built machine learning infrastructure for real-time recommendation systems",
+      "achievements": [
+        "Developed ML feature store serving 1M+ predictions per second with sub-10ms latency",
+        "Implemented A/B testing framework used across 20+ product teams",
+        "Optimized data pipelines reducing processing time from hours to minutes using Apache Spark"
+      ],
+      "technologies": ["Python", "TensorFlow", "Apache Spark", "AWS", "Docker"]
+    },
+    {
+      "id": "exp-3",
+      "company": "StartupCo",
+      "position": "Full Stack Developer",
+      "location": "San Francisco, CA",
+      "startDate": "2017-06",
+      "endDate": "2018-12",
+      "description": "Early employee building core product features for B2B SaaS platform",
+      "achievements": [
+        "Built REST API and admin dashboard serving 500+ enterprise customers",
+        "Implemented real-time collaboration features using WebSockets",
+        "Contributed to 10x user growth through feature development and performance optimization"
+      ],
+      "technologies": ["Node.js", "React", "MongoDB", "Redis", "WebSockets"]
+    },
+    {
+      "id": "exp-4",
+      "company": "University Research Lab",
+      "position": "Graduate Research Assistant",
+      "location": "Stanford, CA",
+      "startDate": "2015-09",
+      "endDate": "2017-05",
+      "description": "Conducted research on distributed systems and machine learning infrastructure",
+      "achievements": [
+        "Published 2 papers on resource allocation in ML training clusters",
+        "Developed prototype achieving 40% improvement in GPU utilization",
+        "Presented research at top-tier conferences (OSDI, NSDI)"
+      ],
+      "technologies": ["Python", "C++", "CUDA", "Kubernetes", "TensorFlow"]
+    }
+  ],
+  "education": [
+    {
+      "id": "edu-1",
+      "institution": "Stanford University",
+      "degree": "M.S.",
+      "field": "Computer Science",
+      "location": "Stanford, CA",
+      "startDate": "2015-09",
+      "endDate": "2017-06",
+      "gpa": "3.9/4.0",
+      "honors": ["Graduate with Distinction", "Departmental Fellowship"]
+    },
+    {
+      "id": "edu-2",
+      "institution": "University of California, Berkeley",
+      "degree": "B.S.",
+      "field": "Computer Science",
+      "location": "Berkeley, CA",
+      "startDate": "2011-08",
+      "endDate": "2015-05",
+      "gpa": "3.8/4.0",
+      "honors": ["Summa Cum Laude", "Dean's List (8 semesters)"]
+    }
+  ],
+  "skills": {
+    "categories": [
+      {
+        "name": "Programming Languages",
+        "items": ["Go", "TypeScript", "Python", "Rust", "Java", "C++"]
+      },
+      {
+        "name": "Cloud & Infrastructure",
+        "items": ["AWS", "Kubernetes", "Docker", "Terraform", "Cloudflare", "GCP"]
+      },
+      {
+        "name": "Databases & Storage",
+        "items": ["PostgreSQL", "Redis", "MongoDB", "ClickHouse", "DynamoDB", "Elasticsearch"]
+      },
+      {
+        "name": "Frameworks & Tools",
+        "items": ["React", "Node.js", "gRPC", "Apache Kafka", "Apache Spark", "TensorFlow"]
+      },
+      {
+        "name": "DevOps & Monitoring",
+        "items": ["CI/CD", "Prometheus", "Grafana", "ELK Stack", "GitHub Actions", "Jenkins"]
+      }
+    ]
+  },
+  "certifications": [
+    {
+      "id": "cert-1",
+      "name": "AWS Certified Solutions Architect - Professional",
+      "issuer": "Amazon Web Services",
+      "date": "2023-06",
+      "credentialUrl": "https://aws.amazon.com/verification"
+    },
+    {
+      "id": "cert-2",
+      "name": "Certified Kubernetes Administrator (CKA)",
+      "issuer": "Cloud Native Computing Foundation",
+      "date": "2022-11",
+      "credentialUrl": "https://www.cncf.io/certification"
+    }
+  ]
+}

@@ -4,10 +4,10 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build",
-		"preview": "astro build && wrangler dev",
+		"build": "astro build && pagefind --site dist",
+		"preview": "astro build && pagefind --site dist && wrangler dev",
 		"astro": "astro",
-		"deploy": "astro build && wrangler deploy",
+		"deploy": "astro build && pagefind --site dist && wrangler deploy",
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
@@ -15,10 +15,16 @@
 		"@astrojs/sitemap": "^3.6.1",
 		"@tailwindcss/vite": "^4.1.18",
 		"astro": "^5.16.7",
+		"satori": "^0.18.3",
+		"sharp": "^0.34.5",
 		"tailwindcss": "^4.1.18"
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.3",
+		"@vite-pwa/astro": "^1.2.0",
+		"pagefind": "^1.4.0",
+		"vite-plugin-pwa": "^1.2.0",
+		"workbox-window": "^7.4.0",
 		"wrangler": "^4.57.0"
 	}
 }

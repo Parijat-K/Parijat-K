@@ -1,0 +1,95 @@
+---
+interface FilterOption {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  filters: {
+    id: string;
+    label: string;
+    options: FilterOption[];
+  }[];
+  class?: string;
+}
+
+const { filters, class: className = '' } = Astro.props;
+---
+
+<div class={`flex flex-wrap gap-4 items-center mb-8 ${className}`}>
+  {filters.map((filter) => (
+    <div class="flex flex-col gap-1">
+      <label for={filter.id} class="text-xs font-medium text-slate-600 uppercase tracking-wide">
+        {filter.label}
+      </label>
+      <select
+        id={filter.id}
+        class="px-3 py-2 border border-slate-300 rounded-md text-sm bg-white hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+        data-filter={filter.id}
+      >
+        {filter.options.map((option) => (
+          <option value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </div>
+  ))}
+
+  <button
+    id="clear-filters"
+    class="ml-auto px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
+    aria-label="Clear all filters"
+  >
+    Clear Filters
+  </button>
+</div>
+
+<script>
+  // Client-side filtering logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterSelects = document.querySelectorAll('[data-filter]');
+    const clearButton = document.getElementById('clear-filters');
+    const items = document.querySelectorAll('[data-filter-item]');
+
+    function applyFilters() {
+      const activeFilters: Record<string, string> = {};
+
+      filterSelects.forEach((select) => {
+        const htmlSelect = select as HTMLSelectElement;
+        const filterId = htmlSelect.dataset.filter!;
+        const value = htmlSelect.value;
+        if (value !== 'all') {
+          activeFilters[filterId] = value;
+        }
+      });
+
+      items.forEach((item) => {
+        const htmlItem = item as HTMLElement;
+        let shouldShow = true;
+
+        Object.keys(activeFilters).forEach((filterId) => {
+          const itemValue = htmlItem.dataset[filterId];
+          if (itemValue && itemValue !== activeFilters[filterId]) {
+            shouldShow = false;
+          }
+        });
+
+        if (shouldShow) {
+          htmlItem.style.display = '';
+        } else {
+          htmlItem.style.display = 'none';
+        }
+      });
+    }
+
+    filterSelects.forEach((select) => {
+      select.addEventListener('change', applyFilters);
+    });
+
+    clearButton?.addEventListener('click', () => {
+      filterSelects.forEach((select) => {
+        (select as HTMLSelectElement).value = 'all';
+      });
+      applyFilters();
+    });
+  });
+</script>

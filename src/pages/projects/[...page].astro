@@ -1,0 +1,115 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import ProjectsHero from '../../components/projects/ProjectsHero.astro';
+import ProjectCard from '../../components/projects/ProjectCard.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import Pagination from '../../components/ui/Pagination.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  // Load all projects
+  const projectItems = await getCollection('projects');
+
+  // Sort by order field (if present) or start date
+  const sortedProjects = projectItems.sort((a, b) => {
+    if (a.data.order !== undefined && b.data.order !== undefined) {
+      return a.data.order - b.data.order;
+    }
+    return new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime();
+  });
+
+  return paginate(sortedProjects, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const projectItems = page.data;
+
+// Extract unique categories and statuses for filters
+const allProjects = await getCollection('projects');
+const categories = ['all', ...new Set(allProjects.map(item => item.data.category))];
+const statuses = ['all', ...new Set(allProjects.map(item => item.data.status))];
+
+const filters = [
+  {
+    id: 'category',
+    label: 'Category',
+    options: categories.map(cat => ({
+      value: cat,
+      label: cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    })),
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    options: statuses.map(status => ({
+      value: status,
+      label: status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')
+    })),
+  },
+];
+---
+
+<Layout
+  title={`Engineering Projects${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ''} - Alex Rivera`}
+  description="Showcase of engineering projects, production systems, and open-source contributions in distributed systems, infrastructure, and web technologies."
+>
+  <Navigation />
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <ProjectsHero />
+
+    <!-- Filters -->
+    <FilterBar filters={filters} />
+
+    <!-- Results count -->
+    <p class="text-sm text-slate-600 mb-4">
+      Showing {page.start + 1}–{page.end + 1} of {page.total} projects
+    </p>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {projectItems.map((item) => (
+        <ProjectCard
+          slug={item.id}
+          title={item.data.title}
+          description={item.data.description}
+          category={item.data.category}
+          status={item.data.status}
+          technologies={item.data.technologies}
+          role={item.data.role}
+          highlights={item.data.highlights}
+          githubUrl={item.data.githubUrl}
+          demoUrl={item.data.demoUrl}
+        />
+      ))}
+    </div>
+
+    <!-- Pagination -->
+    {page.lastPage > 1 && (
+      <Pagination
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/projects"
+        class="mb-8"
+      />
+    )}
+
+    <!-- Consultation Banner -->
+    <div class="bg-indigo-50 rounded-lg p-8 text-center">
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">Need Help with Your Project?</h2>
+      <p class="text-slate-700 mb-6 max-w-2xl mx-auto">
+        I'm available for consulting on distributed systems architecture, performance optimization, and cloud infrastructure design.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a
+          href="mailto:alex.rivera@example.com"
+          class="px-6 py-3 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
+        >
+          Contact Me
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>

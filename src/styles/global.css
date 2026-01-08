@@ -1,1 +1,202 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
+
+/* Import Tailwind CSS */
 @import "tailwindcss";
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  /* Custom Fonts */
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: "Inter", sans-serif;
+
+  /* Custom Color Tokens */
+  --color-cv-primary: theme(colors.slate.900);
+  --color-research-primary: theme(colors.indigo.900);
+  --color-projects-primary: theme(colors.slate.800);
+  --color-bg-base: theme(colors.slate.100);
+}
+
+/* Base Styles */
+body {
+  font-family: var(--font-inter);
+  background-color: var(--color-bg-base);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair);
+  font-weight: 700;
+}
+
+/* Card Hover Effect Utility */
+.card-hover {
+  @apply transition-all duration-300;
+}
+
+.card-hover:hover {
+  @apply -translate-y-1 shadow-lg;
+}
+
+/* Hero Texture Overlay */
+.hero-texture {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-texture > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 400ms ease-out;
+}
+
+/* Print Styles - CV Only */
+@media print {
+  /* Hide non-essential elements */
+  nav,
+  footer,
+  .no-print,
+  .cv-photo,
+  button,
+  [role="button"] {
+    display: none !important;
+  }
+
+  /* Reset background and colors */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  /* Remove shadows and transitions */
+  * {
+    box-shadow: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  /* Optimize typography for print */
+  h1 {
+    font-size: 18pt;
+    margin-bottom: 0.5em;
+  }
+
+  h2 {
+    font-size: 14pt;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 12pt;
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+  }
+
+  /* Page break controls */
+  .experience-item,
+  .education-item,
+  .skills-category {
+    page-break-inside: avoid;
+  }
+
+  section {
+    page-break-inside: avoid;
+  }
+
+  /* Compact spacing for print */
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Show link URLs */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* Remove link underlines */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Ensure proper margins */
+  @page {
+    margin: 0.5in;
+  }
+
+  /* Convert colors to grayscale */
+  * {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Keep some subtle grays for structure */
+  .bg-slate-50,
+  .bg-gray-50 {
+    background: #f9f9f9 !important;
+    border: 1px solid #e0e0e0 !important;
+  }
+}
+
+/* Accessibility - Skip to content link */
+.skip-to-content {
+  @apply absolute left-0 top-0 z-50 -translate-y-full bg-indigo-600 px-4 py-2 text-white transition-transform focus:translate-y-0;
+}
+
+/* Search Modal Backdrop */
+.search-backdrop {
+  @apply fixed inset-0 z-40 bg-black/50 backdrop-blur-sm;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

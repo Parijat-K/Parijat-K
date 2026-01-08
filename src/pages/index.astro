@@ -1,11 +1,49 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import CVHeader from '../components/cv/CVHeader.astro';
+import CVSummary from '../components/cv/CVSummary.astro';
+import CVExperience from '../components/cv/CVExperience.astro';
+import CVEducation from '../components/cv/CVEducation.astro';
+import CVSkills from '../components/cv/CVSkills.astro';
+import CVCertifications from '../components/cv/CVCertifications.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Load CV data from content collection
+const cvEntry = await getEntry('cv', 'main');
+const cv = cvEntry.data;
+
+// SEO metadata
+const title = `${cv.personalInfo.name} - CV/Resume`;
+const description = cv.summary;
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title={title}
+  description={description}
+  type="profile"
+>
+  <Navigation />
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- CV Container with white background and shadow (print-optimized) -->
+    <div class="bg-white rounded-lg shadow-2xl p-8 md:p-12">
+      <CVHeader personalInfo={cv.personalInfo} />
+      <CVSummary summary={cv.summary} />
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column: Experience & Education -->
+        <div class="lg:col-span-2">
+          <CVExperience experience={cv.experience} />
+          <CVEducation education={cv.education} />
+        </div>
+
+        <!-- Right Sidebar: Skills & Certifications -->
+        <div class="lg:col-span-1">
+          <CVSkills categories={cv.skills.categories} />
+          <CVCertifications certifications={cv.certifications} />
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>

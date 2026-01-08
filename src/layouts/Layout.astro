@@ -1,25 +1,114 @@
 ---
-import '../styles/global.css'
---- 
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  type?: 'website' | 'article' | 'profile';
+  author?: string;
+  publishedDate?: string;
+}
+
+const {
+  title = 'Senior Engineer & Researcher Portfolio',
+  description = 'Portfolio showcasing software engineering work, academic research, and technical projects.',
+  ogImage,
+  canonicalUrl = Astro.url.href,
+  type = 'website',
+  author,
+  publishedDate,
+} = Astro.props;
+
+const siteName = 'Portfolio';
+const siteUrl = Astro.site?.href || 'https://parijatkhan-home.pages.dev';
+
+// Determine section type from URL for OG image
+const getOgImageType = () => {
+  const path = Astro.url.pathname;
+  if (path.startsWith('/research')) return 'research';
+  if (path.startsWith('/projects')) return 'projects';
+  if (path.startsWith('/blog')) return 'blog';
+  return 'cv';
+};
+
+// Generate dynamic OG image URL if not provided
+const ogImageUrl = ogImage
+  ? new URL(ogImage, siteUrl).href
+  : `${siteUrl}/api/og.png?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent('Senior Engineer & Researcher')}&type=${getOgImageType()}`;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content={siteName} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {author && <meta name="author" content={author} />}
+    {publishedDate && <meta property="article:published_time" content={publishedDate} />}
+
+    <!-- JSON-LD Structured Data for Person Schema -->
+    {type === 'profile' && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: 'Alex Rivera',
+        jobTitle: 'Senior Software Engineer & Researcher',
+        url: siteUrl,
+        sameAs: [
+          'https://github.com/alexrivera',
+          'https://linkedin.com/in/alexrivera',
+        ],
+      })} />
+    )}
+
+    {type === 'article' && author && publishedDate && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description: description,
+        author: {
+          '@type': 'Person',
+          name: author,
+        },
+        datePublished: publishedDate,
+        url: canonicalUrl,
+      })} />
+    )}
+
+    <!-- View Transitions API -->
+    <ViewTransitions />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0f172a" />
+  </head>
+  <body class="min-h-screen">
+    <slot />
+  </body>
+</html>
