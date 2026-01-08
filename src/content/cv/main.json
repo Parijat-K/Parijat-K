@@ -12,7 +12,7 @@
   },
   "summary": "Ever since I was a teenager, I have been passionate about programming. I started with BASIC, gradually moved to C, C++ during my college days, and now I am a full time Developer/Tech Lead, working primarily with Java, Python and C#. The passion remains with me even today and stronger infact. I always feel excited to try new Languages and Technologies. I love to be part of Hackathons and Open source communities.",
   "availability": {
-    "status": "open",
+    "status": "limited",
     "message": "I am currently open to consulating and freelance collaborations. Feel free to reach out!"
   },
   "experience": [
@@ -111,21 +111,30 @@
   "skills": {
     "categories": [
       {
-        "name": "Programming Languages",
+        "name": "Backend",
         "languages": [
-          { "name": "Java", "frameworks": ["Spring", "Struts"] },
+          { "name": "Java", "frameworks": ["Spring", "Hibernate"] },
           { "name": "Python", "frameworks": ["Django"] },
-          { "name": "C#", "frameworks": [] },
+          { "name": "C#", "frameworks": ["DotNet"] },
           { "name": "C++", "frameworks": [] },
-          { "name": "C", "frameworks": [] },
-          { "name": "JavaScript", "frameworks": [] },
-          { "name": "TypeScript", "frameworks": [] },
-          { "name": "BASIC", "frameworks": [] }
+          { "name": "Go", "frameworks": [] }
         ]
       },
       {
-        "name": "Frontend Technologies",
-        "items": ["React.js", "Freemarker"]
+        "name": "Frontend",
+        "languages": [
+          { "name": "React", "frameworks": [] },
+          { "name": "Angular", "frameworks": [] },
+          { "name": "HTMX", "frameworks": [] }
+        ]
+      },
+      {
+        "name": "Mobile & Cross-Platform",
+        "languages": [
+          { "name": "Flutter", "frameworks": [] },
+          { "name": "Java", "frameworks": ["KMP"] },
+          { "name": "C#", "frameworks": ["MAUI"] }
+        ]
       },
       {
         "name": "Development Practices",
