@@ -1,0 +1,28 @@
+---
+interface Props {
+  name?: string;
+  year?: number;
+}
+
+const {
+  name = "Parijat Khan",
+  year = new Date().getFullYear()
+} = Astro.props;
+---
+
+<footer class="bg-slate-900 text-slate-400 py-6 mt-auto">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <p class="text-sm">
+        © {year} {name}. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Ensure footer sticks to bottom even on short pages */
+  footer {
+    flex-shrink: 0;
+  }
+</style>

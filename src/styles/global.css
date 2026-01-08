@@ -85,8 +85,19 @@ h1, h2, h3, h4, h5, h6 {
   .no-print,
   .cv-photo,
   button,
-  [role="button"] {
+  [role="button"],
+  footer {
     display: none !important;
+  }
+
+  /* Skills with frameworks */
+  .skill-category {
+    page-break-inside: avoid;
+  }
+
+  /* Grouped experience print optimization */
+  .role-entry {
+    page-break-inside: avoid;
   }
 
   /* Reset background and colors */

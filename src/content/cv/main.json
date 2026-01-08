@@ -11,6 +11,10 @@
     "photoUrl": "~/assets/Profile.jpg"
   },
   "summary": "Ever since I was a teenager, I have been passionate about programming. I started with BASIC, gradually moved to C, C++ during my college days, and now I am a full time Developer/Tech Lead, working primarily with Java, Python and C#. The passion remains with me even today and stronger infact. I always feel excited to try new Languages and Technologies. I love to be part of Hackathons and Open source communities.",
+  "availability": {
+    "status": "open",
+    "message": "I am currently open to consulating and freelance collaborations. Feel free to reach out!"
+  },
   "experience": [
     {
       "id": "exp-1",
@@ -108,11 +112,16 @@
     "categories": [
       {
         "name": "Programming Languages",
-        "items": ["Java", "Python", "C#", "C++", "C", "JavaScript", "TypeScript", "BASIC"]
-      },
-      {
-        "name": "Backend Frameworks",
-        "items": ["Spring", "Django", "Struts"]
+        "languages": [
+          { "name": "Java", "frameworks": ["Spring", "Struts"] },
+          { "name": "Python", "frameworks": ["Django"] },
+          { "name": "C#", "frameworks": [] },
+          { "name": "C++", "frameworks": [] },
+          { "name": "C", "frameworks": [] },
+          { "name": "JavaScript", "frameworks": [] },
+          { "name": "TypeScript", "frameworks": [] },
+          { "name": "BASIC", "frameworks": [] }
+        ]
       },
       {
         "name": "Frontend Technologies",

@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from "astro:transitions";
 import "../styles/global.css";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title?: string;
@@ -129,7 +130,10 @@ const ogImageUrl = ogImage
       src="https://cloud.umami.is/script.js"
       data-website-id="165505d8-1b79-4244-b8de-e629324cd229"></script>
   </head>
-  <body class="min-h-screen">
-    <slot />
+  <body class="min-h-screen flex flex-col">
+    <div class="grow">
+      <slot />
+    </div>
+    <Footer />
   </body>
 </html>

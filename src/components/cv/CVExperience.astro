@@ -13,6 +13,24 @@ interface Experience {
   technologies: string[];
 }
 
+interface Role {
+  position: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  achievements: string[];
+  technologies: string[];
+}
+
+interface GroupedExperience {
+  company: string;
+  location: string;
+  roles: Role[];
+  allTechnologies: string[];
+  overallStartDate: string;
+  overallEndDate: string;
+}
+
 interface Props {
   experience: Experience[];
 }
@@ -24,53 +42,112 @@ function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
+
+function groupExperienceByCompany(experiences: Experience[]): GroupedExperience[] {
+  const grouped = new Map<string, Experience[]>();
+
+  // Group by company
+  experiences.forEach(exp => {
+    if (!grouped.has(exp.company)) {
+      grouped.set(exp.company, []);
+    }
+    grouped.get(exp.company)!.push(exp);
+  });
+
+  // Convert to GroupedExperience format
+  return Array.from(grouped.entries()).map(([company, companyExps]) => {
+    // Sort by start date descending (most recent first)
+    companyExps.sort((a, b) => b.startDate.localeCompare(a.startDate));
+
+    // Collect all unique technologies
+    const techSet = new Set<string>();
+    companyExps.forEach(exp => {
+      exp.technologies?.forEach(tech => techSet.add(tech));
+    });
+
+    return {
+      company,
+      location: companyExps[0].location, // Most recent location
+      roles: companyExps.map(exp => ({
+        position: exp.position,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        description: exp.description,
+        achievements: exp.achievements,
+        technologies: exp.technologies || [],
+      })),
+      allTechnologies: Array.from(techSet),
+      overallStartDate: companyExps[companyExps.length - 1].startDate, // Earliest
+      overallEndDate: companyExps[0].endDate, // Most recent
+    };
+  });
+}
+
+const groupedExperiences = groupExperienceByCompany(experience);
 ---
 
 <section class="mb-8">
   <h2 class="text-2xl font-bold text-slate-900 mb-6">Experience</h2>
 
   <div class="space-y-6">
-    {experience.map((exp) => (
+    {groupedExperiences.map((group) => (
       <div class="relative pl-8 border-l-2 border-slate-200 pb-6 last:pb-0 page-break-avoid">
         <!-- Timeline dot -->
         <div class="absolute left-0 top-0 -translate-x-1/2 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow" />
 
-        <!-- Content -->
-        <div>
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-2">
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">{exp.position}</h3>
-              <p class="text-indigo-600 font-medium">{exp.company}</p>
-            </div>
-            <div class="text-sm text-slate-600 md:text-right mt-1 md:mt-0">
-              <p>{formatDate(exp.startDate)} - {formatDate(exp.endDate)}</p>
-              <p class="text-slate-500">{exp.location}</p>
-            </div>
+        <!-- Company Header -->
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+          <div>
+            <h3 class="text-xl font-bold text-indigo-600">{group.company}</h3>
+            <p class="text-sm text-slate-500">{group.location}</p>
           </div>
+          <div class="text-sm text-slate-600 md:text-right mt-1 md:mt-0">
+            <p class="font-medium">
+              {formatDate(group.overallStartDate)} - {formatDate(group.overallEndDate)}
+            </p>
+          </div>
+        </div>
 
-          <p class="text-slate-700 mb-3">{exp.description}</p>
+        <!-- Roles -->
+        <div class="space-y-4">
+          {group.roles.map((role, roleIndex) => (
+            <div class={roleIndex > 0 ? 'pt-4 border-t border-slate-200 role-entry' : 'role-entry'}>
+              <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-2">
+                <h4 class="text-lg font-bold text-slate-900">{role.position}</h4>
+                <p class="text-sm text-slate-600 mt-1 md:mt-0">
+                  {formatDate(role.startDate)} - {formatDate(role.endDate)}
+                </p>
+              </div>
 
-          {exp.achievements.length > 0 && (
-            <ul class="space-y-2 mb-3">
-              {exp.achievements.map((achievement) => (
-                <li class="flex items-start gap-2 text-slate-700">
-                  <svg class="w-4 h-4 mt-1 text-indigo-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                  </svg>
-                  <span>{achievement}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+              <p class="text-slate-700 mb-2 text-sm">{role.description}</p>
 
-          {exp.technologies.length > 0 && (
+              {role.achievements.length > 0 && (
+                <ul class="space-y-2 mb-3">
+                  {role.achievements.map((achievement) => (
+                    <li class="flex items-start gap-2 text-slate-700 text-sm">
+                      <svg class="w-4 h-4 mt-0.5 text-indigo-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span>{achievement}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <!-- All Technologies (shown once per company) -->
+        {group.allTechnologies.length > 0 && (
+          <div class="mt-4 pt-3 border-t border-slate-200">
+            <p class="text-xs text-slate-600 mb-2 font-medium">Technologies Used:</p>
             <div class="flex flex-wrap gap-2">
-              {exp.technologies.map((tech) => (
+              {group.allTechnologies.map((tech) => (
                 <Badge text={tech} variant="technology" />
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     ))}
   </div>

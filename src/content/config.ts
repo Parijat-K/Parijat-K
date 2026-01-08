@@ -17,6 +17,10 @@ const cvCollection = defineCollection({
       photoUrl: z.string().optional(),
     }),
     summary: z.string(),
+    availability: z.object({
+      status: z.enum(['open', 'closed', 'limited']).optional(),
+      message: z.string().optional(),
+    }).optional(),
     experience: z.array(
       z.object({
         id: z.string(),
@@ -48,7 +52,13 @@ const cvCollection = defineCollection({
       categories: z.array(
         z.object({
           name: z.string(),
-          items: z.array(z.string()),
+          items: z.array(z.string()).optional(),
+          languages: z.array(
+            z.object({
+              name: z.string(),
+              frameworks: z.array(z.string()).optional(),
+            })
+          ).optional(),
         })
       ),
     }),

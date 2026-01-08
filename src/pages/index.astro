@@ -8,6 +8,7 @@ import CVExperience from '../components/cv/CVExperience.astro';
 import CVEducation from '../components/cv/CVEducation.astro';
 import CVSkills from '../components/cv/CVSkills.astro';
 import CVCertifications from '../components/cv/CVCertifications.astro';
+import CVAvailability from '../components/cv/CVAvailability.astro';
 
 // Load CV data from content collection
 const cvEntry = await getEntry('cv', 'main');
@@ -25,24 +26,43 @@ const description = cv.summary;
 >
   <Navigation />
 
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- CV Container with white background and shadow (print-optimized) -->
-    <div class="bg-white rounded-lg shadow-2xl p-8 md:p-12">
-      <CVHeader personalInfo={cv.personalInfo} />
-      <CVSummary summary={cv.summary} />
+  <main class="py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- CV Container with white background and shadow (print-optimized) -->
+      <div class="bg-white rounded-lg shadow-2xl p-8 md:p-12">
+        <CVHeader personalInfo={cv.personalInfo} />
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Left Column: Experience & Education -->
-        <div class="lg:col-span-2">
-          <CVExperience experience={cv.experience} />
-          <CVEducation education={cv.education} />
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Left Panel: Summary + Experience -->
+          <div class="lg:col-span-2 space-y-8">
+            <CVSummary summary={cv.summary} />
+            <CVExperience experience={cv.experience} />
+          </div>
+
+          <!-- Right Panel: Skills → Certifications → Education -->
+          <div class="lg:col-span-1 space-y-8">
+            <CVSkills categories={cv.skills.categories} />
+
+            {cv.certifications && cv.certifications.length > 0 && (
+              <>
+                <hr class="border-slate-200" />
+                <CVCertifications certifications={cv.certifications} />
+              </>
+            )}
+
+            <hr class="border-slate-200" />
+            <CVEducation education={cv.education} />
+          </div>
         </div>
 
-        <!-- Right Sidebar: Skills & Certifications -->
-        <div class="lg:col-span-1">
-          <CVSkills categories={cv.skills.categories} />
-          <CVCertifications certifications={cv.certifications} />
-        </div>
+        <!-- Availability integrated at bottom -->
+        {cv.availability && (
+          <CVAvailability
+            availabilityStatus={cv.availability.message}
+            email={cv.personalInfo.email}
+            linkedin={cv.personalInfo.linkedin}
+          />
+        )}
       </div>
     </div>
   </main>
