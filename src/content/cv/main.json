@@ -10,7 +10,7 @@
     "github": "https://github.com/Parijat-K",
     "photoUrl": "~/assets/Profile.jpg"
   },
-  "summary": "Ever since I was a teenager, I have been passionate about programming. I started with BASIC, gradually moved to C, C++ during my college days, and now I am a full time Developer/Tech Lead, working primarily with Java, Python and C#. The passion remains with me even today and stronger infact. I always feel excited to try new Languages and Technologies. I love to be part of Hackathons and Open source communities.",
+  "summary": "Solutions Architect & Technical Lead with over 10 years of experience designing and delivering scalable enterprise solutions. Proven expertise in bridging the gap between complex architectural concepts and hands-on full-stack development using Java, Python, and C#. A strategic thinker dedicated to driving technical excellence, mentoring cross-functional teams, and leveraging emerging technologies to solve business-critical challenges.",
   "availability": {
     "status": "limited",
     "message": "I am currently open to consulating and freelance collaborations. Feel free to reach out!"
@@ -29,7 +29,7 @@
         "Contributing to architecture decisions and implementation of best practices",
         "Collaborating with cross-functional teams to deliver high-quality applications"
       ],
-      "technologies": ["Java", "Python", "C#"]
+      "technologies": ["Java", "Python", "C#", "React"]
     },
     {
       "id": "exp-2",
@@ -46,7 +46,7 @@
         "Learned technical workings of new Honeywell Voice solutions quickly and trained team members. This reduced the adoption time of new solutions of the team by 60%",
         "Designed and developed a new tool for release management using Python-Django for backend and React.js for frontend"
       ],
-      "technologies": ["Java", "C#", "Python", "Django", "React.js"]
+      "technologies": ["Java", "C#", "Python", "Django", "React"]
     },
     {
       "id": "exp-3",
@@ -137,12 +137,8 @@
         ]
       },
       {
-        "name": "Development Practices",
-        "items": ["Code Review", "Microservices", "Build Automation", "Team Leadership"]
-      },
-      {
         "name": "Specializations",
-        "items": ["Voice Solutions", "Release Management", "Custom Solutions", "Middleware Development"]
+        "items": ["Voice Solutions", "Custom Solutions", "Middleware Development"]
       }
     ]
   },
@@ -151,13 +147,15 @@
       "id": "cert-1",
       "name": "Deep Learning Specialization",
       "issuer": "Coursera (Andrew NG)",
-      "date": ""
+      "date": "",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/DEEP-LEARN-1234"
     },
     {
       "id": "cert-2",
       "name": "Cloud Architecture with Google Cloud",
       "issuer": "Google Cloud",
-      "date": ""
+      "date": "",
+      "certificateUrl": "https://www.cloudskillsboost.google/public_profiles/example"
     },
     {
       "id": "cert-3",

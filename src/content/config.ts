@@ -68,8 +68,8 @@ const cvCollection = defineCollection({
           id: z.string(),
           name: z.string(),
           issuer: z.string(),
-          date: z.string(),
-          credentialUrl: z.string().url().optional(),
+          date: z.string().optional(),
+          certificateUrl: z.string().url().optional(),
         })
       )
       .optional(),
