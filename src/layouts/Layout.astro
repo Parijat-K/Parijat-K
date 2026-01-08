@@ -13,8 +13,8 @@ interface Props {
 }
 
 const {
-  title = "Senior Engineer & Researcher Portfolio",
-  description = "Portfolio showcasing software engineering work, academic research, and technical projects.",
+  title = "Parijat Khan - Solution Designer & Full-Stack Developer",
+  description = "Solution Designer, Full-Stack Developer, and Technology Enthusiast based in Wellington, New Zealand. Experienced in Java, Python, C#, and modern web technologies. Passionate about building scalable software solutions and exploring new technologies.",
   ogImage,
   canonicalUrl = Astro.url.href,
   type = "website",
@@ -22,8 +22,8 @@ const {
   publishedDate,
 } = Astro.props;
 
-const siteName = "Portfolio";
-const siteUrl = Astro.site?.href || "https://parijatkhan-home.pages.dev";
+const siteName = "Parijat Khan";
+const siteUrl = Astro.site?.href || "https://parijatkhan.in";
 
 // Determine section type from URL for OG image
 const getOgImageType = () => {
@@ -37,7 +37,7 @@ const getOgImageType = () => {
 // Generate dynamic OG image URL if not provided
 const ogImageUrl = ogImage
   ? new URL(ogImage, siteUrl).href
-  : `${siteUrl}/api/og.png?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent("Senior Engineer & Researcher")}&type=${getOgImageType()}`;
+  : `${siteUrl}/api/og.png?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent("Solution Designer & Full-Stack Developer")}&type=${getOgImageType()}`;
 ---
 
 <!doctype html>
@@ -85,12 +85,12 @@ const ogImageUrl = ogImage
           set:html={JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            name: "Alex Rivera",
-            jobTitle: "Senior Software Engineer & Researcher",
+            name: "Parijat Khan",
+            jobTitle: "Solution Designer & Full-Stack Developer",
             url: siteUrl,
             sameAs: [
-              "https://github.com/alexrivera",
-              "https://linkedin.com/in/alexrivera",
+              "https://github.com/Parijat-K",
+              "https://linkedin.com/in/parijat-k",
             ],
           })}
         />

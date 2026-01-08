@@ -9,7 +9,7 @@ import AstroPWA from '@vite-pwa/astro';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://parijatkhan-home.pages.dev',
+  site: 'https://parijatkhan.in',
 
   adapter: cloudflare({
     platformProxy: {
@@ -32,9 +32,9 @@ export default defineConfig({
       includeAssets: ['favicon.svg'],
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Alex Rivera - Portfolio',
-        short_name: 'Portfolio',
-        description: 'Senior Engineer & Researcher Portfolio showcasing software engineering work, academic research, and technical projects.',
+        name: 'Parijat Khan - Portfolio',
+        short_name: 'Parijat Khan',
+        description: 'Solution Designer, Full-Stack Developer & Technology Enthusiast. Portfolio showcasing software engineering work and technical projects.',
         theme_color: '#0f172a',
         background_color: '#f1f5f9',
         display: 'standalone',
