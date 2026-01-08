@@ -4,6 +4,69 @@ import sharp from 'sharp';
 
 export const prerender = false;
 
+/**
+ * Load a Google Font as ArrayBuffer for Satori
+ * Fetches the font in TTF format (required by Satori, WOFF2 not supported)
+ */
+async function loadGoogleFont(
+  family: string,
+  weight: number
+): Promise<ArrayBuffer> {
+  try {
+    // Construct Google Fonts API URL with specific user-agent to get TTF fonts
+    const API = `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, '+')}:wght@${weight}`;
+
+    console.log(`Fetching font CSS for ${family} ${weight} from:`, API);
+
+    // Use a user-agent that will receive TTF format (not WOFF2)
+    const cssResponse = await fetch(API, {
+      headers: {
+        // Use a bot user-agent to get TTF instead of WOFF2
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1',
+      },
+    });
+
+    if (!cssResponse.ok) {
+      throw new Error(`Failed to fetch CSS: ${cssResponse.status} ${cssResponse.statusText}`);
+    }
+
+    const css = await cssResponse.text();
+    console.log(`Received CSS (first 200 chars):`, css.substring(0, 200));
+
+    // Extract font URL from CSS - try multiple patterns
+    let resource = css.match(/src:\s*url\(([^)]+)\)\s*format\(['"](?:opentype|truetype)['"]\)/);
+
+    if (!resource) {
+      // Try without format specifier
+      resource = css.match(/src:\s*url\(([^)]+)\)/);
+    }
+
+    if (!resource) {
+      console.error('Full CSS:', css);
+      throw new Error(`Failed to extract font URL from CSS for ${family} ${weight}`);
+    }
+
+    const fontUrl = resource[1].replace(/['"]/g, '');
+    console.log(`Fetching font file from:`, fontUrl);
+
+    // Fetch the actual font file
+    const fontResponse = await fetch(fontUrl);
+
+    if (!fontResponse.ok) {
+      throw new Error(`Failed to fetch font file: ${fontResponse.status} ${fontResponse.statusText}`);
+    }
+
+    const arrayBuffer = await fontResponse.arrayBuffer();
+    console.log(`Successfully loaded font ${family} ${weight}, size: ${arrayBuffer.byteLength} bytes`);
+
+    return arrayBuffer;
+  } catch (error) {
+    console.error(`Error loading font ${family} ${weight}:`, error);
+    throw error;
+  }
+}
+
 export const GET: APIRoute = async ({ url }) => {
   const title = url.searchParams.get('title') || 'Alex Rivera';
   const subtitle = url.searchParams.get('subtitle') || 'Senior Engineer & Researcher';
@@ -19,6 +82,39 @@ export const GET: APIRoute = async ({ url }) => {
 
   const colors = colorSchemes[type] || colorSchemes.cv;
 
+  // Load custom fonts from Google Fonts
+  // Satori REQUIRES at least one font, so we must load fonts successfully
+  let fontFamilyHeading = 'Playfair Display';
+  let fontFamilyBody = 'Inter';
+
+  // Load fonts in parallel for better performance
+  const [playfairData, interSemiboldData, interRegularData] = await Promise.all([
+    loadGoogleFont('Playfair Display', 700),
+    loadGoogleFont('Inter', 600),
+    loadGoogleFont('Inter', 400),
+  ]);
+
+  const fonts = [
+    {
+      name: 'Playfair Display',
+      data: playfairData,
+      weight: 700,
+      style: 'normal',
+    },
+    {
+      name: 'Inter',
+      data: interSemiboldData,
+      weight: 600,
+      style: 'normal',
+    },
+    {
+      name: 'Inter',
+      data: interRegularData,
+      weight: 400,
+      style: 'normal',
+    },
+  ];
+
   // Create SVG with Satori
   const svg = await satori(
     {
@@ -31,7 +127,7 @@ export const GET: APIRoute = async ({ url }) => {
           height: '100%',
           backgroundColor: colors.bg,
           padding: '80px',
-          fontFamily: 'system-ui, sans-serif',
+          fontFamily: fontFamilyBody,
           position: 'relative',
         },
         children: [
@@ -67,7 +163,8 @@ export const GET: APIRoute = async ({ url }) => {
                   props: {
                     style: {
                       fontSize: '32px',
-                      fontWeight: 'bold',
+                      fontWeight: 700,
+                      fontFamily: fontFamilyHeading,
                       color: colors.primary,
                       marginBottom: '8px',
                     },
@@ -79,6 +176,8 @@ export const GET: APIRoute = async ({ url }) => {
                   props: {
                     style: {
                       fontSize: '18px',
+                      fontWeight: 600,
+                      fontFamily: fontFamilyBody,
                       color: colors.secondary,
                       textTransform: 'uppercase',
                       letterSpacing: '2px',
@@ -95,7 +194,8 @@ export const GET: APIRoute = async ({ url }) => {
             props: {
               style: {
                 fontSize: '72px',
-                fontWeight: 'bold',
+                fontWeight: 700,
+                fontFamily: fontFamilyHeading,
                 color: colors.primary,
                 lineHeight: 1.1,
                 maxWidth: '900px',
@@ -124,6 +224,8 @@ export const GET: APIRoute = async ({ url }) => {
                   props: {
                     style: {
                       fontSize: '24px',
+                      fontWeight: 400,
+                      fontFamily: fontFamilyBody,
                       color: colors.secondary,
                     },
                     children: 'parijatkhan-home.pages.dev',
@@ -134,6 +236,8 @@ export const GET: APIRoute = async ({ url }) => {
                   props: {
                     style: {
                       fontSize: '20px',
+                      fontWeight: 600,
+                      fontFamily: fontFamilyBody,
                       color: colors.secondary,
                       textTransform: 'uppercase',
                       letterSpacing: '2px',
@@ -150,6 +254,7 @@ export const GET: APIRoute = async ({ url }) => {
     {
       width: 1200,
       height: 630,
+      fonts,
     }
   );
 
