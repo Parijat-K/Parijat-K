@@ -1,12 +1,16 @@
 ---
-import Card from '../ui/Card.astro';
+import Card from "../ui/Card.astro";
 ---
 
-<Card variant="hero" class="bg-indigo-900 text-white p-12 mb-8">
+<Card
+  variant="hero"
+  class="bg-indigo-900 rounded-xl p-8 sm:p-12 text-white shadow-xl bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"
+>
   <div class="relative z-10 text-center">
     <h1 class="text-4xl md:text-5xl font-bold mb-4">Academic Research</h1>
-    <p class="text-xl text-indigo-100 max-w-3xl mx-auto">
-      Publications, papers, and research work in distributed systems, machine learning infrastructure, and software engineering.
+    <p class="text-xl max-w-3xl mx-auto">
+      Publications, papers, and research work in distributed systems, machine
+      learning infrastructure, and software engineering.
     </p>
   </div>
 </Card>

@@ -1,14 +1,13 @@
-/* Import Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
+/* Import Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 /* Import Tailwind CSS */
 @import "tailwindcss";
 
 /* Tailwind v4 Theme Configuration */
 @theme {
-  /* Custom Fonts */
-  --font-playfair: "Playfair Display", serif;
-  --font-inter: "Inter", sans-serif;
+  /* Custom Font */
+  --font-base: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Custom Color Tokens */
   --color-cv-primary: theme(colors.slate.900);
@@ -19,7 +18,7 @@
 
 /* Base Styles */
 body {
-  font-family: var(--font-inter);
+  font-family: var(--font-base);
   background-color: var(--color-bg-base);
   margin: 0;
   padding: 0;
@@ -27,7 +26,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-playfair);
+  font-family: var(--font-base);
   font-weight: 700;
 }
 

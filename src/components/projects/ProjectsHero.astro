@@ -1,12 +1,16 @@
 ---
-import Card from '../ui/Card.astro';
+import Card from "../ui/Card.astro";
 ---
 
-<Card variant="hero" class="bg-slate-800 text-white p-12 mb-8">
+<Card
+  variant="hero"
+  class="bg-slate-800 rounded-xl p-8 sm:p-12 text-white shadow-xl bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"
+>
   <div class="relative z-10 text-center">
     <h1 class="text-4xl md:text-5xl font-bold mb-4">Engineering Projects</h1>
-    <p class="text-xl text-slate-200 max-w-3xl mx-auto">
-      Production systems, open-source contributions, and engineering work in distributed systems, infrastructure, and web technologies.
+    <p class="text-xl max-w-3xl mx-auto">
+      Production systems, open-source contributions, and engineering work in
+      distributed systems, infrastructure, and web technologies.
     </p>
   </div>
 </Card>
