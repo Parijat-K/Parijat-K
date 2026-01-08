@@ -128,15 +128,21 @@ const isBlog = currentPath.startsWith('/blog');
         aria-label="Toggle mobile menu"
         aria-expanded="false"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Hamburger Icon -->
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <!-- Close Icon -->
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden pb-4">
+    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-slate-700 mt-2 pt-4 transition-all duration-200">
       <div class="flex flex-col gap-2">
+        <!-- Navigation Links -->
         <a
           href="/"
           class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -186,41 +192,117 @@ const isBlog = currentPath.startsWith('/blog');
             Blog
           </a>
         )}
+
+        <!-- Utility Buttons -->
+        <div class="border-t border-slate-700 pt-2 mt-2 flex items-center gap-2">
+          <!-- Mobile Search Button -->
+          <Search />
+
+          <!-- Mobile Share Button -->
+          <button
+            id="mobile-share-button"
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
+            aria-label="Share this page"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            <span class="text-sm font-medium">Share</span>
+          </button>
+
+          <!-- Mobile Print Button (only on CV page) -->
+          {isCV && (
+            <button
+              id="mobile-print-button"
+              class="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
+              aria-label="Print CV"
+              onclick="window.print()"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              <span class="text-sm font-medium">Print</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   </div>
 </nav>
 
-<script>
-  // Share functionality
-  document.getElementById('share-button')?.addEventListener('click', async () => {
+<script is:inline>
+  // Share functionality (shared handler)
+  function handleShare() {
     const url = window.location.href;
     const title = document.title;
 
     if (navigator.share) {
-      try {
-        await navigator.share({ title, url });
-      } catch (err) {
+      navigator.share({ title, url }).catch((err) => {
         console.log('Share cancelled or failed');
-      }
+      });
     } else {
       // Fallback: Copy to clipboard
-      try {
-        await navigator.clipboard.writeText(url);
+      navigator.clipboard.writeText(url).then(() => {
         alert('Link copied to clipboard!');
-      } catch (err) {
+      }).catch((err) => {
         console.error('Failed to copy link');
-      }
+      });
     }
-  });
+  }
 
-  // Mobile menu toggle
-  document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
+  // Mobile menu toggle handler
+  function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
     const button = document.getElementById('mobile-menu-button');
-    const isExpanded = button?.getAttribute('aria-expanded') === 'true';
+    const openIcon = document.getElementById('menu-icon-open');
+    const closeIcon = document.getElementById('menu-icon-close');
 
-    menu?.classList.toggle('hidden');
-    button?.setAttribute('aria-expanded', String(!isExpanded));
-  });
+    if (!menu || !button || !openIcon || !closeIcon) return;
+
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+    // Toggle menu visibility
+    menu.classList.toggle('hidden');
+
+    // Toggle icons
+    openIcon.classList.toggle('hidden');
+    closeIcon.classList.toggle('hidden');
+
+    // Update aria-expanded
+    button.setAttribute('aria-expanded', String(!isExpanded));
+  }
+
+  // Initialize all event listeners
+  function initializeNavigation() {
+    // Desktop share button
+    const shareButton = document.getElementById('share-button');
+    if (shareButton && !shareButton.dataset.initialized) {
+      shareButton.addEventListener('click', handleShare);
+      shareButton.dataset.initialized = 'true';
+    }
+
+    // Mobile share button
+    const mobileShareButton = document.getElementById('mobile-share-button');
+    if (mobileShareButton && !mobileShareButton.dataset.initialized) {
+      mobileShareButton.addEventListener('click', handleShare);
+      mobileShareButton.dataset.initialized = 'true';
+    }
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    if (mobileMenuButton && !mobileMenuButton.dataset.initialized) {
+      mobileMenuButton.addEventListener('click', toggleMobileMenu);
+      mobileMenuButton.dataset.initialized = 'true';
+    }
+  }
+
+  // Initialize on DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeNavigation);
+  } else {
+    initializeNavigation();
+  }
+
+  // Re-initialize after view transitions (Astro's page navigation)
+  document.addEventListener('astro:page-load', initializeNavigation);
 </script>
