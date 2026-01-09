@@ -1,6 +1,6 @@
 ---
+import { getCollection, getEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { resumeData } from "../../data/resumeData";
 import {
   Printer,
   MapPin,
@@ -17,6 +17,10 @@ import {
   GraduationCap,
   Award,
 } from "lucide-astro";
+
+const resumeData = await getEntry("resume", "main");
+const projects = await getCollection("projects");
+const publications = await getCollection("publications");
 ---
 
 <Layout title="Resume" currentPath="/cv">
@@ -46,63 +50,61 @@ import {
         >
           <div>
             <h1 class="text-4xl font-bold tracking-tight">
-              {resumeData.header.name}
+              {resumeData?.data.header.name}
             </h1>
             <p class="text-xl text-slate-300 font-medium mt-1">
-              {resumeData.header.title}
+              {resumeData?.data.header.title}
             </p>
           </div>
 
           <div class="flex flex-col gap-2 text-sm text-slate-300">
             <div class="flex items-center gap-2">
               <MapPin size={16} />
-              <span>{resumeData.header.location}</span>
+              <span>{resumeData?.data.header.location}</span>
             </div>
             <div class="flex items-center gap-2">
               <Mail size={16} />
               <a
-                href={`mailto:${resumeData.header.email}`}
+                href={`mailto:${resumeData?.data.header.email}`}
                 class="hover:text-white transition-colors"
-                >{resumeData.header.email}</a
+                >{resumeData?.data.header.email}</a
               >
             </div>
             <div class="flex items-center gap-2">
               <Phone size={16} />
-              <span>{resumeData.header.phone}</span>
+              <span>{resumeData?.data.header.phone}</span>
             </div>
             <div class="flex gap-4 mt-2 print:text-black">
               <a
-                href={`https://${resumeData.header.linkedin}`}
+                href={`https://${resumeData?.data.header.linkedin}`}
                 target="_blank"
                 rel="noreferrer"
                 class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
               >
                 <Linkedin size={20} class="print:hidden" />
                 <span class="hidden print:inline text-xs"
-                  >{resumeData.header.linkedin}</span
+                  >{resumeData?.data.header.linkedin}</span
                 >
               </a>
               <a
-                href={`https://${resumeData.header.github}`}
+                href={`https://${resumeData?.data.header.github}`}
                 target="_blank"
                 rel="noreferrer"
                 class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
               >
                 <Github size={20} class="print:hidden" />
                 <span class="hidden print:inline text-xs"
-                  >{resumeData.header.github}</span
+                  >{resumeData?.data.header.github}</span
                 >
               </a>
               <a
-                href={`https://${resumeData.header.website}`}
+                href={Astro.site}
                 target="_blank"
                 rel="noreferrer"
                 class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
               >
                 <Globe size={20} class="print:hidden" />
-                <span class="hidden print:inline text-xs"
-                  >{resumeData.header.website}</span
-                >
+                <span class="hidden print:inline text-xs">{Astro.site}</span>
               </a>
             </div>
           </div>
@@ -110,14 +112,14 @@ import {
 
         <div class="mt-8 border-t border-slate-700 pt-6">
           <p class="text-slate-300 leading-relaxed max-w-3xl">
-            {resumeData.header.summary}
+            {resumeData?.data.header.summary}
           </p>
         </div>
       </header>
 
       {/* MAIN BODY: Experience (Left) & Skills (Right) */}
       {/* Added print:flex-row to prevent stacking in print */}
-      <div class="flex flex-col md:flex-row print:flex-row flex-grow">
+      <div class="flex flex-col md:flex-row print:flex-row grow">
         {/* LEFT COLUMN: Experience ONLY */}
         {/* Added print:w-2/3 to maintain width */}
         <div
@@ -131,15 +133,12 @@ import {
             </h2>
             <div class="space-y-8">
               {
-                resumeData.experience.map((companyData) => (
+                resumeData?.data.experience.map((companyData) => (
                   <div class="relative pl-4 border-l-2 border-slate-300 transition-colors duration-300">
                     <div class="flex justify-between items-baseline mb-4">
                       <div class="text-xl font-bold text-slate-900">
                         {companyData.company}
                       </div>
-                      <span class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded border border-slate-300">
-                        {companyData.period}
-                      </span>
                     </div>
                     <div class="space-y-6">
                       {companyData.roles.map((role) => (
@@ -154,7 +153,7 @@ import {
                             </span>
                           </div>
                           <ul class="list-disc list-outside ml-4 space-y-1.5 text-slate-700 text-sm leading-relaxed">
-                            {role.description.map((point) => (
+                            {role.achievements.map((point) => (
                               <li>{point}</li>
                             ))}
                           </ul>
@@ -181,7 +180,7 @@ import {
             </h2>
             <div class="space-y-5">
               {
-                resumeData.skills.map((skillGroup) => (
+                resumeData?.data.skills.map((skillGroup) => (
                   <div>
                     <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-2 border-l-4 border-slate-700 pl-3">
                       {skillGroup.category}
@@ -211,10 +210,10 @@ import {
         {/* Added print:grid-cols-3 to keep 3 columns in print */}
         <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4">
           {
-            resumeData.projects
-              .filter((p) => p.featured)
+            projects
+              .filter((p: any) => p.data.featured)
               .slice(0, 3)
-              .map((project) => (
+              .map((project: any) => (
                 <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-slate-400 transition-colors">
                   <div class="flex justify-between items-start mb-2">
                     <h3 class="font-bold text-slate-900">{project.name}</h3>
@@ -248,12 +247,12 @@ import {
         </h2>
         <div class="grid grid-cols-1 gap-3">
           {
-            resumeData.publications
-              .filter((p) => p.featured)
+            publications
+              .filter((p: any) => p.data.featured)
               .slice(0, 3)
-              .map((pub) => (
+              .map((pub: any) => (
                 <div class="flex flex-col md:flex-row print:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
-                  <div class="flex-grow">
+                  <div class="grow">
                     <a
                       href={`https://${pub.link}`}
                       target="_blank"
@@ -289,15 +288,17 @@ import {
             </h2>
             <div class="space-y-4">
               {
-                resumeData.education.map((edu) => (
+                resumeData?.data.education.map((edu) => (
                   <div>
                     <h3 class="font-bold text-slate-900 text-sm leading-tight">
                       {edu.degree}
                     </h3>
                     <div class="text-xs text-slate-700 font-medium mt-1">
-                      {edu.school}
+                      {edu.institution}
                     </div>
-                    <div class="text-xs text-slate-500 mt-0.5">{edu.year}</div>
+                    <div class="text-xs text-slate-500 mt-0.5">
+                      {edu.period}
+                    </div>
                   </div>
                 ))
               }
@@ -317,7 +318,7 @@ import {
               class="grid grid-cols-1 sm:grid-cols-2 print:grid-cols-2 gap-x-8 gap-y-4"
             >
               {
-                resumeData.certifications.map((cert) => (
+                resumeData?.data.certificates?.map((cert) => (
                   <div class="flex flex-col text-sm border-l-2 border-slate-300 pl-3 hover:border-slate-500 transition-colors">
                     <a
                       href={cert.link}
@@ -333,7 +334,7 @@ import {
                         {cert.issuer}
                       </span>
                       <span>•</span>
-                      <span>{cert.year}</span>
+                      <span>{cert.date}</span>
                     </div>
                   </div>
                 ))
