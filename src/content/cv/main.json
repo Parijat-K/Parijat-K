@@ -117,7 +117,8 @@
           { "name": "Python", "frameworks": ["Django"] },
           { "name": "C#", "frameworks": ["DotNet"] },
           { "name": "C++", "frameworks": [] },
-          { "name": "Go", "frameworks": [] }
+          { "name": "Go", "frameworks": [] },
+          { "name": "Julia", "frameworks": [] }
         ]
       },
       {
@@ -144,36 +145,53 @@
   },
   "certifications": [
     {
-      "id": "cert-1",
-      "name": "Deep Learning Specialization",
-      "issuer": "Coursera (Andrew NG)",
-      "date": "",
-      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/DEEP-LEARN-1234"
-    },
-    {
-      "id": "cert-2",
-      "name": "Cloud Architecture with Google Cloud",
-      "issuer": "Google Cloud",
-      "date": "",
-      "certificateUrl": "https://www.cloudskillsboost.google/public_profiles/example"
-    },
-    {
-      "id": "cert-3",
-      "name": "Building Scalable Java Microservices with Spring Boot and Spring Cloud",
-      "issuer": "Coursera",
-      "date": ""
-    },
-    {
-      "id": "cert-4",
+      "id": "ml-basic",
       "name": "Machine Learning",
       "issuer": "Coursera",
-      "date": ""
+      "date": "Jul 2018",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/verify/2E339ZMJZHQM"
     },
     {
-      "id": "cert-5",
+      "id": "deep-learning-spec",
+      "name": "Deep Learning Specialization",
+      "issuer": "Coursera (Andrew NG)",
+      "date": "Aug 2018",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/specialization/certificate/6AHHEDBPQM2N"
+    },
+    {
+      "id": "algo-toolbox",
+      "name": "Algorithmic Toolbox",
+      "issuer": "Coursera",
+      "date": "Mar 2019",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/verify/4YDG2B2Z9WEV"
+    },
+    {
+      "id": "scalable-java-microservices",
+      "name": "Building Scalable Java Microservices with Spring Boot and Spring Cloud",
+      "issuer": "Coursera",
+      "date": "Aug 2020",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/EVPKCU3YKTXA"
+    },
+    {
+      "id": "cloud-architecture-gcp",
+      "name": "Cloud Architecture with Google Cloud",
+      "issuer": "Google Cloud",
+      "date": "Dec 2020",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/specialization/certificate/94BJFDAD6Y5T"
+    },
+    {
+      "id": "ibm-ai-engineering-spec",
       "name": "IBM AI Engineering Specialization",
-      "issuer": "IBM",
-      "date": ""
+      "issuer": "Coursera",
+      "date": "Dec 2020",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/specialization/certificate/MKHVHY4NTS6H"
+    },
+    {
+      "id": "julia-scientific-programming",
+      "name": "Julia Scientific Programming",
+      "issuer": "Coursera",
+      "date": "Dec 2020",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/HJPQR6BKECDK"
     }
   ]
 }
