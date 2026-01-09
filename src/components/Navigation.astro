@@ -1,308 +1,109 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import Search from './Search.astro';
+import { getCollection, getEntry } from "astro:content";
+import {
+  Menu,
+  X,
+  Search,
+} from "lucide-astro";
 
-// Load CV data for branding
-const cvEntry = await getEntry('cv', 'main');
-const personalInfo = cvEntry.data.personalInfo;
+const { currentPath } = Astro.props;
 
-// Check if collections have content
-const researchItems = await getCollection('research');
-const projectItems = await getCollection('projects');
-const blogItems = await getCollection('blog', ({ data }) => !data.draft);
+const resumeData = await getEntry("resume", "main");
+const projects = await getCollection("projects");
+const publications = await getCollection("publications");
+const blogs = await getCollection("blogs");
 
-const hasResearch = researchItems.length > 0;
-const hasProjects = projectItems.length > 0;
-const hasBlog = blogItems.length > 0;
+const hasProjects = projects && projects.length > 0;
+const hasPublications = publications && publications.length > 0;
+const hasBlogs = blogs && blogs.length > 0;
 
-// Determine active page based on current URL
-const currentPath = Astro.url.pathname;
-const isCV = currentPath === '/';
-const isResearch = currentPath.startsWith('/research');
-const isProjects = currentPath.startsWith('/projects');
-const isBlog = currentPath.startsWith('/blog');
+const navItems = [
+  { name: "Home", path: "/", show: true },
+  { name: "Projects", path: "/projects", show: hasProjects },
+  { name: "Research", path: "/research", show: hasPublications },
+  { name: "Blog", path: "/blog", show: hasBlogs },
+  { name: "Resume / CV", path: "/cv", show: true },
+];
+
+const visibleNavItems = navItems.filter((item) => item.show);
 ---
 
-<nav class="sticky top-0 z-50 bg-slate-900 text-white shadow-lg no-print">
+<nav class="sticky top-0 z-50 bg-slate-900 text-white shadow-lg print:hidden">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <!-- Left: Branding -->
-      <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-        <span class="text-lg font-bold">{personalInfo.name}</span>
-        <span class="text-slate-400">|</span>
-        <span class="text-sm text-slate-300">{personalInfo.title}</span>
+    <div class="flex justify-between h-16 items-center">
+      <a href="/" class="flex items-center">
+        <span class="font-bold text-xl tracking-tight"
+          >{resumeData?.data.header.name}</span
+        >
       </a>
 
-      <!-- Right: Navigation Links -->
-      <div class="hidden md:flex items-center gap-2 ml-auto">
-        <a
-          href="/"
-          class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            isCV
-              ? 'bg-slate-700 text-white shadow-md'
-              : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-          }`}
-          aria-current={isCV ? 'page' : undefined}
-        >
-          CV
-        </a>
+      <div class="flex items-center gap-4">
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+          {
+            visibleNavItems.map((item) => (
+              <a
+                href={item.path}
+                class={`text-sm font-medium transition-colors hover:text-indigo-300 ${currentPath === item.path || (currentPath.startsWith(item.path + "/") && item.path !== "/") ? "text-white" : "text-slate-400"}`}
+              >
+                {item.name}
+              </a>
+            ))
+          }
+        </div>
 
-        {hasResearch && (
-          <a
-            href="/research"
-            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isResearch
-                ? 'bg-slate-700 text-white shadow-md'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-            aria-current={isResearch ? 'page' : undefined}
-          >
-            Research
-          </a>
-        )}
-
-        {hasProjects && (
-          <a
-            href="/projects"
-            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isProjects
-                ? 'bg-slate-700 text-white shadow-md'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-            aria-current={isProjects ? 'page' : undefined}
-          >
-            Projects
-          </a>
-        )}
-
-        {hasBlog && (
-          <a
-            href="/blog"
-            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isBlog
-                ? 'bg-slate-700 text-white shadow-md'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-            aria-current={isBlog ? 'page' : undefined}
-          >
-            Blog
-          </a>
-        )}
-      </div>
-
-      <!-- Far Right: Utility Buttons -->
-      <div class="hidden md:flex items-center gap-2 border-l border-slate-700 pl-4 ml-4">
-        <!-- Search Button -->
-        <Search />
-
-        <!-- Share Button -->
-        <button
-          id="share-button"
-          class="p-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
-          aria-label="Share this page"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-          </svg>
-        </button>
-
-        <!-- Print Button (only on CV page) -->
-        {isCV && (
+        <div class="flex items-center gap-3">
           <button
-            id="print-button"
-            class="p-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
-            aria-label="Print CV"
-            onclick="window.print()"
+            id="search-trigger"
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-all"
+            title="Search (Cmd+K)"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
-          </button>
-        )}
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-button"
-        class="md:hidden p-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
-        aria-label="Toggle mobile menu"
-        aria-expanded="false"
-      >
-        <!-- Hamburger Icon -->
-        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <!-- Close Icon -->
-        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-slate-700 mt-2 pt-4 transition-all duration-200">
-      <div class="flex flex-col gap-2">
-        <!-- Navigation Links -->
-        <a
-          href="/"
-          class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            isCV
-              ? 'bg-slate-700 text-white shadow-md'
-              : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-          }`}
-        >
-          CV
-        </a>
-
-        {hasResearch && (
-          <a
-            href="/research"
-            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isResearch
-                ? 'bg-slate-700 text-white shadow-md'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            Research
-          </a>
-        )}
-
-        {hasProjects && (
-          <a
-            href="/projects"
-            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isProjects
-                ? 'bg-slate-700 text-white shadow-md'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            Projects
-          </a>
-        )}
-
-        {hasBlog && (
-          <a
-            href="/blog"
-            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isBlog
-                ? 'bg-slate-700 text-white shadow-md'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            Blog
-          </a>
-        )}
-
-        <!-- Utility Buttons -->
-        <div class="border-t border-slate-700 pt-2 mt-2 flex items-center gap-2">
-          <!-- Mobile Search Button -->
-          <Search />
-
-          <!-- Mobile Share Button -->
-          <button
-            id="mobile-share-button"
-            class="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
-            aria-label="Share this page"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-            <span class="text-sm font-medium">Share</span>
+            <Search size={20} />
           </button>
 
-          <!-- Mobile Print Button (only on CV page) -->
-          {isCV && (
+          <button
+            id="contact-trigger"
+            class="hidden md:block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors"
+          >
+            Contact
+          </button>
+
+          <div class="md:hidden">
             <button
-              id="mobile-print-button"
-              class="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
-              aria-label="Print CV"
-              onclick="window.print()"
+              id="mobile-menu-btn"
+              class="text-slate-300 hover:text-white"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              <span class="text-sm font-medium">Print</span>
+              <Menu size={24} id="menu-icon" />
+              <X size={24} id="close-icon" class="hidden" />
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden bg-slate-800 border-t border-slate-700"
+  >
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {
+        visibleNavItems.map((item) => (
+          <a
+            href={item.path}
+            class={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentPath === item.path ? "bg-slate-900 text-white" : "text-slate-300 hover:bg-slate-700 hover:text-white"}`}
+          >
+            {item.name}
+          </a>
+        ))
+      }
+      <button
+        id="mobile-contact-trigger"
+        class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-400 hover:bg-slate-700 hover:text-white"
+      >
+        Contact Me
+      </button>
+    </div>
+  </div>
 </nav>
-
-<script is:inline>
-  // Share functionality (shared handler)
-  function handleShare() {
-    const url = window.location.href;
-    const title = document.title;
-
-    if (navigator.share) {
-      navigator.share({ title, url }).catch((err) => {
-        console.log('Share cancelled or failed');
-      });
-    } else {
-      // Fallback: Copy to clipboard
-      navigator.clipboard.writeText(url).then(() => {
-        alert('Link copied to clipboard!');
-      }).catch((err) => {
-        console.error('Failed to copy link');
-      });
-    }
-  }
-
-  // Mobile menu toggle handler
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu');
-    const button = document.getElementById('mobile-menu-button');
-    const openIcon = document.getElementById('menu-icon-open');
-    const closeIcon = document.getElementById('menu-icon-close');
-
-    if (!menu || !button || !openIcon || !closeIcon) return;
-
-    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-    // Toggle menu visibility
-    menu.classList.toggle('hidden');
-
-    // Toggle icons
-    openIcon.classList.toggle('hidden');
-    closeIcon.classList.toggle('hidden');
-
-    // Update aria-expanded
-    button.setAttribute('aria-expanded', String(!isExpanded));
-  }
-
-  // Initialize all event listeners
-  function initializeNavigation() {
-    // Desktop share button
-    const shareButton = document.getElementById('share-button');
-    if (shareButton && !shareButton.dataset.initialized) {
-      shareButton.addEventListener('click', handleShare);
-      shareButton.dataset.initialized = 'true';
-    }
-
-    // Mobile share button
-    const mobileShareButton = document.getElementById('mobile-share-button');
-    if (mobileShareButton && !mobileShareButton.dataset.initialized) {
-      mobileShareButton.addEventListener('click', handleShare);
-      mobileShareButton.dataset.initialized = 'true';
-    }
-
-    // Mobile menu toggle
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    if (mobileMenuButton && !mobileMenuButton.dataset.initialized) {
-      mobileMenuButton.addEventListener('click', toggleMobileMenu);
-      mobileMenuButton.dataset.initialized = 'true';
-    }
-  }
-
-  // Initialize on DOMContentLoaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeNavigation);
-  } else {
-    initializeNavigation();
-  }
-
-  // Re-initialize after view transitions (Astro's page navigation)
-  document.addEventListener('astro:page-load', initializeNavigation);
-</script>

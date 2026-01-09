@@ -1,16 +1,10 @@
 ---
-import {
-  Menu,
-  X,
-  Linkedin,
-  Github,
-  Mail,
-  Search,
-  Check,
-  Copy,
-} from "lucide-astro";
 import "../styles/global.css";
-import { resumeData } from "../data/resumeData";
+import { getEntry } from "astro:content";
+import Footer from "../components/Footer.astro";
+import ContactModal from "../components/ContactModal.astro";
+import Navigation from "../components/Navigation.astro";
+import Search from "../components/Search.astro";
 
 interface Props {
   title: string;
@@ -19,20 +13,7 @@ interface Props {
 
 const { title, currentPath } = Astro.props;
 
-const hasProjects = resumeData.projects && resumeData.projects.length > 0;
-const hasPublications =
-  resumeData.publications && resumeData.publications.length > 0;
-const hasBlogs = resumeData.blogs && resumeData.blogs.length > 0;
-
-const navItems = [
-  { name: "Home", path: "/", show: true },
-  { name: "Projects", path: "/projects", show: hasProjects },
-  { name: "Research", path: "/research", show: hasPublications },
-  { name: "Blog", path: "/blog", show: hasBlogs },
-  { name: "Resume / CV", path: "/cv", show: true },
-];
-
-const visibleNavItems = navItems.filter((item) => item.show);
+const resumeData = await getEntry("resume", "main");
 ---
 
 <!doctype html>
@@ -42,91 +23,11 @@ const visibleNavItems = navItems.filter((item) => item.show);
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} | {resumeData.header.name}</title>
+    <title>{title} | {resumeData?.data.header.name}</title>
   </head>
   <body class="min-h-screen bg-white font-sans text-slate-900 flex flex-col">
     <!-- Navbar -->
-    <nav
-      class="sticky top-0 z-50 bg-slate-900 text-white shadow-lg print:hidden"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
-          <a href="/" class="flex items-center">
-            <span class="font-bold text-xl tracking-tight"
-              >Alex<span class="text-indigo-400">Dev</span></span
-            >
-          </a>
-
-          <div class="flex items-center gap-4">
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-8">
-              {
-                visibleNavItems.map((item) => (
-                  <a
-                    href={item.path}
-                    class={`text-sm font-medium transition-colors hover:text-indigo-300 ${currentPath === item.path || (currentPath.startsWith(item.path + "/") && item.path !== "/") ? "text-white" : "text-slate-400"}`}
-                  >
-                    {item.name}
-                  </a>
-                ))
-              }
-            </div>
-
-            <div class="flex items-center gap-3">
-              <button
-                id="search-trigger"
-                class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-all"
-                title="Search (Cmd+K)"
-              >
-                <Search size={20} />
-              </button>
-
-              <button
-                id="contact-trigger"
-                class="hidden md:block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors"
-              >
-                Contact
-              </button>
-
-              <div class="md:hidden">
-                <button
-                  id="mobile-menu-btn"
-                  class="text-slate-300 hover:text-white"
-                >
-                  <Menu size={24} id="menu-icon" />
-                  <X size={24} id="close-icon" class="hidden" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div
-        id="mobile-menu"
-        class="hidden md:hidden bg-slate-800 border-t border-slate-700"
-      >
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {
-            visibleNavItems.map((item) => (
-              <a
-                href={item.path}
-                class={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentPath === item.path ? "bg-slate-900 text-white" : "text-slate-300 hover:bg-slate-700 hover:text-white"}`}
-              >
-                {item.name}
-              </a>
-            ))
-          }
-          <button
-            id="mobile-contact-trigger"
-            class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-400 hover:bg-slate-700 hover:text-white"
-          >
-            Contact Me
-          </button>
-        </div>
-      </div>
-    </nav>
+    <Navigation currentPath={currentPath} />
 
     <!-- Main Content -->
     <main class="grow">
@@ -134,154 +35,13 @@ const visibleNavItems = navItems.filter((item) => item.show);
     </main>
 
     <!-- Compact Footer -->
-    <footer
-      class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 print:hidden mt-auto"
-    >
-      <div
-        class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4"
-      >
-        <div class="flex items-center gap-2 text-sm">
-          <span class="font-bold text-white tracking-tight"
-            >Alex<span class="text-indigo-400">Dev</span></span
-          >
-          <span>© {new Date().getFullYear()}</span>
-        </div>
-        <div class="flex gap-4">
-          <a
-            href={`https://${resumeData.header.linkedin}`}
-            target="_blank"
-            rel="noreferrer"
-            class="hover:text-white transition-colors"><Linkedin size={18} /></a
-          >
-          <a
-            href={`https://${resumeData.header.github}`}
-            target="_blank"
-            rel="noreferrer"
-            class="hover:text-white transition-colors"><Github size={18} /></a
-          >
-          <button
-            id="footer-contact-trigger"
-            class="hover:text-white transition-colors"
-            ><Mail size={18} /></button
-          >
-        </div>
-      </div>
-    </footer>
+    <Footer />
 
     <!-- Contact Modal -->
-    <div
-      id="contact-modal"
-      class="fixed inset-0 z-70 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4"
-    >
-      <div
-        class="bg-white w-full max-w-md rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
-      >
-        <div
-          class="flex justify-between items-center p-6 border-b border-slate-100"
-        >
-          <h2 class="text-xl font-bold text-slate-900">Get in Touch</h2>
-          <button
-            id="close-contact"
-            class="text-slate-400 hover:text-slate-600 transition-colors"
-          >
-            <X size={20} />
-          </button>
-        </div>
-        <div class="p-6 space-y-6">
-          <p class="text-slate-600 text-sm">
-            I'm always open to discussing new opportunities, research
-            collaborations, or just chatting about distributed systems.
-          </p>
-          {/* Email */}
-          <div class="space-y-3">
-            <div
-              class="text-xs font-bold text-slate-400 uppercase tracking-wider"
-            >
-              Email
-            </div>
-            <div class="flex gap-2">
-              <div
-                class="grow p-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-mono text-sm truncate"
-                id="email-text"
-              >
-                {resumeData.header.email}
-              </div>
-              <button
-                id="copy-email-btn"
-                class="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-medium transition-all"
-              >
-                <Copy size={18} class="copy-icon" />
-                <Check size={18} class="check-icon hidden" />
-                <span class="btn-text">Copy</span>
-              </button>
-            </div>
-            <div class="text-center">
-              <span class="text-xs text-slate-400">or</span>
-            </div>
-            <a
-              href={`mailto:${resumeData.header.email}`}
-              class="block w-full py-2 text-center text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-              >Open in Email Client</a
-            >
-          </div>
-          {/* LinkedIn */}
-          <div class="space-y-3 pt-2 border-t border-slate-100">
-            <div
-              class="text-xs font-bold text-slate-400 uppercase tracking-wider"
-            >
-              Social
-            </div>
-            <a
-              href={`https://${resumeData.header.linkedin}`}
-              target="_blank"
-              rel="noreferrer"
-              class="flex items-center justify-between w-full p-4 bg-[#0077b5]/5 border border-[#0077b5]/20 rounded-xl hover:bg-[#0077b5]/10 transition-colors group"
-            >
-              <div class="flex items-center gap-3">
-                <Linkedin class="text-[#0077b5]" size={24} />
-                <span
-                  class="font-bold text-slate-700 group-hover:text-[#0077b5] transition-colors"
-                  >Connect on LinkedIn</span
-                >
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ContactModal />
 
     <!-- Global Search Modal -->
-    <div
-      id="search-modal"
-      class="fixed inset-0 z-60 bg-slate-900/50 backdrop-blur-sm hidden items-start justify-center pt-20 px-4"
-    >
-      <div
-        class="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
-      >
-        <div class="p-4 border-b border-slate-100 flex items-center gap-3">
-          <Search class="text-slate-400" size={20} />
-          <input
-            type="text"
-            id="global-search-input"
-            placeholder="Search projects, research, blogs, skills..."
-            class="grow outline-none text-lg text-slate-800 placeholder:text-slate-400"
-          />
-          <button id="close-search" class="text-slate-400 hover:text-slate-600"
-            ><X size={20} /></button
-          >
-        </div>
-        <div
-          id="search-results"
-          class="overflow-y-auto p-4 bg-slate-50 grow space-y-6"
-        >
-          <div
-            class="text-center text-slate-400 py-12 flex flex-col items-center gap-3"
-          >
-            <p>Type to search across pages...</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Search />
 
     <!-- Client-side Scripts -->
     <script define:vars={{ resumeData }}>

@@ -137,7 +137,7 @@ const hasPublications = publications && publications.length > 0;
                       {project.data.name}
                     </h3>
                     <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
-                      {project.data.tech}
+                      {project.data.tech.join(', ')}
                     </p>
                     <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
                       {project.data.description}
