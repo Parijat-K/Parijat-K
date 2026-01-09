@@ -1,4 +1,4 @@
-{
+﻿{
   "personalInfo": {
     "name": "Parijat Khan",
     "title": "Solution Designer",
@@ -23,11 +23,11 @@
       "location": "Wellington, Wellington Region, New Zealand",
       "startDate": "2021-01",
       "endDate": "Present",
-      "description": "Leading application development initiatives and delivering scalable software solutions",
+      "description": "Lead enterprise application initiatives and steer delivery of scalable, cloud-ready solutions",
       "achievements": [
-        "Driving technical excellence and innovation in software development projects",
-        "Contributing to architecture decisions and implementation of best practices",
-        "Collaborating with cross-functional teams to deliver high-quality applications"
+        "Drive technical excellence and continuous innovation across the software portfolio",
+        "Shape architecture decisions and codify best practices to safeguard scalability",
+        "Partner with cross-functional stakeholders to deliver resilient, production-ready applications"
       ],
       "technologies": ["Java", "Python", "C#", "React", "Flutter"]
     },
@@ -38,13 +38,13 @@
       "location": "Hyderabad, Telangana, India",
       "startDate": "2019-04",
       "endDate": "2021-01",
-      "description": "Leading development of customized Voice workflow solutions for global customers",
+      "description": "Led development of customized Voice workflow solutions for customers across APAC, EMEA, and the USA",
       "achievements": [
-        "Gathered requirements from clients and designed and deployed effective customized Voice workflow solutions for 6 different customers across APAC, EMEA, and the USA to date",
-        "Developed 5 new modules in Java and 2 new applications in C# from scratch which were reusable across different customers and were integrated into Core Voice offerings",
-        "Enhanced performance of the Core Java middleware to handle 10 times larger assignments",
-        "Learned technical workings of new Honeywell Voice solutions quickly and trained team members. This reduced the adoption time of new solutions of the team by 60%",
-        "Designed and developed a new tool for release management using Python-Django for backend and React.js for frontend"
+        "Captured client requirements end to end and deployed tailored Voice workflows for six customers across three regions",
+        "Built five reusable Java modules and two greenfield C# applications that became part of the Core Voice offering",
+        "Optimized the Core Java middleware to sustain assignments 10x larger than the previous limit",
+        "Absorbed new Honeywell Voice solutions quickly and trained the team, trimming adoption time by 60%",
+        "Designed a Python-Django release management service with a React.js UI to streamline deployments"
       ],
       "technologies": ["Java", "C#", "Python", "Django", "React"]
     },
@@ -55,12 +55,12 @@
       "location": "Bengaluru, Karnataka, India",
       "startDate": "2017-03",
       "endDate": "2019-03",
-      "description": "Team lead for custom solutions development and proof of concepts",
+      "description": "Served as team lead for custom solution delivery and high-velocity proof of concepts",
       "achievements": [
-        "Led team of 5 developers and testers in 9 projects and 4 proof of concepts",
-        "Member of designing team in 6 customization projects",
-        "Independently created 5 pilots that won the follow-up projects",
-        "Standardized build process for the custom solutions which decreased human errors by 52% and build times by 43%"
+        "Directed five-person engineering and QA squad across nine delivery projects and four proofs of concept",
+        "Contributed to solution architecture for six customer-specific customizations",
+        "Independently delivered five pilots that secured the follow-on engagements",
+        "Standardized the custom build pipeline, shrinking human errors by 52% and build times by 43%"
       ],
       "technologies": ["Java"]
     },
@@ -71,10 +71,10 @@
       "location": "Bengaluru Area, India",
       "startDate": "2015-05",
       "endDate": "2017-02",
-      "description": "Custom solution implementation and hackathon participation",
+      "description": "Implemented complex custom solutions while advancing innovation through internal hackathons",
       "achievements": [
-        "Implemented and delivered 4 custom solutions before anticipated deadlines",
-        "Engaged in internal Hackathons to work on proof of concepts. Secured 2nd position in one of them"
+        "Delivered four custom solutions ahead of schedule while managing competing priorities",
+        "Drove proof-of-concept development through internal hackathons, earning second place in one event"
       ],
       "technologies": []
     },
@@ -85,13 +85,13 @@
       "location": "",
       "startDate": "2013-02",
       "endDate": "2015-05",
-      "description": "Yellow-pages middleware development using Java-Spring framework",
+      "description": "Contributed to yellow-pages middleware development on the Java Spring stack",
       "achievements": [
-        "Developed 5 modules of the yellow-pages middleware using Java-Spring",
-        "Conducted code-review",
-        "Helped in module design",
-        "Learned about the Media and Information Services domain and the yellow pages solutions within the first 3 months",
-        "Contributed to different back-end modules to gain domain expertise"
+        "Developed five middleware modules leveraging Java Spring",
+        "Performed peer code reviews to maintain delivery quality",
+        "Supported module design efforts during sprint planning",
+        "Completed ramp-up on Media and Information Services domain and yellow-pages platforms within three months",
+        "Rotated across multiple backend modules to deepen domain expertise"
       ],
       "technologies": ["Java", "Spring"]
     }
