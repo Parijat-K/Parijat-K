@@ -16,7 +16,8 @@ const projects = await getCollection("projects");
 const publications = await getCollection("publications");
 
 const hasHighlights =
-  resumeData?.data.highlights && resumeData.data.highlights.length > 0;
+  resumeData?.data.careerHighlights &&
+  resumeData.data.careerHighlights.length > 0;
 const hasProjects = projects && projects.length > 0;
 const hasPublications = publications && publications.length > 0;
 ---
@@ -67,32 +68,26 @@ const hasPublications = publications && publications.length > 0;
               <div class="w-20 h-1 bg-indigo-500 mx-auto mt-4" />
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {resumeData?.data.careerHighlights.map(
-                (highlight: {
-                  icon: string;
-                  title: string;
-                  description: string;
-                }) => (
-                  <div class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                    {highlight.icon && (
-                      <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
-                        <DynamicIcon
-                          name={highlight.icon}
-                          class="text-indigo-600"
-                          size={24}
-                        />
-                      </div>
-                    )}
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">
-                      {highlight.title}
-                    </h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">
-                      {highlight.description}
-                    </p>
-                  </div>
-                )
-              )}
+            <div class="grid gap-8 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
+              {resumeData?.data.careerHighlights?.map((highlight) => (
+                <div class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                  {highlight.icon && (
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                      <DynamicIcon
+                        name={highlight.icon}
+                        class="text-indigo-600"
+                        size={24}
+                      />
+                    </div>
+                  )}
+                  <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {highlight.title}
+                  </h3>
+                  <p class="text-slate-600 leading-relaxed text-sm">
+                    {highlight.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -127,33 +122,28 @@ const hasPublications = publications && publications.length > 0;
               {projects
                 .filter((p: { data: { featured: any } }) => p.data.featured)
                 .slice(0, 3)
-                .map(
-                  (project: {
-                    id: any;
-                    data: { name: string; tech: unknown; description: string };
-                  }) => (
-                    <a
-                      href={`/projects/${project.id}`}
-                      class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group"
-                    >
-                      <div class="flex justify-between items-start mb-3">
-                        <FolderGit
-                          size={24}
-                          class="text-indigo-600 group-hover:scale-110 transition-transform"
-                        />
-                      </div>
-                      <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-indigo-600 transition-colors">
-                        {project.data.name}
-                      </h3>
-                      <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
-                        {project.data.tech}
-                      </p>
-                      <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                        {project.data.description}
-                      </p>
-                    </a>
-                  )
-                )}
+                .map((project) => (
+                  <a
+                    href={`/projects/${project.id}`}
+                    class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group"
+                  >
+                    <div class="flex justify-between items-start mb-3">
+                      <FolderGit
+                        size={24}
+                        class="text-indigo-600 group-hover:scale-110 transition-transform"
+                      />
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-indigo-600 transition-colors">
+                      {project.data.name}
+                    </h3>
+                    <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
+                      {project.data.tech}
+                    </p>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                      {project.data.description}
+                    </p>
+                  </a>
+                ))}
             </div>
           </div>
         </div>
