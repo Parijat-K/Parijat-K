@@ -17,6 +17,7 @@
 		"@fontsource/playfair-display": "^5.2.8",
 		"@tailwindcss/vite": "^4.1.18",
 		"astro": "^5.16.7",
+		"lucide-astro": "^0.556.0",
 		"satori": "^0.18.3",
 		"sharp": "^0.34.5",
 		"tailwindcss": "^4.1.18"
