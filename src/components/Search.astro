@@ -1,6 +1,6 @@
 ---
 // Search component with Pagefind integration
-import { X } from "lucide-astro";
+import { Search as SearchIcon, X } from "lucide-astro";
 ---
 
 <!-- Search Button (visible in Navigation) -->
@@ -12,7 +12,7 @@ import { X } from "lucide-astro";
     class="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
   >
     <div class="p-4 border-b border-slate-100 flex items-center gap-3">
-      <Search class="text-slate-400" size={20} />
+      <SearchIcon class="text-slate-400" size={20} />
       <input
         type="text"
         id="global-search-input"
