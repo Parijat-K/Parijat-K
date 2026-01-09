@@ -1,10 +1,12 @@
 ---
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { resumeData } from "../../data/resumeData";
 import { ArrowLeft, Calendar, Clock } from "lucide-astro";
 
+const blogs = await getCollection("blogs");
+
 export function getStaticPaths() {
-  return resumeData.blogs.map((blog) => ({
+  return blogs.map((blog) => ({
     params: { id: blog.id },
     props: { blog },
   }));
@@ -13,15 +15,18 @@ export function getStaticPaths() {
 const { blog } = Astro.props;
 
 const getRelatedBlogs = (currentId: string, tags: string[]) => {
-  return resumeData.blogs
-    .filter((b) => b.id !== currentId && b.tags.some((t) => tags.includes(t)))
+  return blogs
+    .filter(
+      (b) => b.id !== currentId && b.data.tags.some((t) => tags.includes(t))
+    )
     .slice(0, 3);
 };
 
-const relatedBlogs = getRelatedBlogs(blog.id, blog.tags);
+const { Content } = await render(blog);
+const relatedBlogs = getRelatedBlogs(blog.id, blog.data.tags);
 ---
 
-<Layout title={blog.title} currentPath="/blog">
+<Layout title={blog.data.title} currentPath="/blog">
   <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
     {/* Header */}
     <div class="bg-slate-900 text-white pt-12 pb-24 px-4">
@@ -33,18 +38,18 @@ const relatedBlogs = getRelatedBlogs(blog.id, blog.tags);
           <ArrowLeft size={20} /> Back to Blog
         </a>
         <h1 class="text-2xl md:text-4xl font-extrabold mb-4 leading-tight">
-          {blog.title}
+          {blog.data.title}
         </h1>
         <div
           class="flex flex-wrap gap-6 items-center text-slate-300 text-sm md:text-base"
         >
           <div class="flex items-center gap-2">
             <Calendar size={18} />
-            <span>{blog.date}</span>
+            <span>{blog.data.date}</span>
           </div>
           <div class="flex items-center gap-2">
             <Clock size={18} />
-            <span>{blog.readTime}</span>
+            <span>{blog.data.readTime}</span>
           </div>
         </div>
       </div>
@@ -57,37 +62,18 @@ const relatedBlogs = getRelatedBlogs(blog.id, blog.tags);
       >
         <div class="prose prose-slate max-w-none">
           <p class="text-xl font-medium text-slate-800 leading-relaxed mb-8">
-            {blog.summary}
+            {blog.data.summary}
           </p>
           <div class="my-8 h-px bg-slate-100 w-full"></div>
           <div class="text-slate-600 leading-7 space-y-4">
-            {/* Simulating rich text content */}
-            <p>{blog.content}</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
-            <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4">
-              Key Takeaways
-            </h3>
-            <ul class="list-disc pl-5 space-y-2">
-              <li>
-                Understanding the core problem space is 90% of the solution.
-              </li>
-              <li>
-                Scalability often comes at the cost of initial complexity.
-              </li>
-              <li>Always measure before optimizing.</li>
-            </ul>
+            <Content />
           </div>
         </div>
 
         <div class="mt-12 pt-8 border-t border-slate-100">
           <div class="flex flex-wrap gap-2">
             {
-              blog.tags.map((tag) => (
+              blog.data.tags.map((tag) => (
                 <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium">
                   #{tag}
                 </span>
@@ -111,11 +97,11 @@ const relatedBlogs = getRelatedBlogs(blog.id, blog.tags);
                   class="block bg-white p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
                 >
                   <h4 class="font-bold text-slate-900 text-lg mb-1">
-                    {rb.title}
+                    {rb.data.title}
                   </h4>
                   <div class="flex justify-between items-center text-sm text-slate-500">
-                    <span>{rb.readTime}</span>
-                    <span>{rb.date}</span>
+                    <span>{rb.data.readTime}</span>
+                    <span>{rb.data.date}</span>
                   </div>
                 </a>
               ))}

@@ -1,6 +1,6 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { resumeData } from "../../data/resumeData";
 import {
   ArrowLeft,
   Calendar,
@@ -9,25 +9,33 @@ import {
   Quote,
 } from "lucide-astro";
 
+const publications = await getCollection("publications");
+
 export function getStaticPaths() {
-  return resumeData.publications.map((pub) => ({
-    params: { id: pub.id },
-    props: { pub },
+  return publications.map((publication) => ({
+    params: { id: publication.id },
+    props: { publication },
   }));
 }
 
-const { pub } = Astro.props;
+const { publication } = Astro.props;
 
 const getRelatedPublications = (currentId: string, tags: string[]) => {
-  return resumeData.publications
-    .filter((p) => p.id !== currentId && p.tags.some((t) => tags.includes(t)))
+  return publications
+    .filter(
+      (p: any) =>
+        p.id !== currentId && p.data.tags.some((t: any) => tags.includes(t))
+    )
     .slice(0, 3);
 };
 
-const relatedPubs = getRelatedPublications(pub.id, pub.tags);
+const relatedPubs = getRelatedPublications(
+  publication.id,
+  publication.data.tags
+);
 ---
 
-<Layout title={pub.title} currentPath="/research">
+<Layout title={publication.data.title} currentPath="/research">
   <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
     {/* Header */}
     <div class="bg-slate-900 text-white pt-12 pb-24 px-4">
@@ -39,18 +47,18 @@ const relatedPubs = getRelatedPublications(pub.id, pub.tags);
           <ArrowLeft size={20} /> Back to Research
         </a>
         <h1 class="text-2xl md:text-4xl font-extrabold mb-4 leading-tight">
-          {pub.title}
+          {publication.data.title}
         </h1>
         <div
           class="flex flex-wrap gap-6 items-center text-slate-300 text-sm md:text-base"
         >
           <div class="flex items-center gap-2">
             <Calendar size={18} />
-            <span>{pub.year}</span>
+            <span>{publication.data.year}</span>
           </div>
           <div class="flex items-center gap-2">
             <BookOpen size={18} />
-            <span class="italic">{pub.conference}</span>
+            <span class="italic">{publication.data.publisher}</span>
           </div>
         </div>
       </div>
@@ -70,7 +78,7 @@ const relatedPubs = getRelatedPublications(pub.id, pub.tags);
           <p
             class="text-lg leading-relaxed text-slate-800 italic border-l-4 border-indigo-100 pl-6 py-2"
           >
-            {pub.abstract}
+            {publication.data.abstract}
           </p>
         </div>
 
@@ -82,7 +90,7 @@ const relatedPubs = getRelatedPublications(pub.id, pub.tags);
           </h2>
           <div class="flex flex-wrap gap-2">
             {
-              pub.tags.map((tag) => (
+              publication.data.tags.map((tag) => (
                 <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded text-sm font-medium">
                   {tag}
                 </span>
@@ -93,7 +101,7 @@ const relatedPubs = getRelatedPublications(pub.id, pub.tags);
 
         <div class="flex gap-4 pt-6 border-t border-slate-100">
           <a
-            href={`https://${pub.link}`}
+            href={`https://${publication.data.link}`}
             target="_blank"
             rel="noreferrer"
             class="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors font-bold"
@@ -122,11 +130,11 @@ const relatedPubs = getRelatedPublications(pub.id, pub.tags);
                   class="block bg-white p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
                 >
                   <h4 class="font-bold text-slate-900 text-lg mb-1">
-                    {rp.title}
+                    {rp.data.title}
                   </h4>
                   <div class="flex justify-between items-center text-sm text-slate-500">
-                    <span>{rp.conference}</span>
-                    <span>{rp.year}</span>
+                    <span>{rp.data.publisher}</span>
+                    <span>{rp.data.year}</span>
                   </div>
                 </a>
               ))}

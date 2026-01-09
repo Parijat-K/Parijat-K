@@ -1,12 +1,9 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { resumeData } from "../../data/resumeData";
-import {
-  FolderGit,
-  ExternalLink,
-  Search,
-  Tag,
-} from "lucide-astro";
+import { FolderGit, ExternalLink, Search, Tag } from "lucide-astro";
+
+const projects = await getCollection("projects");
 ---
 
 <Layout title="Projects" currentPath="/projects">
@@ -37,12 +34,12 @@ import {
 
       <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {
-          resumeData.projects.map((project) => (
+          projects.map((project) => (
             <div
               class="project-card flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer overflow-hidden group"
-              data-name={project.name.toLowerCase()}
-              data-tech={project.tech.toLowerCase()}
-              data-tags={project.tags.join(" ").toLowerCase()}
+              data-name={project.data.name.toLowerCase()}
+              data-tech={project.data.tech.join(" ").toLowerCase()}
+              data-tags={project.data.tags.join(" ").toLowerCase()}
             >
               <div class="h-2 bg-indigo-500 w-full group-hover:bg-indigo-600 transition-colors" />
               <a
@@ -59,25 +56,25 @@ import {
                   </span>
                 </div>
                 <h3 class="font-bold text-slate-900 text-xl mb-2 group-hover:text-indigo-600 transition-colors">
-                  {project.name}
+                  {project.data.name}
                 </h3>
                 <div class="mb-4">
                   <span class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-2 py-1 rounded border border-indigo-100 font-mono">
-                    {project.tech}
+                    {project.data.tech.join(", ")}
                   </span>
                 </div>
                 <p class="text-slate-600 text-sm leading-relaxed grow line-clamp-3">
-                  {project.description}
+                  {project.data.description}
                 </p>
                 <div class="mt-4 pt-4 border-t border-slate-50 flex flex-wrap gap-2">
-                  {project.tags.slice(0, 3).map((tag) => (
+                  {project.data.tags.slice(0, 3).map((tag) => (
                     <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded flex items-center gap-1">
                       <Tag size={10} /> {tag}
                     </span>
                   ))}
-                  {project.tags.length > 3 && (
+                  {project.data.tags.length > 3 && (
                     <span class="text-xs text-slate-400 py-1">
-                      +{project.tags.length - 3} more
+                      +{project.data.tags.length - 3} more
                     </span>
                   )}
                 </div>

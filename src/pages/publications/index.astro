@@ -1,7 +1,9 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { resumeData } from "../../data/resumeData";
 import { Search, ExternalLink, BookOpen } from "lucide-astro";
+
+const publications = await getCollection("publications");
 ---
 
 <Layout title="Research" currentPath="/research">
@@ -32,17 +34,17 @@ import { Search, ExternalLink, BookOpen } from "lucide-astro";
 
       <div id="research-list" class="space-y-6">
         {
-          resumeData.publications.map((pub) => (
+          publications.map((pub) => (
             <div
               class="research-card bg-white p-8 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col"
-              data-title={pub.title.toLowerCase()}
-              data-conf={pub.conference.toLowerCase()}
-              data-tags={pub.tags.join(" ").toLowerCase()}
+              data-title={pub.data.title.toLowerCase()}
+              data-conf={pub.data.publisher.toLowerCase()}
+              data-tags={pub.data.tags.join(" ").toLowerCase()}
             >
               <div class="flex flex-col sm:flex-row gap-6">
                 <div class="shrink-0">
                   <div class="w-16 h-16 bg-indigo-50 group-hover:bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-700 font-bold text-xl border border-indigo-100 transition-colors">
-                    {pub.year}
+                    {pub.data.year}
                   </div>
                 </div>
                 <div class="grow">
@@ -51,7 +53,7 @@ import { Search, ExternalLink, BookOpen } from "lucide-astro";
                       href={`/research/${pub.id}`}
                       class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors"
                     >
-                      {pub.title}
+                      {pub.data.title}
                     </a>
                     <ExternalLink
                       size={18}
@@ -59,21 +61,20 @@ import { Search, ExternalLink, BookOpen } from "lucide-astro";
                     />
                   </div>
                   <p class="text-slate-600 italic mb-4 flex items-center gap-2 text-sm">
-                    <BookOpen size={16} class="shrink-0" />{" "}
-                    {pub.conference}
+                    <BookOpen size={16} class="shrink-0" /> {pub.data.publisher}
                   </p>
                   <p class="text-slate-500 text-sm mb-4 line-clamp-3 leading-relaxed">
-                    {pub.abstract}
+                    {pub.data.abstract}
                   </p>
                   <div class="flex flex-wrap gap-2 mt-auto">
-                    {pub.tags.slice(0, 4).map((tag) => (
+                    {pub.data.tags.slice(0, 4).map((tag) => (
                       <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded font-medium border border-slate-200">
                         {tag}
                       </span>
                     ))}
-                    {pub.tags.length > 4 && (
+                    {pub.data.tags.length > 4 && (
                       <span class="px-2 py-1 text-slate-400 text-xs font-medium">
-                        +{pub.tags.length - 4}
+                        +{pub.data.tags.length - 4}
                       </span>
                     )}
                   </div>

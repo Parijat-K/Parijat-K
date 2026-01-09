@@ -1,7 +1,9 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { resumeData } from "../../data/resumeData";
 import { Search, Calendar, Clock, ArrowRight } from "lucide-astro";
+
+const blogs = await getCollection("blogs");
 ---
 
 <Layout title="Blog" currentPath="/blog">
@@ -32,30 +34,30 @@ import { Search, Calendar, Clock, ArrowRight } from "lucide-astro";
 
       <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
         {
-          resumeData.blogs.map((blog) => (
+          blogs.map((blog) => (
             <a
               href={`/blog/${blog.id}`}
               class="blog-card bg-white p-8 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col h-full"
-              data-title={blog.title.toLowerCase()}
-              data-summary={blog.summary.toLowerCase()}
-              data-tags={blog.tags.join(" ").toLowerCase()}
+              data-title={blog.data.title.toLowerCase()}
+              data-summary={blog.data.summary.toLowerCase()}
+              data-tags={blog.data.tags.join(" ").toLowerCase()}
             >
               <div class="mb-4">
                 <div class="flex items-center gap-2 text-xs font-bold text-indigo-600 mb-2 uppercase tracking-wide">
                   <Calendar size={14} />
-                  <span>{blog.date}</span>
+                  <span>{blog.data.date}</span>
                 </div>
                 <h3 class="text-xl font-bold text-slate-900 mb-3 leading-tight group-hover:text-indigo-600 transition-colors">
-                  {blog.title}
+                  {blog.data.title}
                 </h3>
                 <p class="text-slate-500 text-sm mb-4 line-clamp-3 leading-relaxed grow">
-                  {blog.summary}
+                  {blog.data.summary}
                 </p>
               </div>
               <div class="mt-auto flex items-center justify-between border-t border-slate-50 pt-4">
                 <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
                   <Clock size={14} />
-                  <span>{blog.readTime}</span>
+                  <span>{blog.data.readTime}</span>
                 </div>
                 <span class="text-indigo-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   Read More <ArrowRight size={16} />

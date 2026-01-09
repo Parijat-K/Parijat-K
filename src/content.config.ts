@@ -80,7 +80,7 @@ const projects = defineCollection({
   schema: z.object({
     name: z.string(),
     tech: z.array(z.string()),
-    tags: z.array(z.string()).optional(),
+    tags: z.array(z.string()),
     description: z.string().optional(),
     link: z.string().url().optional(),
     featured: z.boolean().optional().default(false),
@@ -96,7 +96,7 @@ const publications = defineCollection({
     title: z.string(),
     publisher: z.string(),
     year: z.number(),
-    tags: z.array(z.string()).optional(),
+    tags: z.array(z.string()),
     abstract: z.string(),
     link: z.string().url().optional(),
     featured: z.boolean().optional().default(false),
@@ -112,7 +112,7 @@ const blogs = defineCollection({
     title: z.string(),
     date: z.string().date(), // Format: "YYYY-MM-DD"
     readTime: z.number().optional(), // in minutes
-    tags: z.array(z.string()).optional(),
+    tags: z.array(z.string()),
     summary: z.string(),
   }),
 });
