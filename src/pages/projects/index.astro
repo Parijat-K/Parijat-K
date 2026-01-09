@@ -1,0 +1,135 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { resumeData } from "../../data/resumeData";
+import {
+  FolderGit,
+  ExternalLink,
+  Search,
+  Tag,
+} from "lucide-astro";
+---
+
+<Layout title="Projects" currentPath="/projects">
+  <div
+    class="min-h-screen bg-slate-50 animate-in fade-in duration-500 py-12 px-4 md:px-8"
+  >
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-12 text-center md:text-left">
+        <h1 class="text-4xl font-extrabold text-slate-900 mb-4">
+          Engineering Portfolio
+        </h1>
+        <p class="text-xl text-slate-600 max-w-2xl mb-8">
+          A comprehensive list of my engineering projects, open-source
+          contributions, and architectural experiments.
+        </p>
+
+        {/* Search Bar */}
+        <div class="relative max-w-md">
+          <Search class="absolute left-3 top-3 text-slate-400" size={20} />
+          <input
+            type="text"
+            id="project-search"
+            placeholder="Filter projects by tech, name, or tag..."
+            class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow shadow-sm"
+          />
+        </div>
+      </div>
+
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {
+          resumeData.projects.map((project) => (
+            <div
+              class="project-card flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer overflow-hidden group"
+              data-name={project.name.toLowerCase()}
+              data-tech={project.tech.toLowerCase()}
+              data-tags={project.tags.join(" ").toLowerCase()}
+            >
+              <div class="h-2 bg-indigo-500 w-full group-hover:bg-indigo-600 transition-colors" />
+              <a
+                href={`/projects/${project.id}`}
+                class="p-6 flex flex-col grow"
+              >
+                <div class="flex justify-between items-start mb-4">
+                  <FolderGit
+                    size={32}
+                    class="text-slate-700 group-hover:text-indigo-600 transition-colors"
+                  />
+                  <span class="p-2 bg-slate-50 rounded-full text-slate-400">
+                    <ExternalLink size={20} />
+                  </span>
+                </div>
+                <h3 class="font-bold text-slate-900 text-xl mb-2 group-hover:text-indigo-600 transition-colors">
+                  {project.name}
+                </h3>
+                <div class="mb-4">
+                  <span class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-2 py-1 rounded border border-indigo-100 font-mono">
+                    {project.tech}
+                  </span>
+                </div>
+                <p class="text-slate-600 text-sm leading-relaxed grow line-clamp-3">
+                  {project.description}
+                </p>
+                <div class="mt-4 pt-4 border-t border-slate-50 flex flex-wrap gap-2">
+                  {project.tags.slice(0, 3).map((tag) => (
+                    <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded flex items-center gap-1">
+                      <Tag size={10} /> {tag}
+                    </span>
+                  ))}
+                  {project.tags.length > 3 && (
+                    <span class="text-xs text-slate-400 py-1">
+                      +{project.tags.length - 3} more
+                    </span>
+                  )}
+                </div>
+              </a>
+            </div>
+          ))
+        }
+      </div>
+
+      <div id="no-results" class="text-center py-20 text-slate-500 hidden">
+        No projects found matching your criteria.
+      </div>
+
+      <div class="mt-16 text-center">
+        <a href="/" class="text-indigo-600 font-bold hover:underline">
+          &larr; Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("project-search");
+    const projectCards = document.querySelectorAll(".project-card");
+    const noResults = document.getElementById("no-results");
+
+    searchInput?.addEventListener("input", (e) => {
+      const query = (e.target as HTMLInputElement).value.toLowerCase();
+      let visibleCount = 0;
+
+      projectCards.forEach((card) => {
+        const name = card.getAttribute("data-name") || "";
+        const tech = card.getAttribute("data-tech") || "";
+        const tags = card.getAttribute("data-tags") || "";
+
+        if (
+          name.includes(query) ||
+          tech.includes(query) ||
+          tags.includes(query)
+        ) {
+          (card as HTMLElement).style.display = "flex";
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = "none";
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResults?.classList.remove("hidden");
+      } else {
+        noResults?.classList.add("hidden");
+      }
+    });
+  </script>
+</Layout>

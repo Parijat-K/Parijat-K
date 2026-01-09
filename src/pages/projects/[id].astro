@@ -1,0 +1,134 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { resumeData } from "../../data/resumeData";
+import {
+  FolderGit,
+  ExternalLink,
+  FileText,
+  ArrowLeft,
+  Github,
+} from "lucide-astro";
+
+export function getStaticPaths() {
+  return resumeData.projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const getRelatedProjects = (currentId: string, tags: string[]) => {
+  return resumeData.projects
+    .filter((p) => p.id !== currentId && p.tags.some((t) => tags.includes(t)))
+    .slice(0, 3);
+};
+
+const relatedProjects = getRelatedProjects(project.id, project.tags);
+---
+
+<Layout title={project.name} currentPath="/projects">
+  <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
+    {/* Header */}
+    <div class="bg-slate-900 text-white pt-12 pb-24 px-4">
+      <div class="max-w-4xl mx-auto">
+        <a
+          href="/projects"
+          class="text-indigo-300 hover:text-white flex items-center gap-2 mb-6 font-medium transition-colors"
+        >
+          <ArrowLeft size={20} /> Back to Projects
+        </a>
+        <h1 class="text-3xl md:text-5xl font-extrabold mb-4">{project.name}</h1>
+        <div class="flex flex-wrap gap-4 items-center">
+          <div class="flex items-center gap-2 text-slate-300">
+            <FolderGit size={20} />
+            <span class="font-mono">{project.tech}</span>
+          </div>
+          {
+            project.link && (
+              <a
+                href={`https://${project.link}`}
+                target="_blank"
+                rel="noreferrer"
+                class="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-full text-sm font-bold transition-colors"
+              >
+                <Github size={16} /> View Code
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+
+    {/* Content */}
+    <div class="max-w-4xl mx-auto px-4 -mt-16">
+      <div
+        class="bg-white rounded-xl shadow-xl p-8 md:p-12 border border-slate-100"
+      >
+        <div class="prose max-w-none text-slate-700">
+          <h2
+            class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2"
+          >
+            <FileText class="text-indigo-600" /> Overview
+          </h2>
+          <p class="text-lg leading-relaxed mb-8">{project.longDescription}</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div
+              class="bg-slate-50 p-6 rounded-lg border-l-4 border-indigo-500"
+            >
+              <h3 class="font-bold text-slate-900 mb-2">The Challenge</h3>
+              <p class="text-sm">{project.challenges}</p>
+            </div>
+            <div
+              class="bg-slate-50 p-6 rounded-lg border-l-4 border-emerald-500"
+            >
+              <h3 class="font-bold text-slate-900 mb-2">The Outcome</h3>
+              <p class="text-sm">{project.outcome}</p>
+            </div>
+          </div>
+
+          <h3 class="text-xl font-bold text-slate-900 mb-4">
+            Technologies & Concepts
+          </h3>
+          <div class="flex flex-wrap gap-2 mb-8">
+            {
+              project.tags.map((tag) => (
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                  {tag}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Related Projects */}
+      {
+        relatedProjects.length > 0 && (
+          <div class="mt-16">
+            <h3 class="text-2xl font-bold text-slate-900 mb-6">
+              Related Projects
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedProjects.map((rp) => (
+                <a
+                  href={`/projects/${rp.id}`}
+                  class="bg-white p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:-translate-y-1 transition-all cursor-pointer"
+                >
+                  <h4 class="font-bold text-slate-900 mb-2">{rp.name}</h4>
+                  <p class="text-xs text-indigo-600 font-mono mb-2">
+                    {rp.tech}
+                  </p>
+                  <p class="text-sm text-slate-600 line-clamp-2">
+                    {rp.description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</Layout>

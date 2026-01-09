@@ -1,71 +1,255 @@
 ---
-import { getEntry } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
-import CVHeader from '../components/cv/CVHeader.astro';
-import CVSummary from '../components/cv/CVSummary.astro';
-import CVExperience from '../components/cv/CVExperience.astro';
-import CVEducation from '../components/cv/CVEducation.astro';
-import CVSkills from '../components/cv/CVSkills.astro';
-import CVCertifications from '../components/cv/CVCertifications.astro';
-import CVAvailability from '../components/cv/CVAvailability.astro';
+import Layout from "../layouts/Layout.astro";
+import { resumeData } from "../data/resumeData";
+import {
+  ArrowRight,
+  Mail,
+  BookOpen,
+  Cpu,
+  Award,
+  ChevronRight,
+  FolderGit,
+  ExternalLink,
+  Bot,
+} from "lucide-astro";
 
-// Load CV data from content collection
-const cvEntry = await getEntry('cv', 'main');
-const cv = cvEntry.data;
-
-// SEO metadata
-const title = `${cv.personalInfo.name} - CV/Resume`;
-const description = cv.summary;
+const hasProjects = resumeData.projects && resumeData.projects.length > 0;
+const hasPublications =
+  resumeData.publications && resumeData.publications.length > 0;
 ---
 
-<Layout
-  title={title}
-  description={description}
-  type="profile"
->
-  <Navigation />
-
-  <main class="py-12">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- CV Container with white background and shadow (print-optimized) -->
-      <div class="bg-white rounded-lg shadow-2xl p-8 md:p-12">
-        <CVHeader personalInfo={cv.personalInfo} />
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <!-- Left Panel: Summary + Experience -->
-          <div class="lg:col-span-2 space-y-8">
-            <CVSummary summary={cv.summary} />
-            <CVExperience experience={cv.experience} />
-          </div>
-
-          <!-- Right Panel: Skills → Certifications → Education -->
-          <div class="lg:col-span-1 space-y-8">
-            <CVSkills categories={cv.skills.categories} />
-
-            {cv.certifications && cv.certifications.length > 0 && (
-              <>
-                <hr class="border-slate-200" />
-                <CVCertifications certifications={cv.certifications} />
-              </>
-            )}
-
-            <hr class="border-slate-200" />
-            <CVEducation education={cv.education} />
-          </div>
+<Layout title="Home" currentPath="/">
+  <div class="animate-in fade-in duration-500">
+    {/* Hero Section */}
+    <div class="bg-slate-900 text-white pt-20 pb-24 md:pt-32 md:pb-40 px-4">
+      <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+          Hi, I'm <span class="text-indigo-400">{resumeData.header.name}</span>
+        </h1>
+        <p
+          class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed"
+        >
+          {resumeData.header.title} specializing in distributed systems and scalable
+          enterprise architecture.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/cv"
+            class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
+          >
+            View Full CV <ArrowRight size={20} />
+          </a>
+          <button
+            id="home-contact-trigger"
+            class="px-8 py-4 bg-transparent border-2 border-slate-600 hover:border-white text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
+          >
+            Get In Touch <Mail size={20} />
+          </button>
         </div>
-
-        <!-- Availability integrated at bottom -->
-        {cv.availability && (
-          <div class="mt-8 md:mt-12 -mx-8 md:-mx-12 -mb-8 md:-mb-12">
-            <CVAvailability
-              availabilityStatus={cv.availability.message}
-              email={cv.personalInfo.email}
-              linkedin={cv.personalInfo.linkedin}
-            />
-          </div>
-        )}
       </div>
     </div>
-  </main>
+
+    {/* Highlights Section */}
+    <div class="bg-white py-20 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-slate-900">Career Highlights</h2>
+          <div class="w-20 h-1 bg-indigo-500 mx-auto mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div
+            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
+            >
+              <BookOpen class="text-indigo-600" size={24} />
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3">
+              Academic Excellence
+            </h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              Ph.D. in Distributed Systems from Stanford University. Published
+              author in IEEE and top-tier journals on blockchain latency
+              optimization.
+            </p>
+          </div>
+
+          <div
+            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
+            >
+              <Cpu class="text-indigo-600" size={24} />
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3">
+              Full-Stack Expertise
+            </h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              Deep expertise in Java, .NET, and Python ecosystems. Capable of
+              architecting complex backends and building intuitive frontends.
+            </p>
+          </div>
+
+          <div
+            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
+            >
+              <Bot class="text-indigo-600" size={24} />
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3">
+              AI & Agentic Systems
+            </h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              Skilled in developing autonomous agents using Pydantic, Semantic
+              Kernel, and modern LLM orchestration patterns.
+            </p>
+          </div>
+
+          <div
+            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div
+              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
+            >
+              <Award class="text-indigo-600" size={24} />
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3">
+              Certified Professional
+            </h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              Holder of 8+ industry certifications including AWS Solutions
+              Architect, CKA (Kubernetes), and Google Cloud Architect.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Featured Projects Highlight */}
+    {
+      hasProjects && (
+        <div class="bg-slate-50 py-20 px-4">
+          <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+              <div>
+                <h2 class="text-3xl font-bold text-slate-900">
+                  Featured Projects
+                </h2>
+                <div class="w-20 h-1 bg-indigo-500 mt-4" />
+              </div>
+              <a
+                href="/projects"
+                class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center gap-1 group"
+              >
+                View All Projects{" "}
+                <ChevronRight
+                  size={20}
+                  class="transform group-hover:translate-x-1 transition-transform"
+                />
+              </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {resumeData.projects
+                .filter((p) => p.featured)
+                .slice(0, 3)
+                .map((project) => (
+                  <a
+                    href={`/projects/${project.id}`}
+                    class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group"
+                  >
+                    <div class="flex justify-between items-start mb-3">
+                      <FolderGit
+                        size={24}
+                        class="text-indigo-600 group-hover:scale-110 transition-transform"
+                      />
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-indigo-600 transition-colors">
+                      {project.name}
+                    </h3>
+                    <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
+                      {project.tech}
+                    </p>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                      {project.description}
+                    </p>
+                  </a>
+                ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    {/* Featured Research Highlight */}
+    {
+      hasPublications && (
+        <div class="bg-white py-20 px-4">
+          <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+              <div>
+                <h2 class="text-3xl font-bold text-slate-900">
+                  Selected Research
+                </h2>
+                <div class="w-20 h-1 bg-indigo-500 mt-4" />
+              </div>
+              <a
+                href="/research"
+                class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center gap-1 group"
+              >
+                View All Publications{" "}
+                <ChevronRight
+                  size={20}
+                  class="transform group-hover:translate-x-1 transition-transform"
+                />
+              </a>
+            </div>
+
+            <div class="space-y-4">
+              {resumeData.publications
+                .filter((p) => p.featured)
+                .slice(0, 3)
+                .map((pub) => (
+                  <a
+                    href={`/research/${pub.id}`}
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-colors group"
+                  >
+                    <div class="grow pr-4">
+                      <h3 class="font-bold text-slate-900 text-lg mb-1 group-hover:text-indigo-600 transition-colors">
+                        {pub.title}
+                      </h3>
+                      <div class="flex items-center gap-2 text-slate-600 text-sm italic">
+                        <BookOpen size={16} />
+                        <span>{pub.conference}</span>
+                      </div>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex items-center gap-4 min-w-fit">
+                      <span class="font-bold text-slate-400">{pub.year}</span>
+                      <span class="text-indigo-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        View Details <ChevronRight size={16} />
+                      </span>
+                    </div>
+                  </a>
+                ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+  </div>
+
+  <script>
+    // Trigger contact modal from home hero
+    document
+      .getElementById("home-contact-trigger")
+      ?.addEventListener("click", () => {
+        const modal = document.getElementById("contact-modal");
+        if (modal) modal.classList.replace("hidden", "flex");
+      });
+  </script>
 </Layout>
