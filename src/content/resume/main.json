@@ -1,0 +1,230 @@
+{
+  "header": {
+    "name": "Parijat Khan",
+    "title": "Solution Designer",
+    "additionalTitles": ["Full-Stack Developer", "Technology Enthusiast"],
+    "specialization": "Scalable Enterprise Architecture & Strategic thinking",
+    "summary": "Solutions Architect, Technical Lead and Polyglot engineer with over 10 years of experience designing and delivering scalable enterprise solutions. Proven expertise in bridging the gap between complex architectural concepts and hands-on full-stack development. A strategic thinker dedicated to driving technical excellence, mentoring cross-functional teams, and leveraging emerging technologies to solve business-critical challenges.",
+    "email": "khanparijat@gmail.com",
+    "phone": "+64 221046500",
+    "location": "Wellington, New Zealand",
+    "linkedin": "https://www.linkedin.com/in/parijat-k",
+    "github": "https://github.com/Parijat-K",
+    "photoUrl": "~/assets/Profile.jpg"
+  },
+  "skills": [
+    {
+      "category": "AI & Agent Systems",
+      "items": [
+        "Agent Dev (Pydantic)",
+        "LLMs & RAG",
+        "LangChain",
+        "Vector Databases",
+        "OpenAI API",
+        "Semantic Kernel"
+      ]
+    },
+    {
+      "category": "Algorithmic Optimization",
+      "items": [
+        "Constraint Programming",
+        "Discrete Optimization",
+        "Google OR-Tools",
+        "OptaPlanner"
+      ]
+    },
+    {
+      "category": "Java Ecosystem",
+      "items": [
+        "Java 17",
+        "Spring Boot",
+        "Hibernate",
+        "JPA",
+        "Gradle",
+        "Maven",
+        "JUnit 5"
+      ]
+    },
+    {
+      "category": ".NET Stack",
+      "items": [
+        "C#",
+        ".NET MAUI",
+        "ASP.NET Core",
+        "Blazor",
+        "Entity Framework",
+        "LINQ",
+        "SQL Server"
+      ]
+    },
+    {
+      "category": "Python & Data",
+      "items": [
+        "Python 3.11",
+        "Django",
+        "FastAPI",
+        "Pandas",
+        "NumPy",
+        "PyTorch",
+        "Jupyter"
+      ]
+    },
+    {
+      "category": "Frontend & Mobile",
+      "items": [
+        "TypeScript",
+        "React",
+        "HTMX",
+        "Tailwind CSS",
+        "Flutter",
+        "Kotlin Multiplatform (KMP)"
+      ]
+    }
+  ],
+  "careerHighlights": [
+    {
+      "title": "Full-Stack Expertise",
+      "description": "Deep expertise in Java, .NET, and Python ecosystems. Capable of architecting complex backends and building intuitive frontends.",
+      "icon": "Cpu"
+    },
+    {
+      "title": "AI & Agentic Systems",
+      "description": "Skilled in developing autonomous agents using Pydantic, Semantic Kernel, and modern LLM orchestration patterns.",
+      "icon": "Bot"
+    },
+    {
+      "title": "Certified Professional",
+      "description": "Holder of 8+ industry certifications including AWS Architect, CKA (Kubernetes), and Google Cloud Architect.",
+      "icon": "Award"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Mountain Leverage",
+      "roles": [
+        {
+          "title": "Lead Developer",
+          "period": "2021-01 - Present",
+          "location": "Wellington, New Zealand",
+          "description": "Lead enterprise application initiatives and steer delivery of scalable, cloud-ready solutions",
+          "achievements": [
+            "Drive technical excellence and continuous innovation across the software portfolio",
+            "Shape architecture decisions and codify best practices to safeguard scalability",
+            "Partner with cross-functional stakeholders to deliver resilient, production-ready applications"
+          ]
+        }
+      ]
+    },
+    {
+      "company": "Honeywell",
+      "roles": [
+        {
+          "title": "Senior Advanced Software Engineer",
+          "period": "2019-04 - 2021-01",
+          "location": "Hyderabad, Telangana, India",
+          "description": "Led development of customized Voice workflow solutions for customers across APAC, EMEA, and the USA",
+          "achievements": [
+            "Captured client requirements end to end and deployed tailored Voice workflows for six customers across three regions",
+            "Built five reusable Java modules and two greenfield C# applications that became part of the Core Voice offering",
+            "Optimized the Core Java middleware to sustain assignments 10x larger than the previous limit",
+            "Absorbed new Honeywell Voice solutions quickly and trained the team, trimming adoption time by 60%",
+            "Designed a Python-Django release management service with a React.js UI to streamline deployments"
+          ]
+        },
+        {
+          "title": "Advanced Software Engineer",
+          "period": "2017-03 - 2019-03",
+          "location": "Bengaluru, Karnataka, India",
+          "description": "Served as team lead for custom solution delivery and high-velocity proof of concepts",
+          "achievements": [
+            "Directed five-person engineering and QA squad across nine delivery projects and four proofs of concept",
+            "Contributed to solution architecture for six customer-specific customizations",
+            "Independently delivered five pilots that secured the follow-on engagements",
+            "Standardized the custom build pipeline, shrinking human errors by 52% and build times by 43%"
+          ]
+        },
+        {
+          "title": "Senior Engineer",
+          "period": "2015-05 - 2017-02",
+          "location": "Bengaluru Area, India",
+          "description": "Implemented complex custom solutions while advancing innovation through internal hackathons",
+          "achievements": [
+            "Delivered four custom solutions ahead of schedule while managing competing priorities",
+            "Drove proof-of-concept development through internal hackathons, earning second place in one event"
+          ]
+        }
+      ]
+    },
+    {
+      "company": "Tata Consultancy Services",
+      "roles": [
+        {
+          "title": "Software Engineer",
+          "period": "2013-02 - 2015-05",
+          "location": "Kolkata, West Bengal, India",
+          "description": "Contributed to yellow-pages middleware development on the Java Spring stack",
+          "achievements": [
+            "Developed five middleware modules leveraging Java Spring",
+            "Performed peer code reviews to maintain delivery quality",
+            "Supported module design efforts during sprint planning",
+            "Completed ramp-up on Media and Information Services domain and yellow-pages platforms within three months",
+            "Rotated across multiple backend modules to deepen domain expertise"
+          ]
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's Degree",
+      "institution": "West Bengal University of Technology",
+      "field": "Computer Science and Engineering",
+      "location": "West Bengal, India",
+      "period": "2008 - 2012"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Machine Learning",
+      "issuer": "Coursera",
+      "date": "2018",
+      "link": "https://www.coursera.org/account/accomplishments/verify/2E339ZMJZHQM"
+    },
+    {
+      "name": "Deep Learning Specialization",
+      "issuer": "Coursera (Andrew NG)",
+      "date": "2018",
+      "link": "https://www.coursera.org/account/accomplishments/specialization/certificate/6AHHEDBPQM2N"
+    },
+    {
+      "name": "Algorithmic Toolbox",
+      "issuer": "Coursera",
+      "date": "2019",
+      "link": "https://www.coursera.org/account/accomplishments/verify/4YDG2B2Z9WEV"
+    },
+    {
+      "name": "Building Scalable Java Microservices with Spring Boot and Spring Cloud",
+      "issuer": "Coursera",
+      "date": "2020",
+      "link": "https://www.coursera.org/account/accomplishments/certificate/EVPKCU3YKTXA"
+    },
+    {
+      "name": "Cloud Architecture with Google Cloud",
+      "issuer": "Google Cloud",
+      "date": "2020",
+      "link": "https://www.coursera.org/account/accomplishments/specialization/certificate/94BJFDAD6Y5T"
+    },
+    {
+      "name": "IBM AI Engineering Specialization",
+      "issuer": "Coursera",
+      "date": "2020",
+      "link": "https://www.coursera.org/account/accomplishments/specialization/certificate/MKHVHY4NTS6H"
+    },
+    {
+      "name": "Julia Scientific Programming",
+      "issuer": "Coursera",
+      "date": "2020",
+      "link": "https://www.coursera.org/account/accomplishments/certificate/HJPQR6BKECDK"
+    }
+  ]
+}

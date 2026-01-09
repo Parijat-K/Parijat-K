@@ -1,0 +1,17 @@
+---
+import * as LucideIcons from "lucide-astro";
+
+interface Props {
+  name: string;
+  size?: number;
+  class?: string; // Astro uses 'class', not 'className'
+}
+
+const { name, size = 20, class: className } = Astro.props;
+
+// Access the icon component dynamically from the imported namespace
+// We cast to 'any' here to allow dynamic string indexing, or you could use 'keyof typeof LucideIcons'
+const IconComponent = (LucideIcons as any)[name];
+---
+
+{IconComponent && <IconComponent size={size} class={className} />}

@@ -1,21 +1,24 @@
 ---
+import { getEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { resumeData } from "../data/resumeData";
 import {
   ArrowRight,
   Mail,
   BookOpen,
-  Cpu,
-  Award,
   ChevronRight,
   FolderGit,
-  ExternalLink,
-  Bot,
 } from "lucide-astro";
+import { getCollection } from "astro:content";
+import DynamicIcon from "../components/DynamicIcon.astro";
 
-const hasProjects = resumeData.projects && resumeData.projects.length > 0;
-const hasPublications =
-  resumeData.publications && resumeData.publications.length > 0;
+const resumeData = await getEntry("resume", "main");
+const projects = await getCollection("projects");
+const publications = await getCollection("publications");
+
+const hasHighlights =
+  resumeData?.data.highlights && resumeData.data.highlights.length > 0;
+const hasProjects = projects && projects.length > 0;
+const hasPublications = publications && publications.length > 0;
 ---
 
 <Layout title="Home" currentPath="/">
@@ -24,13 +27,16 @@ const hasPublications =
     <div class="bg-slate-900 text-white pt-20 pb-24 md:pt-32 md:pb-40 px-4">
       <div class="max-w-5xl mx-auto text-center">
         <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-          Hi, I'm <span class="text-indigo-400">{resumeData.header.name}</span>
+          Hi, I'm <span class="text-indigo-400"
+            >{resumeData?.data.header.name}</span
+          >
         </h1>
         <p
           class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed"
         >
-          {resumeData.header.title} specializing in distributed systems and scalable
-          enterprise architecture.
+          {resumeData?.data.header.title} specializing in {
+            resumeData?.data.header.specialization
+          }.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a
@@ -50,85 +56,48 @@ const hasPublications =
     </div>
 
     {/* Highlights Section */}
-    <div class="bg-white py-20 px-4">
-      <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold text-slate-900">Career Highlights</h2>
-          <div class="w-20 h-1 bg-indigo-500 mx-auto mt-4"></div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div
-            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div
-              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
-            >
-              <BookOpen class="text-indigo-600" size={24} />
+    {
+      hasHighlights && (
+        <div class="bg-white py-20 px-4">
+          <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-3xl font-bold text-slate-900">
+                Career Highlights
+              </h2>
+              <div class="w-20 h-1 bg-indigo-500 mx-auto mt-4" />
             </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-3">
-              Academic Excellence
-            </h3>
-            <p class="text-slate-600 leading-relaxed text-sm">
-              Ph.D. in Distributed Systems from Stanford University. Published
-              author in IEEE and top-tier journals on blockchain latency
-              optimization.
-            </p>
-          </div>
 
-          <div
-            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div
-              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
-            >
-              <Cpu class="text-indigo-600" size={24} />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {resumeData?.data.careerHighlights.map(
+                (highlight: {
+                  icon: string;
+                  title: string;
+                  description: string;
+                }) => (
+                  <div class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    {highlight.icon && (
+                      <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                        <DynamicIcon
+                          name={highlight.icon}
+                          class="text-indigo-600"
+                          size={24}
+                        />
+                      </div>
+                    )}
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">
+                      {highlight.title}
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                      {highlight.description}
+                    </p>
+                  </div>
+                )
+              )}
             </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-3">
-              Full-Stack Expertise
-            </h3>
-            <p class="text-slate-600 leading-relaxed text-sm">
-              Deep expertise in Java, .NET, and Python ecosystems. Capable of
-              architecting complex backends and building intuitive frontends.
-            </p>
-          </div>
-
-          <div
-            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div
-              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
-            >
-              <Bot class="text-indigo-600" size={24} />
-            </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-3">
-              AI & Agentic Systems
-            </h3>
-            <p class="text-slate-600 leading-relaxed text-sm">
-              Skilled in developing autonomous agents using Pydantic, Semantic
-              Kernel, and modern LLM orchestration patterns.
-            </p>
-          </div>
-
-          <div
-            class="p-8 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div
-              class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"
-            >
-              <Award class="text-indigo-600" size={24} />
-            </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-3">
-              Certified Professional
-            </h3>
-            <p class="text-slate-600 leading-relaxed text-sm">
-              Holder of 8+ industry certifications including AWS Solutions
-              Architect, CKA (Kubernetes), and Google Cloud Architect.
-            </p>
           </div>
         </div>
-      </div>
-    </div>
+      )
+    }
 
     {/* Featured Projects Highlight */}
     {
@@ -155,31 +124,36 @@ const hasPublications =
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {resumeData.projects
-                .filter((p) => p.featured)
+              {projects
+                .filter((p: { data: { featured: any } }) => p.data.featured)
                 .slice(0, 3)
-                .map((project) => (
-                  <a
-                    href={`/projects/${project.id}`}
-                    class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group"
-                  >
-                    <div class="flex justify-between items-start mb-3">
-                      <FolderGit
-                        size={24}
-                        class="text-indigo-600 group-hover:scale-110 transition-transform"
-                      />
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-indigo-600 transition-colors">
-                      {project.name}
-                    </h3>
-                    <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
-                      {project.tech}
-                    </p>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                      {project.description}
-                    </p>
-                  </a>
-                ))}
+                .map(
+                  (project: {
+                    id: any;
+                    data: { name: string; tech: unknown; description: string };
+                  }) => (
+                    <a
+                      href={`/projects/${project.id}`}
+                      class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group"
+                    >
+                      <div class="flex justify-between items-start mb-3">
+                        <FolderGit
+                          size={24}
+                          class="text-indigo-600 group-hover:scale-110 transition-transform"
+                        />
+                      </div>
+                      <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-indigo-600 transition-colors">
+                        {project.data.name}
+                      </h3>
+                      <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
+                        {project.data.tech}
+                      </p>
+                      <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                        {project.data.description}
+                      </p>
+                    </a>
+                  )
+                )}
             </div>
           </div>
         </div>
@@ -211,31 +185,38 @@ const hasPublications =
             </div>
 
             <div class="space-y-4">
-              {resumeData.publications
-                .filter((p) => p.featured)
+              {publications
+                .filter((p: { data: { featured: boolean } }) => p.data.featured)
                 .slice(0, 3)
-                .map((pub) => (
-                  <a
-                    href={`/research/${pub.id}`}
-                    class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-colors group"
-                  >
-                    <div class="grow pr-4">
-                      <h3 class="font-bold text-slate-900 text-lg mb-1 group-hover:text-indigo-600 transition-colors">
-                        {pub.title}
-                      </h3>
-                      <div class="flex items-center gap-2 text-slate-600 text-sm italic">
-                        <BookOpen size={16} />
-                        <span>{pub.conference}</span>
+                .map(
+                  (pub: {
+                    id: any;
+                    data: { title: string; publisher: string; year: number };
+                  }) => (
+                    <a
+                      href={`/research/${pub.id}`}
+                      class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-colors group"
+                    >
+                      <div class="grow pr-4">
+                        <h3 class="font-bold text-slate-900 text-lg mb-1 group-hover:text-indigo-600 transition-colors">
+                          {pub.data.title}
+                        </h3>
+                        <div class="flex items-center gap-2 text-slate-600 text-sm italic">
+                          <BookOpen size={16} />
+                          <span>{pub.data.publisher}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="mt-4 md:mt-0 flex items-center gap-4 min-w-fit">
-                      <span class="font-bold text-slate-400">{pub.year}</span>
-                      <span class="text-indigo-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        View Details <ChevronRight size={16} />
-                      </span>
-                    </div>
-                  </a>
-                ))}
+                      <div class="mt-4 md:mt-0 flex items-center gap-4 min-w-fit">
+                        <span class="font-bold text-slate-400">
+                          {pub.data.year}
+                        </span>
+                        <span class="text-indigo-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          View Details <ChevronRight size={16} />
+                        </span>
+                      </div>
+                    </a>
+                  )
+                )}
             </div>
           </div>
         </div>
