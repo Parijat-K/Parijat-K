@@ -292,7 +292,7 @@ const profilePhoto = resumeData?.data.header.photoUrl
 
             {/* Scrollable Carousel Container */}
             <div class="relative">
-              <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory no-scrollbar px-4 md:px-0">
+              <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory recommendations-scroll px-4 md:px-0">
                 {resumeData?.data.recommendations.map((rec, idx) => (
                   <div class="w-[85vw] md:w-100 shrink-0 snap-center bg-slate-800 p-8 rounded-xl relative border border-slate-700 hover:border-slate-600 transition-colors">
                     <Quote

@@ -191,6 +191,40 @@ h1, h2, h3, h4, h5, h6 {
   @apply fixed inset-0 z-40 bg-black/50 backdrop-blur-sm;
 }
 
+/* Recommendations carousel scrollbar */
+.recommendations-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.85) rgba(15, 23, 42, 0.8);
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
+  -webkit-overflow-scrolling: touch;
+}
+
+.recommendations-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.recommendations-scroll::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 9999px;
+  margin-inline: 1.5rem;
+}
+
+.recommendations-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+  border-radius: 9999px;
+  border: 2px solid rgba(15, 23, 42, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.recommendations-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #6366f1, #c084fc);
+}
+
+.recommendations-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
