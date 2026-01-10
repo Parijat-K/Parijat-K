@@ -79,6 +79,7 @@ h1, h2, h3, h4, h5, h6 {
   nav,
   footer,
   .no-print,
+  .cv-print-shell::before,
   .cv-photo,
   button,
   [role="button"],
@@ -107,6 +108,8 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: none !important;
     transition: none !important;
     transform: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   /* Optimize typography for print */
@@ -143,6 +146,19 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 !important;
   }
 
+  .cv-print-shell {
+    display: contents !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .cv-document {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
   /* Remove default link duplication */
   a[href]::after {
     content: none;
@@ -177,10 +193,20 @@ h1, h2, h3, h4, h5, h6 {
   .cv-contact {
     font-size: 11pt;
   }
+
+  .cv-role-title {
+    margin-top: 0 !important;
+    margin-bottom: 0.15em !important;
+  }
 }
 
 /* Preserve brand colors for color-capable printers */
-@media print and (min-color: 1) {
+@media print and (min-color: 1), print and (color), print and (not (monochrome)) {
+  .cv-print-shell,
+  .cv-document {
+    display: block !important;
+  }
+
   * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -196,73 +222,83 @@ h1, h2, h3, h4, h5, h6 {
     color: white !important;
   }
 
-  .cv-header {
-    background: transparent !important;
-    color: white !important;
+  .cv-header,
+  .cv-header *,
+  .resume-header a,
+  .resume-header span,
+  .resume-header p,
+  .resume-header svg {
+    color: inherit !important;
+    stroke: currentColor !important;
   }
 
-  .cv-header * {
-    color: inherit !important;
+  .resume-header svg {
+    fill: none !important;
   }
 
   .cv-contact {
     color: rgba(226, 232, 240, 1) !important;
   }
+
+  .cv-document,
+  .cv-document *,
+  .resume-header,
+  .resume-header * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 
 /* Force high-contrast header for devices reporting no color */
-@media print and (max-color: 0), print and (color: 0), print and (color-index: 0) {
+@media print and (monochrome), print and (color: 0) {
+  body,
+  .cv-document,
+  .cv-document * {
+    background: white !important;
+    background-image: none !important;
+    color: #000000 !important;
+  }
+
   .resume-header,
-  .resume-header *,
   .cv-header,
-  .cv-header *,
   .cv-contact,
-  .cv-contact * {
-    background: white !important;
-    background-color: white !important;
-    color: black !important;
-  }
-
   .skills-panel,
-  .skills-panel *,
   .education-item,
-  .education-item *,
   .experience-item,
-  .experience-item *,
-  .cv-print-stack,
-  .cv-print-stack * {
+  .cv-print-stack {
+    border-color: transparent !important;
+  }
+
+  [class*="bg-"],
+  [class*="from-"],
+  [class*="via-"],
+  [class*="to-"],
+  [class*="text-"],
+  [class*="ring-"],
+  [class*="border-"],
+  [style*="background"],
+  [style*="color"],
+  [style*="border"] {
     background: white !important;
-    background-color: white !important;
-    color: black !important;
+    background-image: none !important;
+    color: #000000 !important;
+    border-color: #9ca3af !important;
   }
 
-  [class*="bg-slate-"],
-  [class*="bg-gray-"],
-  [class*="bg-indigo-"],
-  [class*="bg-neutral-"],
-  [class*="bg-white/"],
-  [class*="bg-black/"] {
-    background: white !important;
-    background-color: white !important;
+  a {
+    color: #000000 !important;
+    text-decoration-color: #9ca3af !important;
   }
 
-  [class*="text-slate-"],
-  [class*="text-gray-"],
-  [class*="text-indigo-"],
-  [class*="text-blue-"],
-  [class*="text-white"],
-  .cv-print-stack,
-  .cv-print-stack * {
-    color: #111111 !important;
-  }
-
-  .border-slate-100,
-  .border-slate-200,
-  .border-slate-300,
-  .border-gray-100,
-  .border-gray-200,
-  .border-gray-300 {
-    border-color: #d4d4d8 !important;
+  hr,
+  .border,
+  [class*="border-"],
+  .resume-header,
+  .skills-panel,
+  .education-item,
+  .experience-item,
+  .cv-print-stack {
+    border-color: #9ca3af !important;
   }
 }
 

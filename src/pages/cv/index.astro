@@ -51,7 +51,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
 
 <Layout title="Resume" currentPath="/cv">
   <div
-    class="bg-white p-4 md:p-8 animate-in slide-in-from-bottom-4 duration-500 print:p-0"
+    class="cv-print-shell bg-white p-4 md:p-8 animate-in slide-in-from-bottom-4 duration-500 print:p-0"
   >
     {/* Floating Print Button - Visible only on screen */}
     <button
@@ -64,7 +64,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
     </button>
 
     <div
-      class="max-w-[210mm] mx-auto bg-white shadow-2xl overflow-hidden print:shadow-none print:max-w-none print:m-0 flex flex-col min-h-[297mm]"
+      class="cv-document max-w-[210mm] mx-auto bg-white shadow-2xl overflow-hidden print:shadow-none print:max-w-none print:m-0 flex flex-col min-h-[297mm]"
     >
       {/* HEADER */}
       <header
@@ -114,7 +114,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
               <span>{resumeData?.data.header.phone}</span>
             </div>
             <div
-              class="flex flex-wrap gap-4 mt-2 md:justify-start print:flex-col print:gap-2 print:text-white print:w-full print:items-start"
+              class="flex flex-wrap gap-4 mt-2 md:justify-start print:flex-col print:gap-1 print:text-white print:w-full print:items-start"
             >
               {
                 linkedinUrl && (
@@ -122,7 +122,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={linkedinUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:w-full"
+                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:hidden"
                   >
                     <Linkedin size={20} />
                     <span class="hidden print:inline text-xs font-semibold tracking-wide">
@@ -138,7 +138,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:w-full"
+                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:hidden"
                   >
                     <Github size={20} />
                     <span class="hidden print:inline text-xs font-semibold tracking-wide">
@@ -203,9 +203,9 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     <div class="space-y-6">
                       {companyData.roles.map((role) => (
                         <div class="relative">
-                          <div class="absolute -left-5.25 top-2 w-2.5 h-2.5 rounded-full bg-slate-400 border-2 border-white" />
+                          <div class="absolute -left-5.25 top-3 print:top-2 w-2.5 h-2.5 rounded-full bg-slate-400 border-2 border-white" />
                           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                            <h3 class="text-lg font-bold text-slate-800">
+                            <h3 class="cv-role-title text-lg font-bold text-slate-800">
                               {role.title}
                             </h3>
                             <span class="text-sm font-medium text-slate-500">
