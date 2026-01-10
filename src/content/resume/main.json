@@ -183,47 +183,47 @@
       "period": "2008 - 2012"
     }
   ],
-  "certifications": [
+  "certificates": [
     {
       "name": "Machine Learning",
       "issuer": "Coursera",
-      "date": "2018",
+      "date": 2018,
       "link": "https://www.coursera.org/account/accomplishments/verify/2E339ZMJZHQM"
     },
     {
       "name": "Deep Learning Specialization",
       "issuer": "Coursera (Andrew NG)",
-      "date": "2018",
+      "date": 2018,
       "link": "https://www.coursera.org/account/accomplishments/specialization/certificate/6AHHEDBPQM2N"
     },
     {
       "name": "Algorithmic Toolbox",
       "issuer": "Coursera",
-      "date": "2019",
+      "date": 2019,
       "link": "https://www.coursera.org/account/accomplishments/verify/4YDG2B2Z9WEV"
     },
     {
       "name": "Building Scalable Java Microservices with Spring Boot and Spring Cloud",
       "issuer": "Coursera",
-      "date": "2020",
+      "date": 2020,
       "link": "https://www.coursera.org/account/accomplishments/certificate/EVPKCU3YKTXA"
     },
     {
       "name": "Cloud Architecture with Google Cloud",
       "issuer": "Google Cloud",
-      "date": "2020",
+      "date": 2020,
       "link": "https://www.coursera.org/account/accomplishments/specialization/certificate/94BJFDAD6Y5T"
     },
     {
       "name": "IBM AI Engineering Specialization",
       "issuer": "Coursera",
-      "date": "2020",
+      "date": 2020,
       "link": "https://www.coursera.org/account/accomplishments/specialization/certificate/MKHVHY4NTS6H"
     },
     {
       "name": "Julia Scientific Programming",
       "issuer": "Coursera",
-      "date": "2020",
+      "date": 2020,
       "link": "https://www.coursera.org/account/accomplishments/certificate/HJPQR6BKECDK"
     }
   ]

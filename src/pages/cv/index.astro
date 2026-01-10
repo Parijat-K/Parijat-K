@@ -21,6 +21,9 @@ import {
 const resumeData = await getEntry("resume", "main");
 const projects = await getCollection("projects");
 const publications = await getCollection("publications");
+
+const hasProjects = projects && projects.length > 0;
+const hasPublications = publications && publications.length > 0;
 ---
 
 <Layout title="Resume" currentPath="/cv">
@@ -58,12 +61,14 @@ const publications = await getCollection("publications");
           </div>
 
           <div class="flex flex-col gap-2 text-sm text-slate-300">
-            {resumeData?.data.header.location && (
-              <div class="flex items-center gap-2">
-                <MapPin size={16} />
-                <span>{resumeData?.data.header.location}</span>
-              </div>
-            )}
+            {
+              resumeData?.data.header.location && (
+                <div class="flex items-center gap-2">
+                  <MapPin size={16} />
+                  <span>{resumeData?.data.header.location}</span>
+                </div>
+              )
+            }
             <div class="flex items-center gap-2">
               <Mail size={16} />
               <a
@@ -77,32 +82,36 @@ const publications = await getCollection("publications");
               <span>{resumeData?.data.header.phone}</span>
             </div>
             <div class="flex gap-4 mt-2 print:text-black">
-              {resumeData?.data.header.linkedin && (
-                <a
-                  href={`https://${resumeData?.data.header.linkedin}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
-                >
-                  <Linkedin size={20} class="print:hidden" />
-                  <span class="hidden print:inline text-xs"
-                    >{resumeData?.data.header.linkedin}</span
+              {
+                resumeData?.data.header.linkedin && (
+                  <a
+                    href={`https://${resumeData?.data.header.linkedin}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
                   >
-                </a>
-              )}
-              {resumeData?.data.header.github && (
-                <a
-                  href={`https://${resumeData?.data.header.github}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
-                >
-                  <Github size={20} class="print:hidden" />
-                  <span class="hidden print:inline text-xs"
-                    >{resumeData?.data.header.github}</span
+                    <Linkedin size={20} class="print:hidden" />
+                    <span class="hidden print:inline text-xs">
+                      {resumeData?.data.header.linkedin}
+                    </span>
+                  </a>
+                )
+              }
+              {
+                resumeData?.data.header.github && (
+                  <a
+                    href={`https://${resumeData?.data.header.github}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
                   >
-                </a>
-              )}
+                    <Github size={20} class="print:hidden" />
+                    <span class="hidden print:inline text-xs">
+                      {resumeData?.data.header.github}
+                    </span>
+                  </a>
+                )
+              }
               <a
                 href={Astro.site}
                 target="_blank"
@@ -116,13 +125,15 @@ const publications = await getCollection("publications");
           </div>
         </div>
 
-        {resumeData?.data.header.summary && (
-          <div class="mt-8 border-t border-slate-700 pt-6">
-            <p class="text-slate-300 leading-relaxed max-w-3xl">
-              {resumeData?.data.header.summary}
-            </p>
-          </div>
-        )}
+        {
+          resumeData?.data.header.summary && (
+            <div class="mt-8 border-t border-slate-700 pt-6">
+              <p class="text-slate-300 leading-relaxed max-w-3xl">
+                {resumeData?.data.header.summary}
+              </p>
+            </div>
+          )
+        }
       </header>
 
       {/* MAIN BODY: Experience (Left) & Skills (Right) */}
@@ -209,84 +220,90 @@ const publications = await getCollection("publications");
       </div>
 
       {/* FULL WIDTH PROJECTS SECTION */}
-      <div class="px-8 md:px-10 pb-6 bg-white">
-        <h2
-          class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2"
-        >
-          <FolderGit size={20} class="text-slate-700" /> Key Projects
-        </h2>
-        {/* Added print:grid-cols-3 to keep 3 columns in print */}
-        <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4">
-          {
-            projects
-              .filter((p: any) => p.data.featured)
-              .slice(0, 3)
-              .map((project: any) => (
-                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-slate-400 transition-colors">
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="font-bold text-slate-900">{project.name}</h3>
-                    {project.link && (
-                      <a
-                        href={project.link.startsWith("http") ? project.link : `https://${project.link}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        class="text-slate-600 hover:text-slate-900 print:hidden"
-                      >
-                        <ExternalLink size={16} />
-                      </a>
+      {
+        hasProjects && (
+          <div class="px-8 md:px-10 pb-6 bg-white">
+            <h2 class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2">
+              <FolderGit size={20} class="text-slate-700" /> Key Projects
+            </h2>
+            {/* Added print:grid-cols-3 to keep 3 columns in print */}
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4">
+              {projects
+                .filter((p: any) => p.data.featured)
+                .slice(0, 3)
+                .map((project: any) => (
+                  <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-slate-400 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                      <h3 class="font-bold text-slate-900">{project.name}</h3>
+                      {project.link && (
+                        <a
+                          href={
+                            project.link.startsWith("http")
+                              ? project.link
+                              : `https://${project.link}`
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                          class="text-slate-600 hover:text-slate-900 print:hidden"
+                        >
+                          <ExternalLink size={16} />
+                        </a>
+                      )}
+                    </div>
+                    <p class="text-xs font-bold text-slate-700 font-mono mb-2">
+                      {project.tech}
+                    </p>
+                    {project.description && (
+                      <p class="text-sm text-slate-600 leading-snug">
+                        {project.description}
+                      </p>
                     )}
                   </div>
-                  <p class="text-xs font-bold text-slate-700 font-mono mb-2">
-                    {project.tech}
-                  </p>
-                  {project.description && (
-                    <p class="text-sm text-slate-600 leading-snug">
-                      {project.description}
-                    </p>
-                  )}
-                </div>
-              ))
-          }
-        </div>
-      </div>
+                ))}
+            </div>
+          </div>
+        )
+      }
 
       {/* FULL WIDTH PUBLICATIONS SECTION */}
-      <div class="px-8 md:px-10 pb-10 bg-white">
-        <h2
-          class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2"
-        >
-          <BookOpen size={20} class="text-slate-700" /> Publications & Research
-        </h2>
-        <div class="grid grid-cols-1 gap-3">
-          {
-            publications
-              .filter((p: any) => p.data.featured)
-              .slice(0, 3)
-              .map((pub: any) => (
-                <div class="flex flex-col md:flex-row print:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
-                  <div class="grow">
-                    <a
-                      href={`https://${pub.link}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      class="font-bold text-slate-900 hover:underline decoration-slate-400 underline-offset-4"
-                    >
-                      {pub.title}
-                    </a>
-                    {pub.conference && (
-                      <div class="text-sm text-slate-600 mt-1 italic">
-                        {pub.conference}
+      {
+        hasPublications && (
+          <div class="px-8 md:px-10 pb-6 bg-white">
+            <h2 class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2">
+              <BookOpen size={20} class="text-slate-700" /> Publications & Research
+            </h2>
+            <div class="grid grid-cols-1 gap-4">
+              {
+                publications
+                  .filter((p: any) => p.data.featured)
+                  .slice(0, 3)
+                  .map((pub: any) => (
+                    <div class="flex flex-col md:flex-row print:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
+                      <div class="grow">
+                        <a
+                          href={`https://${pub.link}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          class="font-bold text-slate-900 hover:underline decoration-slate-400 underline-offset-4"
+                        >
+                          {pub.title}
+                        </a>
+                        {pub.conference && (
+                          <div class="text-sm text-slate-600 mt-1 italic">
+                            {pub.conference}
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div class="mt-2 md:mt-0 md:ml-6 text-sm font-bold text-slate-500 whitespace-nowrap">
-                    {pub.year}
-                  </div>
-                </div>
-              ))
-          }
-        </div>
-      </div>
+                      <div class="mt-2 md:mt-0 md:ml-6 text-sm font-bold text-slate-500 whitespace-nowrap">
+                        {pub.year}
+                      </div>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+        )
+      }
 
       {/* FOOTER SECTION: Education & Certifications */}
       <div class="bg-slate-50 p-8 md:p-10 border-t border-slate-200">
