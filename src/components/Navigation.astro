@@ -27,7 +27,15 @@ const visibleNavItems = navItems.filter((item) => item.show);
 <nav class="sticky top-0 z-50 bg-slate-900 text-white shadow-lg print:hidden">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
-      <a href="/" class="flex items-center">
+      <a href="/" class="flex items-center gap-3">
+        <img
+          src="/favicon.svg"
+          alt={`${resumeData?.data.header.name ?? "Site"} logo`}
+          class="h-8 w-8"
+          width="32"
+          height="32"
+          loading="lazy"
+        />
         <span class="font-bold text-xl tracking-tight"
           >{resumeData?.data.header.name}</span
         >
