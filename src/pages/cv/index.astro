@@ -38,7 +38,7 @@ const hasPublications = publications && publications.length > 0;
     {/* Floating Print Button - Visible only on screen */}
     <button
       onclick="window.print()"
-      class="fixed bottom-8 right-8 z-50 flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all transform hover:-translate-y-1 print:hidden font-bold"
+      class="fixed bottom-24 md:bottom-16 lg:bottom-14 right-8 z-50 flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all transform hover:-translate-y-1 print:hidden font-bold"
       title="Print or Save as PDF"
     >
       <Printer size={20} />
