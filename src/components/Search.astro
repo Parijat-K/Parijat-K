@@ -25,13 +25,21 @@ import { Search as SearchIcon, X } from "lucide-astro";
     </div>
     <div
       id="search-results"
-      class="overflow-y-auto p-4 bg-slate-50 grow space-y-6"
+      class="overflow-y-auto p-4 bg-slate-50 grow"
     >
       <div
+        id="search-status"
         class="text-center text-slate-400 py-12 flex flex-col items-center gap-3"
       >
-        <p>Type to search across pages...</p>
+        <p class="text-base">Type to search across pages...</p>
+        <p class="text-xs text-slate-400/80">Results are powered by Pagefind.</p>
       </div>
+      <div
+        id="search-results-list"
+        class="hidden flex-col gap-4"
+        role="list"
+        aria-live="polite"
+      ></div>
     </div>
   </div>
 </div>

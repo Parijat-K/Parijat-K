@@ -107,120 +107,181 @@ const resumeData = await getEntry("resume", "main");
       // --- Global Search ---
       const searchModal = document.getElementById("search-modal");
       const searchInput = document.getElementById("global-search-input");
-      const searchResults = document.getElementById("search-results");
+      const searchStatus = document.getElementById("search-status");
+      const searchResultsList = document.getElementById("search-results-list");
       const closeSearch = document.getElementById("close-search");
 
-      const toggleSearch = () => {
-        if (searchModal?.classList.contains("hidden")) {
-          searchModal.classList.replace("hidden", "flex");
-          searchInput?.focus();
-        } else {
-          searchModal?.classList.replace("flex", "hidden");
+      let pagefindInstance = null;
+      let pagefindLoader = null;
+      let currentQuery = "";
+
+      const setStatusMessage = (message, subtext = "") => {
+        if (!searchStatus) return;
+        searchStatus.innerHTML = "";
+
+        const messageEl = document.createElement("p");
+        messageEl.className = "text-base";
+        messageEl.textContent = message;
+        searchStatus.appendChild(messageEl);
+
+        if (subtext) {
+          const subEl = document.createElement("p");
+          subEl.className = "text-xs text-slate-400/80";
+          subEl.textContent = subtext;
+          searchStatus.appendChild(subEl);
         }
+
+        searchStatus.classList.remove("hidden");
+        if (searchResultsList) {
+          searchResultsList.classList.add("hidden");
+          searchResultsList.innerHTML = "";
+        }
+      };
+
+      const getPagefindCategory = (url = "") => {
+        if (url.includes("/projects")) return "Projects";
+        if (url.includes("/publications") || url.includes("/research"))
+          return "Research";
+        if (url.includes("/blogs") || url.includes("/blog")) return "Blog";
+        if (url === "/" || url.includes("/cv")) return "CV";
+        return "Site";
+      };
+
+      const renderResults = (items) => {
+        if (!searchResultsList) return;
+        const html = items
+          .map(
+            (result) => `
+              <a
+                href="${result.url}"
+                class="block p-4 bg-white hover:bg-indigo-50 rounded-lg border border-slate-200 shadow-sm transition-colors"
+                role="listitem"
+              >
+                <div class="text-xs font-semibold uppercase tracking-wider text-indigo-500 mb-1">
+                  ${getPagefindCategory(result.url)}
+                </div>
+                <div class="font-semibold text-slate-900 mb-1">
+                  ${result.meta?.title ?? result.url}
+                </div>
+                <div class="text-sm text-slate-600 leading-relaxed">${result.excerpt ?? ""}</div>
+              </a>
+            `
+          )
+          .join("");
+
+        if (!html) {
+          setStatusMessage("No results found.", "Try a different keyword.");
+          return;
+        }
+
+        searchResultsList.innerHTML = html;
+        searchResultsList.classList.remove("hidden");
+        searchStatus?.classList.add("hidden");
+      };
+
+      const loadPagefind = async () => {
+        if (pagefindInstance) return pagefindInstance;
+        if (!pagefindLoader) {
+          pagefindLoader = import("/pagefind/pagefind.js")
+            .then((module) => {
+              const instance = module?.default?.search
+                ? module.default
+                : module;
+              instance?.init?.();
+              return instance;
+            })
+            .catch((error) => {
+              console.warn("Unable to load Pagefind", error);
+              setStatusMessage(
+                "Search index unavailable.",
+                "Run the build step (npm run build && pagefind --site dist) to regenerate Pagefind assets."
+              );
+              return null;
+            });
+        }
+
+        pagefindInstance = await pagefindLoader;
+        pagefindLoader = null;
+        return pagefindInstance;
+      };
+
+      const performSearch = async (query) => {
+        currentQuery = query;
+
+        if (!query) {
+          setStatusMessage(
+            "Type to search across pages...",
+            "Results are powered by Pagefind."
+          );
+          return;
+        }
+
+        setStatusMessage(`Searching “${query}”...`);
+        const pagefind = await loadPagefind();
+        if (!pagefind) return;
+
+        const searchResponse = await pagefind.search(query);
+        if (currentQuery !== query) return;
+
+        if (!searchResponse?.results?.length) {
+          setStatusMessage("No results found.", "Try another keyword.");
+          return;
+        }
+
+        const hydrated = await Promise.all(
+          searchResponse.results.slice(0, 12).map(async (result) => {
+            try {
+              return await result.data();
+            } catch (error) {
+              console.warn("Unable to hydrate Pagefind result", error);
+              return null;
+            }
+          })
+        );
+
+        const validResults = hydrated.filter(Boolean);
+        if (!validResults.length) {
+          setStatusMessage("No results found.", "Try another keyword.");
+          return;
+        }
+
+        renderResults(validResults);
+      };
+
+      const openSearchModal = () => {
+        if (!searchModal) return;
+        if (searchModal.classList.contains("hidden")) {
+          searchModal.classList.replace("hidden", "flex");
+        }
+        searchInput?.focus();
+        loadPagefind();
+      };
+
+      const closeSearchModal = () => {
+        if (!searchModal) return;
+        searchModal.classList.replace("flex", "hidden");
       };
 
       document
         .getElementById("search-trigger")
-        ?.addEventListener("click", toggleSearch);
-      closeSearch?.addEventListener("click", toggleSearch);
+        ?.addEventListener("click", openSearchModal);
+      closeSearch?.addEventListener("click", closeSearchModal);
 
       // Keyboard Shortcut (Cmd+K)
       document.addEventListener("keydown", (e) => {
-        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
           e.preventDefault();
-          toggleSearch();
+          openSearchModal();
         }
         if (e.key === "Escape") {
-          searchModal?.classList.replace("flex", "hidden");
+          closeSearchModal();
           contactModal?.classList.replace("flex", "hidden");
         }
       });
 
-      // Search Logic
-      searchInput?.addEventListener("input", (e) => {
-        const query = e.target.value.toLowerCase();
-        if (!query) {
-          searchResults.innerHTML =
-            '<div class="text-center text-slate-400 py-12"><p>Type to search...</p></div>';
-          return;
-        }
-
-        const matches = {
-          projects: resumeData.projects.filter(
-            (p) =>
-              p.name.toLowerCase().includes(query) ||
-              p.tags.some((t) => t.toLowerCase().includes(query))
-          ),
-          research: resumeData.publications.filter(
-            (p) =>
-              p.title.toLowerCase().includes(query) ||
-              p.tags.some((t) => t.toLowerCase().includes(query))
-          ),
-          blogs: resumeData.blogs.filter(
-            (b) =>
-              b.title.toLowerCase().includes(query) ||
-              b.tags.some((t) => t.toLowerCase().includes(query))
-          ),
-          skills: resumeData.skills
-            .flatMap((s) => s.items)
-            .filter((i) => i.toLowerCase().includes(query)),
-        };
-
-        if (
-          !matches.projects.length &&
-          !matches.research.length &&
-          !matches.blogs.length &&
-          !matches.skills.length
-        ) {
-          searchResults.innerHTML =
-            '<div class="text-center text-slate-500 py-8">No results found.</div>';
-          return;
-        }
-
-        let html = "";
-
-        if (matches.projects.length) {
-          html += `<div class="mb-4"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Projects</h3>`;
-          matches.projects.forEach((p) => {
-            html += `<a href="/projects/${p.id}" class="block p-3 bg-white hover:bg-indigo-50 rounded-lg border border-slate-200 mb-2">
-              <div class="font-bold text-slate-900">${p.name}</div>
-              <div class="text-xs text-slate-500">${p.tech}</div>
-            </a>`;
-          });
-          html += `</div>`;
-        }
-
-        if (matches.research.length) {
-          html += `<div class="mb-4"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Research</h3>`;
-          matches.research.forEach((p) => {
-            html += `<a href="/research/${p.id}" class="block p-3 bg-white hover:bg-indigo-50 rounded-lg border border-slate-200 mb-2">
-              <div class="font-bold text-slate-900 truncate">${p.title}</div>
-              <div class="text-xs text-slate-500">${p.year}</div>
-            </a>`;
-          });
-          html += `</div>`;
-        }
-
-        if (matches.blogs.length) {
-          html += `<div class="mb-4"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Blog</h3>`;
-          matches.blogs.forEach((b) => {
-            html += `<a href="/blog/${b.id}" class="block p-3 bg-white hover:bg-indigo-50 rounded-lg border border-slate-200 mb-2">
-              <div class="font-bold text-slate-900 truncate">${b.title}</div>
-              <div class="text-xs text-slate-500">${b.date}</div>
-            </a>`;
-          });
-          html += `</div>`;
-        }
-
-        if (matches.skills.length) {
-          html += `<div><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Skills</h3><div class="flex flex-wrap gap-2">`;
-          matches.skills.forEach((s) => {
-            html += `<a href="/cv" class="px-2 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 hover:text-indigo-800">${s}</a>`;
-          });
-          html += `</div></div>`;
-        }
-
-        searchResults.innerHTML = html;
+      searchInput?.addEventListener("input", (event) => {
+        const value = event.target.value.trim();
+        performSearch(value);
       });
     </script>
   </body>
