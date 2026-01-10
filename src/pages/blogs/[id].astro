@@ -3,10 +3,14 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { ArrowLeft, Calendar, Clock } from "lucide-astro";
 
-const blogs = await getCollection("blogs");
+export async function getStaticPaths() {
+  const collection = await getCollection("blogs");
 
-export function getStaticPaths() {
-  return blogs.map((blog) => ({
+  if (!collection || collection.length === 0) {
+    return [];
+  }
+
+  return collection.map((blog) => ({
     params: { id: blog.id },
     props: { blog },
   }));
@@ -14,8 +18,12 @@ export function getStaticPaths() {
 
 const { blog } = Astro.props;
 
-const getRelatedBlogs = (currentId: string, tags: string[]) => {
-  return blogs
+const getRelatedBlogs = (
+  collection: Awaited<ReturnType<typeof getCollection>>,
+  currentId: string,
+  tags: string[]
+) => {
+  return collection
     .filter(
       (b) => b.id !== currentId && b.data.tags.some((t) => tags.includes(t))
     )
@@ -23,7 +31,8 @@ const getRelatedBlogs = (currentId: string, tags: string[]) => {
 };
 
 const { Content } = await render(blog);
-const relatedBlogs = getRelatedBlogs(blog.id, blog.data.tags);
+const blogs = await getCollection("blogs");
+const relatedBlogs = getRelatedBlogs(blogs, blog.id, blog.data.tags);
 ---
 
 <Layout title={blog.data.title} currentPath="/blog">

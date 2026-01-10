@@ -3,10 +3,14 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { FolderGit, ArrowLeft, Github } from "lucide-astro";
 
-const projects = await getCollection("projects");
+export async function getStaticPaths() {
+  const collection = await getCollection("projects");
 
-export function getStaticPaths() {
-  return projects.map((project) => ({
+  if (!collection || collection.length === 0) {
+    return [];
+  }
+
+  return collection.map((project) => ({
     params: { id: project.id },
     props: { project },
   }));
@@ -14,8 +18,12 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 
-const getRelatedProjects = (currentId: string, tags: string[]) => {
-  return projects
+const getRelatedProjects = (
+  collection: Awaited<ReturnType<typeof getCollection>>,
+  currentId: string,
+  tags: string[]
+) => {
+  return collection
     .filter(
       (p) => p.id !== currentId && p.data.tags.some((t) => tags.includes(t))
     )
@@ -23,7 +31,8 @@ const getRelatedProjects = (currentId: string, tags: string[]) => {
 };
 
 const { Content } = await render(project);
-const relatedProjects = getRelatedProjects(project.id, project.data.tags);
+const projects = await getCollection("projects");
+const relatedProjects = getRelatedProjects(projects, project.id, project.data.tags);
 ---
 
 <Layout title={project.data.name} currentPath="/projects">

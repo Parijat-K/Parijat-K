@@ -9,10 +9,14 @@ import {
   Quote,
 } from "lucide-astro";
 
-const publications = await getCollection("publications");
+export async function getStaticPaths() {
+  const collection = await getCollection("publications");
 
-export function getStaticPaths() {
-  return publications.map((publication) => ({
+  if (!collection || collection.length === 0) {
+    return [];
+  }
+
+  return collection.map((publication) => ({
     params: { id: publication.id },
     props: { publication },
   }));
@@ -20,8 +24,12 @@ export function getStaticPaths() {
 
 const { publication } = Astro.props;
 
-const getRelatedPublications = (currentId: string, tags: string[]) => {
-  return publications
+const getRelatedPublications = (
+  collection: Awaited<ReturnType<typeof getCollection>>,
+  currentId: string,
+  tags: string[]
+) => {
+  return collection
     .filter(
       (p: any) =>
         p.id !== currentId && p.data.tags.some((t: any) => tags.includes(t))
@@ -29,7 +37,9 @@ const getRelatedPublications = (currentId: string, tags: string[]) => {
     .slice(0, 3);
 };
 
+const publications = await getCollection("publications");
 const relatedPubs = getRelatedPublications(
+  publications,
   publication.id,
   publication.data.tags
 );
