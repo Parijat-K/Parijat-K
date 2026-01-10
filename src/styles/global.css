@@ -96,10 +96,8 @@ h1, h2, h3, h4, h5, h6 {
     page-break-inside: avoid;
   }
 
-  /* Reset background and colors */
+  /* Typography sizing */
   body {
-    background: white !important;
-    color: black !important;
     font-size: 11pt;
     line-height: 1.4;
   }
@@ -138,10 +136,6 @@ h1, h2, h3, h4, h5, h6 {
     page-break-inside: avoid;
   }
 
-  section {
-    page-break-inside: avoid;
-  }
-
   /* Compact spacing for print */
   .container {
     max-width: 100% !important;
@@ -149,11 +143,9 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 !important;
   }
 
-  /* Show link URLs */
-  a[href]:after {
-    content: " (" attr(href) ")";
-    font-size: 9pt;
-    color: #666;
+  /* Remove default link duplication */
+  a[href]::after {
+    content: none;
   }
 
   /* Remove link underlines */
@@ -162,22 +154,115 @@ h1, h2, h3, h4, h5, h6 {
     color: inherit;
   }
 
-  /* Ensure proper margins */
+  /* Remove default browser margins; layout handles spacing */
   @page {
-    margin: 0.5in;
+    margin: 0;
   }
 
-  /* Convert colors to grayscale */
+  .skills-panel {
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+  }
+
+  .resume-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cv-header {
+    align-items: flex-start !important;
+    gap: 2rem !important;
+  }
+
+  .cv-contact {
+    font-size: 11pt;
+  }
+}
+
+/* Preserve brand colors for color-capable printers */
+@media print and (min-color: 1) {
   * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    background: var(--color-bg-base) !important;
+    color: inherit !important;
+  }
+
+  .resume-header {
+    background: #0f172a !important;
+    color: white !important;
+  }
+
+  .cv-header {
+    background: transparent !important;
+    color: white !important;
+  }
+
+  .cv-header * {
+    color: inherit !important;
+  }
+
+  .cv-contact {
+    color: rgba(226, 232, 240, 1) !important;
+  }
+}
+
+/* Force high-contrast header for devices reporting no color */
+@media print and (max-color: 0), print and (color: 0), print and (color-index: 0) {
+  .resume-header,
+  .resume-header *,
+  .cv-header,
+  .cv-header *,
+  .cv-contact,
+  .cv-contact * {
     background: white !important;
+    background-color: white !important;
     color: black !important;
   }
 
-  /* Keep some subtle grays for structure */
-  .bg-slate-50,
-  .bg-gray-50 {
-    background: #f9f9f9 !important;
-    border: 1px solid #e0e0e0 !important;
+  .skills-panel,
+  .skills-panel *,
+  .education-item,
+  .education-item *,
+  .experience-item,
+  .experience-item *,
+  .cv-print-stack,
+  .cv-print-stack * {
+    background: white !important;
+    background-color: white !important;
+    color: black !important;
+  }
+
+  [class*="bg-slate-"],
+  [class*="bg-gray-"],
+  [class*="bg-indigo-"],
+  [class*="bg-neutral-"],
+  [class*="bg-white/"],
+  [class*="bg-black/"] {
+    background: white !important;
+    background-color: white !important;
+  }
+
+  [class*="text-slate-"],
+  [class*="text-gray-"],
+  [class*="text-indigo-"],
+  [class*="text-blue-"],
+  [class*="text-white"],
+  .cv-print-stack,
+  .cv-print-stack * {
+    color: #111111 !important;
+  }
+
+  .border-slate-100,
+  .border-slate-200,
+  .border-slate-300,
+  .border-gray-100,
+  .border-gray-200,
+  .border-gray-300 {
+    border-color: #d4d4d8 !important;
   }
 }
 

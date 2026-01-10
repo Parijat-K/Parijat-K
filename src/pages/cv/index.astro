@@ -29,6 +29,24 @@ const hasAdditionalTitles =
 const hasAwards = resumeData?.data.awards && resumeData.data.awards.length > 0;
 const hasProjects = projects && projects.length > 0;
 const hasPublications = publications && publications.length > 0;
+
+const normalizeUrl = (url?: string | null) => {
+  if (!url) return "";
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+};
+
+const formatUrlForDisplay = (url?: string | null) => {
+  if (!url) return "";
+  return url.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+};
+
+const linkedinUrl = normalizeUrl(resumeData?.data.header.linkedin);
+const githubUrl = normalizeUrl(resumeData?.data.header.github);
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "";
+
+const linkedinDisplay = formatUrlForDisplay(linkedinUrl);
+const githubDisplay = formatUrlForDisplay(githubUrl);
+const siteDisplay = formatUrlForDisplay(siteUrl);
 ---
 
 <Layout title="Resume" currentPath="/cv">
@@ -50,13 +68,13 @@ const hasPublications = publications && publications.length > 0;
     >
       {/* HEADER */}
       <header
-        class="bg-slate-900 text-white p-8 md:p-10 print:bg-slate-900 print:text-white"
+        class="resume-header bg-slate-900 text-white p-8 md:p-10 print:bg-slate-900 print:text-white"
       >
         {/* Added print:flex-row to maintain side-by-side layout in print */}
         <div
-          class="flex flex-col md:flex-row print:flex-row justify-between items-start md:items-center gap-6"
+          class="cv-header flex flex-col gap-6 md:flex-row md:items-start print:flex-row print:items-start print:gap-10 justify-between"
         >
-          <div>
+          <div class="flex-1 min-w-[240px]">
             <h1 class="text-4xl font-bold tracking-tight">
               {resumeData?.data.header.name}
             </h1>
@@ -65,74 +83,85 @@ const hasPublications = publications && publications.length > 0;
             </p>
             {
               hasAdditionalTitles && (
-                <span class="text-base text-slate-300 font-medium">
+                <p class="text-base text-slate-300 font-medium mt-3 leading-snug cv-print-stack">
                   {resumeData?.data.header.additionalTitles?.join(" | ")}
-                </span>
+                </p>
               )
             }
           </div>
 
-          <div class="flex flex-col gap-2 text-sm text-slate-300">
+          <div
+            class="cv-contact flex flex-col gap-2 text-sm text-slate-300 w-full md:w-fit md:self-end md:text-left print:w-fit print:items-start print:text-white print:text-left print:text-xs"
+          >
             {
               resumeData?.data.header.location && (
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 print:text-xs">
                   <MapPin size={16} />
                   <span>{resumeData?.data.header.location}</span>
                 </div>
               )
             }
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 print:text-xs">
               <Mail size={16} />
               <a
                 href={`mailto:${resumeData?.data.header.email}`}
-                class="hover:text-white transition-colors"
+                class="cv-no-print-link hover:text-white transition-colors"
                 >{resumeData?.data.header.email}</a
               >
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 print:text-xs">
               <Phone size={16} />
               <span>{resumeData?.data.header.phone}</span>
             </div>
-            <div class="flex gap-4 mt-2 print:text-black">
+            <div
+              class="flex flex-wrap gap-4 mt-2 md:justify-start print:flex-col print:gap-2 print:text-white print:w-full print:items-start"
+            >
               {
-                resumeData?.data.header.linkedin && (
+                linkedinUrl && (
                   <a
-                    href={`https://${resumeData?.data.header.linkedin}`}
+                    href={linkedinUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
+                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:w-full"
                   >
-                    <Linkedin size={20} class="print:hidden" />
-                    <span class="hidden print:inline text-xs">
-                      {resumeData?.data.header.linkedin}
+                    <Linkedin size={20} />
+                    <span class="hidden print:inline text-xs font-semibold tracking-wide">
+                      {linkedinDisplay ||
+                        linkedinUrl.replace(/^https?:\/\//i, "")}
                     </span>
                   </a>
                 )
               }
               {
-                resumeData?.data.header.github && (
+                githubUrl && (
                   <a
-                    href={`https://${resumeData?.data.header.github}`}
+                    href={githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
+                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:w-full"
                   >
-                    <Github size={20} class="print:hidden" />
-                    <span class="hidden print:inline text-xs">
-                      {resumeData?.data.header.github}
+                    <Github size={20} />
+                    <span class="hidden print:inline text-xs font-semibold tracking-wide">
+                      {githubDisplay || githubUrl.replace(/^https?:\/\//i, "")}
                     </span>
                   </a>
                 )
               }
-              <a
-                href={Astro.site}
-                target="_blank"
-                rel="noreferrer"
-                class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
-              >
-                <Globe size={20} class="print:hidden" />
-                <span class="hidden print:inline text-xs">{Astro.site}</span>
-              </a>
+              {
+                siteUrl && (
+                  <a
+                    href={siteUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="hidden print:flex cv-no-print-link text-slate-300 hover:text-white transition-colors gap-1 print:w-full"
+                  >
+                    <Globe size={20} />
+                    <span class="hidden print:inline text-xs font-semibold tracking-wide">
+                      {siteDisplay || siteUrl.replace(/^https?:\/\//i, "")}
+                    </span>
+                  </a>
+                )
+              }
             </div>
           </div>
         </div>
@@ -154,7 +183,7 @@ const hasPublications = publications && publications.length > 0;
         {/* LEFT COLUMN: Experience ONLY */}
         {/* Added print:w-2/3 to maintain width */}
         <div
-          class="w-full md:w-2/3 print:w-2/3 p-8 md:p-10 pr-4 md:pr-12 bg-white"
+          class="w-full md:w-2/3 print:w-2/3 p-8 md:p-10 pr-4 md:pr-12 bg-white print:pb-6"
         >
           <section>
             <h2
@@ -201,7 +230,7 @@ const hasPublications = publications && publications.length > 0;
         {/* RIGHT COLUMN: Skills ONLY */}
         {/* Added print:w-1/3 to maintain width */}
         <div
-          class="w-full md:w-1/3 print:w-1/3 bg-slate-50 p-8 md:p-10 border-l border-slate-200"
+          class="skills-panel w-full md:w-1/3 print:w-1/3 bg-slate-50 p-8 md:p-10 md:border-l md:border-slate-200 print:py-6"
         >
           <section>
             <h2

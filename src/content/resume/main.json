@@ -8,7 +8,7 @@
     "email": "khanparijat@gmail.com",
     "phone": "+64 221046500",
     "location": "Wellington, New Zealand",
-    "linkedin": "https://www.linkedin.com/in/parijat-k",
+    "linkedin": "https://linkedin.com/in/parijat-k",
     "github": "https://github.com/Parijat-K",
     "photoUrl": "~/assets/Profile.jpg"
   },
@@ -110,7 +110,7 @@
           "achievements": [
             "Drive technical excellence and continuous innovation across the software portfolio",
             "Shape architecture decisions and codify best practices to safeguard scalability",
-            "Partner with cross-functional stakeholders to deliver resilient, production-ready applications"
+            "Build Work Orchestration Engine using BPMN, OptaPlanner, and Java Spring Boot for complex business processes"
           ]
         }
       ]
