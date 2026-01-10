@@ -1,0 +1,117 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { FolderGit, ArrowLeft, Github } from "lucide-astro";
+
+const projects = await getCollection("projects");
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const getRelatedProjects = (currentId: string, tags: string[]) => {
+  return projects
+    .filter(
+      (p) => p.id !== currentId && p.data.tags.some((t) => tags.includes(t))
+    )
+    .slice(0, 3);
+};
+
+const { Content } = await render(project);
+const relatedProjects = getRelatedProjects(project.id, project.data.tags);
+---
+
+<Layout title={project.data.name} currentPath="/projects">
+  <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
+    {/* Header */}
+    <div class="bg-slate-900 text-white pt-12 pb-24 px-4">
+      <div class="max-w-4xl mx-auto">
+        <a
+          href="/projects"
+          class="text-indigo-300 hover:text-white flex items-center gap-2 mb-6 font-medium transition-colors"
+        >
+          <ArrowLeft size={20} /> Back to Projects
+        </a>
+        <h1 class="text-3xl md:text-5xl font-extrabold mb-4">
+          {project.data.name}
+        </h1>
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex items-center gap-2 text-slate-300">
+              <FolderGit size={20} />
+              <span class="font-mono">{project.data.tech.join(', ')}</span>
+            </div>
+            {
+              project.data.link && (
+                <a
+                  href={`https://${project.data.link}`}
+                target="_blank"
+                rel="noreferrer"
+                class="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-full text-sm font-bold transition-colors"
+              >
+                <Github size={16} /> View Code
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+
+    {/* Content */}
+    <div class="max-w-4xl mx-auto px-4 -mt-16">
+      <div
+        class="bg-white rounded-xl shadow-xl p-8 md:p-12 border border-slate-100"
+      >
+        <div class="prose max-w-none text-slate-700">
+          <Content />
+
+          <h3 class="text-xl font-bold text-slate-900 mb-4">
+            Technologies & Concepts
+          </h3>
+          <div class="flex flex-wrap gap-2 mb-8">
+            {
+              project.data.tags.map((tag) => (
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                  {tag}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Related Projects */}
+      {
+        relatedProjects.length > 0 && (
+          <div class="mt-16">
+            <h3 class="text-2xl font-bold text-slate-900 mb-6">
+              Related Projects
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedProjects.map((rp) => (
+                <a
+                  href={`/projects/${rp.id}`}
+                  class="bg-white p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:-translate-y-1 transition-all cursor-pointer"
+                >
+                  <h4 class="font-bold text-slate-900 mb-2">{rp.data.name}</h4>
+                  <p class="text-xs text-indigo-600 font-mono mb-2">
+                    {rp.data.tech}
+                  </p>
+                  {rp.data.description && (
+                    <p class="text-sm text-slate-600 line-clamp-2">
+                      {rp.data.description}
+                    </p>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</Layout>

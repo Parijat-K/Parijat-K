@@ -1,0 +1,149 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import {
+  ArrowLeft,
+  Calendar,
+  BookOpen,
+  ExternalLink,
+  Quote,
+} from "lucide-astro";
+
+const publications = await getCollection("publications");
+
+export function getStaticPaths() {
+  return publications.map((publication) => ({
+    params: { id: publication.id },
+    props: { publication },
+  }));
+}
+
+const { publication } = Astro.props;
+
+const getRelatedPublications = (currentId: string, tags: string[]) => {
+  return publications
+    .filter(
+      (p: any) =>
+        p.id !== currentId && p.data.tags.some((t: any) => tags.includes(t))
+    )
+    .slice(0, 3);
+};
+
+const relatedPubs = getRelatedPublications(
+  publication.id,
+  publication.data.tags
+);
+---
+
+<Layout title={publication.data.title} currentPath="/research">
+  <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
+    {/* Header */}
+    <div class="bg-slate-900 text-white pt-12 pb-24 px-4">
+      <div class="max-w-4xl mx-auto">
+        <a
+          href="/research"
+          class="text-indigo-300 hover:text-white flex items-center gap-2 mb-6 font-medium transition-colors"
+        >
+          <ArrowLeft size={20} /> Back to Research
+        </a>
+        <h1 class="text-2xl md:text-4xl font-extrabold mb-4 leading-tight">
+          {publication.data.title}
+        </h1>
+        <div
+          class="flex flex-wrap gap-6 items-center text-slate-300 text-sm md:text-base"
+        >
+          <div class="flex items-center gap-2">
+            <Calendar size={18} />
+            <span>{publication.data.year}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <BookOpen size={18} />
+            <span class="italic">{publication.data.publisher}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Content */}
+    <div class="max-w-4xl mx-auto px-4 -mt-16">
+      <div
+        class="bg-white rounded-xl shadow-xl p-8 md:p-12 border border-slate-100"
+      >
+        <div class="mb-8">
+          <h2
+            class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+          >
+            Abstract
+          </h2>
+          <p
+            class="text-lg leading-relaxed text-slate-800 italic border-l-4 border-indigo-100 pl-6 py-2"
+          >
+            {publication.data.abstract}
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h2
+            class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4"
+          >
+            Topics
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {
+              publication.data.tags.map((tag) => (
+                <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded text-sm font-medium">
+                  {tag}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="flex gap-4 pt-6 border-t border-slate-100">
+          {publication.data.link && (
+            <a
+              href={`https://${publication.data.link}`}
+              target="_blank"
+              rel="noreferrer"
+              class="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors font-bold"
+            >
+              <ExternalLink size={18} /> Read Full Paper
+            </a>
+          )}
+          <button
+            class="flex items-center gap-2 px-6 py-3 border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors font-medium"
+          >
+            <Quote size={18} /> Cite
+          </button>
+        </div>
+      </div>
+
+      {/* Related Research */}
+      {
+        relatedPubs.length > 0 && (
+          <div class="mt-16">
+            <h3 class="text-2xl font-bold text-slate-900 mb-6">
+              Related Publications
+            </h3>
+            <div class="space-y-4">
+              {relatedPubs.map((rp) => (
+                <a
+                  href={`/research/${rp.id}`}
+                  class="block bg-white p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
+                >
+                  <h4 class="font-bold text-slate-900 text-lg mb-1">
+                    {rp.data.title}
+                  </h4>
+                  <div class="flex justify-between items-center text-sm text-slate-500">
+                    <span>{rp.data.publisher}</span>
+                    <span>{rp.data.year}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</Layout>

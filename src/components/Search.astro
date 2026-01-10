@@ -1,226 +1,37 @@
 ---
 // Search component with Pagefind integration
+import { Search as SearchIcon, X } from "lucide-astro";
 ---
 
 <!-- Search Button (visible in Navigation) -->
-<button
-  id="search-trigger"
-  class="hidden md:flex items-center gap-2 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white rounded-md transition-colors text-sm"
-  aria-label="Open search"
->
-  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-  </svg>
-  <span>Search</span>
-  <kbd class="hidden lg:inline-block px-2 py-0.5 text-xs bg-slate-700 text-slate-300 rounded border border-slate-600">
-    ⌘K
-  </kbd>
-</button>
-
-<!-- Search Modal -->
 <div
   id="search-modal"
-  class="fixed inset-0 z-50 hidden"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="search-title"
+  class="fixed inset-0 z-60 bg-slate-900/50 backdrop-blur-sm hidden items-start justify-center pt-20 px-4"
 >
-  <!-- Backdrop -->
-  <div class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm" id="search-backdrop"></div>
-
-  <!-- Modal Content -->
-  <div class="fixed inset-0 overflow-y-auto">
-    <div class="flex min-h-full items-start justify-center p-4 pt-20">
-      <div class="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl">
-        <!-- Search Input -->
-        <div class="border-b border-slate-200">
-          <div class="flex items-center px-4">
-            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <div id="pagefind-search" class="flex-1"></div>
-            <button
-              id="search-close"
-              class="p-2 text-slate-400 hover:text-slate-600 rounded-md transition-colors"
-              aria-label="Close search"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Search Results (rendered by Pagefind) -->
-        <div id="search-results" class="max-h-96 overflow-y-auto p-4">
-          <p class="text-center text-slate-500 text-sm py-8">
-            Start typing to search across all content...
-          </p>
-        </div>
-
-        <!-- Keyboard Hints -->
-        <div class="border-t border-slate-200 px-4 py-3 flex items-center justify-between text-xs text-slate-500">
-          <div class="flex items-center gap-4">
-            <span class="flex items-center gap-1">
-              <kbd class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300">↑</kbd>
-              <kbd class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300">↓</kbd>
-              to navigate
-            </span>
-            <span class="flex items-center gap-1">
-              <kbd class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300">↵</kbd>
-              to select
-            </span>
-            <span class="flex items-center gap-1">
-              <kbd class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300">esc</kbd>
-              to close
-            </span>
-          </div>
-        </div>
+  <div
+    class="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
+  >
+    <div class="p-4 border-b border-slate-100 flex items-center gap-3">
+      <SearchIcon class="text-slate-400" size={20} />
+      <input
+        type="text"
+        id="global-search-input"
+        placeholder="Search projects, research, blogs, skills..."
+        class="grow outline-none text-lg text-slate-800 placeholder:text-slate-400"
+      />
+      <button id="close-search" class="text-slate-400 hover:text-slate-600"
+        ><X size={20} /></button
+      >
+    </div>
+    <div
+      id="search-results"
+      class="overflow-y-auto p-4 bg-slate-50 grow space-y-6"
+    >
+      <div
+        class="text-center text-slate-400 py-12 flex flex-col items-center gap-3"
+      >
+        <p>Type to search across pages...</p>
       </div>
     </div>
   </div>
 </div>
-
-<script is:inline>
-  let pagefind = null;
-
-  async function initializePagefind() {
-    if (pagefind) return;
-
-    try {
-      // Dynamically load Pagefind only in browser
-      if (typeof window !== 'undefined') {
-        // @ts-ignore - Pagefind is loaded dynamically
-        pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
-        await pagefind.options({
-          excerptLength: 15,
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load Pagefind:', error);
-    }
-  }
-
-  function openSearch() {
-    const modal = document.getElementById('search-modal');
-    const searchContainer = document.getElementById('pagefind-search');
-
-    if (!modal || !searchContainer) return;
-
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-
-    // Initialize Pagefind if not already loaded
-    initializePagefind().then(() => {
-      if (!pagefind) return;
-
-      // Create Pagefind UI
-      searchContainer.innerHTML = '';
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = 'Search...';
-      input.className = 'w-full px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none';
-      input.id = 'pagefind-input';
-
-      searchContainer.appendChild(input);
-      input.focus();
-
-      // Handle search
-      let debounceTimer;
-      input.addEventListener('input', async (e) => {
-        const query = e.target.value;
-        const resultsContainer = document.getElementById('search-results');
-
-        if (!resultsContainer) return;
-
-        clearTimeout(debounceTimer);
-
-        if (query.length < 2) {
-          resultsContainer.innerHTML = '<p class="text-center text-slate-500 text-sm py-8">Start typing to search across all content...</p>';
-          return;
-        }
-
-        debounceTimer = setTimeout(async () => {
-          resultsContainer.innerHTML = '<p class="text-center text-slate-500 text-sm py-8">Searching...</p>';
-
-          try {
-            const search = await pagefind.search(query);
-
-            if (search.results.length === 0) {
-              resultsContainer.innerHTML = '<p class="text-center text-slate-500 text-sm py-8">No results found.</p>';
-              return;
-            }
-
-            const results = await Promise.all(
-              search.results.slice(0, 10).map((r) => r.data())
-            );
-
-            resultsContainer.innerHTML = results
-              .map((result) => `
-                <a
-                  href="${result.url}"
-                  class="block p-4 hover:bg-slate-50 rounded-lg transition-colors border-b border-slate-100 last:border-0"
-                >
-                  <h3 class="font-bold text-slate-900 mb-1">${result.meta.title || 'Untitled'}</h3>
-                  <p class="text-sm text-slate-600 line-clamp-2">${result.excerpt}</p>
-                </a>
-              `)
-              .join('');
-          } catch (error) {
-            console.error('Search error:', error);
-            resultsContainer.innerHTML = '<p class="text-center text-red-500 text-sm py-8">Search error occurred.</p>';
-          }
-        }, 300);
-      });
-    });
-  }
-
-  function closeSearch() {
-    const modal = document.getElementById('search-modal');
-    if (!modal) return;
-
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  // Event listeners
-  document.getElementById('search-trigger')?.addEventListener('click', openSearch);
-  document.getElementById('search-close')?.addEventListener('click', closeSearch);
-  document.getElementById('search-backdrop')?.addEventListener('click', closeSearch);
-
-  // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
-    // Cmd/Ctrl + K to open search
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      openSearch();
-    }
-
-    // Escape to close search
-    if (e.key === 'Escape') {
-      closeSearch();
-    }
-  });
-
-  // Initialize on page load
-  document.addEventListener('astro:page-load', () => {
-    // Re-attach event listeners after page transition
-    document.getElementById('search-trigger')?.addEventListener('click', openSearch);
-  });
-</script>
-
-<style>
-  #pagefind-search input {
-    background: transparent;
-  }
-
-  #search-results a:hover h3 {
-    color: rgb(79 70 229); /* indigo-600 */
-  }
-
-  /* Hide default Pagefind UI styles */
-  #pagefind-search .pagefind-ui {
-    display: none;
-  }
-</style>

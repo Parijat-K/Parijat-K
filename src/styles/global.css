@@ -1,14 +1,10 @@
-/* Import Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
-
 /* Import Tailwind CSS */
 @import "tailwindcss";
 
 /* Tailwind v4 Theme Configuration */
 @theme {
-  /* Custom Fonts */
-  --font-playfair: "Playfair Display", serif;
-  --font-inter: "Inter", sans-serif;
+  /* Default Tailwind sans-serif stack */
+  --font-base: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* Custom Color Tokens */
   --color-cv-primary: theme(colors.slate.900);
@@ -19,7 +15,7 @@
 
 /* Base Styles */
 body {
-  font-family: var(--font-inter);
+  font-family: var(--font-base);
   background-color: var(--color-bg-base);
   margin: 0;
   padding: 0;
@@ -27,7 +23,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-playfair);
+  font-family: var(--font-base);
   font-weight: 700;
 }
 
@@ -85,8 +81,19 @@ h1, h2, h3, h4, h5, h6 {
   .no-print,
   .cv-photo,
   button,
-  [role="button"] {
+  [role="button"],
+  footer {
     display: none !important;
+  }
+
+  /* Skills with frameworks */
+  .skill-category {
+    page-break-inside: avoid;
+  }
+
+  /* Grouped experience print optimization */
+  .role-entry {
+    page-break-inside: avoid;
   }
 
   /* Reset background and colors */

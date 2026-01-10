@@ -38,23 +38,16 @@ export const GET: APIRoute = async ({ url }) => {
 
   // Load custom fonts from local TTF files
   // Satori REQUIRES at least one font, so we must load fonts successfully
-  let fontFamilyHeading = 'Playfair Display';
+  let fontFamilyHeading = 'Inter';
   let fontFamilyBody = 'Inter';
 
   // Load fonts in parallel for better performance
-  const [playfairData, interSemiboldData, interRegularData] = await Promise.all([
-    loadLocalFont('PlayfairDisplay-Bold.ttf'),
+  const [interSemiboldData, interRegularData] = await Promise.all([
     loadLocalFont('Inter-SemiBold.ttf'),
     loadLocalFont('Inter-Regular.ttf'),
   ]);
 
   const fonts = [
-    {
-      name: 'Playfair Display',
-      data: playfairData,
-      weight: 700,
-      style: 'normal',
-    },
     {
       name: 'Inter',
       data: interSemiboldData,
@@ -148,7 +141,7 @@ export const GET: APIRoute = async ({ url }) => {
             props: {
               style: {
                 fontSize: '72px',
-                fontWeight: 700,
+                fontWeight: 600,
                 fontFamily: fontFamilyHeading,
                 color: colors.primary,
                 lineHeight: 1.1,
