@@ -69,6 +69,25 @@ const resume = defineCollection({
         })
       )
       .optional(),
+    recommendations: z
+      .array(
+        z.object({
+          text: z.string(),
+          author: z.string(),
+          role: z.string(),
+        })
+      )
+      .optional(),
+    awards: z
+      .array(
+        z.object({
+          title: z.string(),
+          issuer: z.string(),
+          year: z.string(),
+          link: z.string().url().optional(),
+        })
+      )
+      .optional(),
   }),
 });
 

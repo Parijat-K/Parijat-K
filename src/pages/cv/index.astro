@@ -16,6 +16,7 @@ import {
   BookOpen,
   GraduationCap,
   Award,
+  Trophy,
 } from "lucide-astro";
 
 const resumeData = await getEntry("resume", "main");
@@ -25,6 +26,7 @@ const publications = await getCollection("publications");
 const hasAdditionalTitles =
   resumeData?.data.header.additionalTitles &&
   resumeData?.data.header.additionalTitles.length > 0;
+const hasAwards = resumeData?.data.awards && resumeData.data.awards.length > 0;
 const hasProjects = projects && projects.length > 0;
 const hasPublications = publications && publications.length > 0;
 ---
@@ -382,6 +384,31 @@ const hasPublications = publications && publications.length > 0;
             </div>
           </div>
         </div>
+        {/* AWARDS SECTION */}
+        {
+          hasAwards && (
+            <div class="mt-10 pt-8 border-t border-slate-200">
+              <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <Trophy size={20} class="text-slate-700" /> Honors & Awards
+              </h2>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {resumeData?.data.awards.map((award, index) => (
+                  <div class="flex flex-col">
+                    <div class="font-bold text-slate-900 text-sm leading-tight mb-1">
+                      {award.title}
+                    </div>
+                    <div class="text-xs text-slate-600 font-medium">
+                      {award.issuer}
+                    </div>
+                    <div class="text-xs text-slate-500 mt-0.5">
+                      {award.year}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        }
       </div>
     </div>
   </div>
