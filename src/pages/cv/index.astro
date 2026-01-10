@@ -22,6 +22,9 @@ const resumeData = await getEntry("resume", "main");
 const projects = await getCollection("projects");
 const publications = await getCollection("publications");
 
+const hasAdditionalTitles =
+  resumeData?.data.header.additionalTitles &&
+  resumeData?.data.header.additionalTitles.length > 0;
 const hasProjects = projects && projects.length > 0;
 const hasPublications = publications && publications.length > 0;
 ---
@@ -58,6 +61,13 @@ const hasPublications = publications && publications.length > 0;
             <p class="text-xl text-slate-300 font-medium mt-1">
               {resumeData?.data.header.title}
             </p>
+            {
+              hasAdditionalTitles && (
+                <span class="text-base text-slate-300 font-medium">
+                  {resumeData?.data.header.additionalTitles?.join(" | ")}
+                </span>
+              )
+            }
           </div>
 
           <div class="flex flex-col gap-2 text-sm text-slate-300">
@@ -270,36 +280,35 @@ const hasPublications = publications && publications.length > 0;
         hasPublications && (
           <div class="px-8 md:px-10 pb-6 bg-white">
             <h2 class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2">
-              <BookOpen size={20} class="text-slate-700" /> Publications & Research
+              <BookOpen size={20} class="text-slate-700" /> Publications &
+              Research
             </h2>
             <div class="grid grid-cols-1 gap-4">
-              {
-                publications
-                  .filter((p: any) => p.data.featured)
-                  .slice(0, 3)
-                  .map((pub: any) => (
-                    <div class="flex flex-col md:flex-row print:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
-                      <div class="grow">
-                        <a
-                          href={`https://${pub.link}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          class="font-bold text-slate-900 hover:underline decoration-slate-400 underline-offset-4"
-                        >
-                          {pub.title}
-                        </a>
-                        {pub.conference && (
-                          <div class="text-sm text-slate-600 mt-1 italic">
-                            {pub.conference}
-                          </div>
-                        )}
-                      </div>
-                      <div class="mt-2 md:mt-0 md:ml-6 text-sm font-bold text-slate-500 whitespace-nowrap">
-                        {pub.year}
-                      </div>
+              {publications
+                .filter((p: any) => p.data.featured)
+                .slice(0, 3)
+                .map((pub: any) => (
+                  <div class="flex flex-col md:flex-row print:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
+                    <div class="grow">
+                      <a
+                        href={`https://${pub.link}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="font-bold text-slate-900 hover:underline decoration-slate-400 underline-offset-4"
+                      >
+                        {pub.title}
+                      </a>
+                      {pub.conference && (
+                        <div class="text-sm text-slate-600 mt-1 italic">
+                          {pub.conference}
+                        </div>
+                      )}
                     </div>
-                  ))
-              }
+                    <div class="mt-2 md:mt-0 md:ml-6 text-sm font-bold text-slate-500 whitespace-nowrap">
+                      {pub.year}
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         )
