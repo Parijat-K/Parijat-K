@@ -20,6 +20,7 @@ const hasHighlights =
   resumeData.data.careerHighlights.length > 0;
 const hasProjects = projects && projects.length > 0;
 const hasPublications = publications && publications.length > 0;
+const specialization = resumeData?.data.header.specialization;
 ---
 
 <Layout title="Home" currentPath="/">
@@ -35,9 +36,15 @@ const hasPublications = publications && publications.length > 0;
         <p
           class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed"
         >
-          {resumeData?.data.header.title} specializing in {
-            resumeData?.data.header.specialization
-          }.
+          {resumeData?.data.header.title}
+          {specialization ? (
+            <>
+              {" "}
+              specializing in {specialization}.
+            </>
+          ) : (
+            "."
+          )}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a
@@ -139,9 +146,11 @@ const hasPublications = publications && publications.length > 0;
                     <p class="text-xs font-bold text-indigo-600 font-mono mb-3">
                       {project.data.tech.join(', ')}
                     </p>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                      {project.data.description}
-                    </p>
+                    {project.data.description && (
+                      <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                        {project.data.description}
+                      </p>
+                    )}
                   </a>
                 ))}
             </div>

@@ -55,10 +55,12 @@ const blogs = await getCollection("blogs");
                 </p>
               </div>
               <div class="mt-auto flex items-center justify-between border-t border-slate-50 pt-4">
-                <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                  <Clock size={14} />
-                  <span>{blog.data.readTime}</span>
-                </div>
+                {typeof blog.data.readTime !== "undefined" && (
+                  <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                    <Clock size={14} />
+                    <span>{blog.data.readTime}</span>
+                  </div>
+                )}
                 <span class="text-indigo-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   Read More <ArrowRight size={16} />
                 </span>

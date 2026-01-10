@@ -18,18 +18,24 @@ const resumeData = await getEntry("resume", "main");
       <span>© {new Date().getFullYear()}</span>
     </div>
     <div class="flex gap-4">
-      <a
-        href={`https://${resumeData?.data.header.linkedin}`}
-        target="_blank"
-        rel="noreferrer"
-        class="hover:text-white transition-colors"><Linkedin size={18} /></a
-      >
-      <a
-        href={`https://${resumeData?.data.header.github}`}
-        target="_blank"
-        rel="noreferrer"
-        class="hover:text-white transition-colors"><Github size={18} /></a
-      >
+      {resumeData?.data.header.linkedin && (
+        <a
+          href={`https://${resumeData?.data.header.linkedin}`}
+          target="_blank"
+          rel="noreferrer"
+          class="hover:text-white transition-colors"
+          ><Linkedin size={18} /></a
+        >
+      )}
+      {resumeData?.data.header.github && (
+        <a
+          href={`https://${resumeData?.data.header.github}`}
+          target="_blank"
+          rel="noreferrer"
+          class="hover:text-white transition-colors"
+          ><Github size={18} /></a
+        >
+      )}
       <button
         id="footer-contact-trigger"
         class="hover:text-white transition-colors"><Mail size={18} /></button

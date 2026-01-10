@@ -47,10 +47,12 @@ const relatedBlogs = getRelatedBlogs(blog.id, blog.data.tags);
             <Calendar size={18} />
             <span>{blog.data.date}</span>
           </div>
-          <div class="flex items-center gap-2">
-            <Clock size={18} />
-            <span>{blog.data.readTime}</span>
-          </div>
+          {blog.data.readTime && (
+            <div class="flex items-center gap-2">
+              <Clock size={18} />
+              <span>{blog.data.readTime}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -100,7 +102,9 @@ const relatedBlogs = getRelatedBlogs(blog.id, blog.data.tags);
                     {rb.data.title}
                   </h4>
                   <div class="flex justify-between items-center text-sm text-slate-500">
-                    <span>{rb.data.readTime}</span>
+                    {typeof rb.data.readTime !== "undefined" && (
+                      <span>{rb.data.readTime}</span>
+                    )}
                     <span>{rb.data.date}</span>
                   </div>
                 </a>

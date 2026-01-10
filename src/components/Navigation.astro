@@ -1,10 +1,6 @@
 ---
 import { getCollection, getEntry } from "astro:content";
-import {
-  Menu,
-  X,
-  Search,
-} from "lucide-astro";
+import { Menu, X, Search } from "lucide-astro";
 
 const { currentPath } = Astro.props;
 
@@ -55,7 +51,7 @@ const visibleNavItems = navItems.filter((item) => item.show);
         <div class="flex items-center gap-3">
           <button
             id="search-trigger"
-            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-all"
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-all cursor-pointer"
             title="Search (Cmd+K)"
           >
             <Search size={20} />
@@ -63,7 +59,7 @@ const visibleNavItems = navItems.filter((item) => item.show);
 
           <button
             id="contact-trigger"
-            class="hidden md:block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors"
+            class="hidden md:block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors cursor-pointer"
           >
             Contact
           </button>

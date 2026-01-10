@@ -42,7 +42,7 @@ const resumeData = await getEntry("resume", "main");
           </div>
           <button
             id="copy-email-btn"
-            class="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-medium transition-all"
+            class="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-medium transition-all cursor-pointer"
           >
             <Copy size={18} class="copy-icon" />
             <Check size={18} class="check-icon hidden" />
@@ -59,25 +59,28 @@ const resumeData = await getEntry("resume", "main");
         >
       </div>
       {/* LinkedIn */}
-      <div class="space-y-3 pt-2 border-t border-slate-100">
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">
-          Social
-        </div>
-        <a
-          href={`https://${resumeData?.data.header.linkedin}`}
-          target="_blank"
-          rel="noreferrer"
-          class="flex items-center justify-between w-full p-4 bg-[#0077b5]/5 border border-[#0077b5]/20 rounded-xl hover:bg-[#0077b5]/10 transition-colors group"
-        >
-          <div class="flex items-center gap-3">
-            <Linkedin class="text-[#0077b5]" size={24} />
-            <span
-              class="font-bold text-slate-700 group-hover:text-[#0077b5] transition-colors"
-              >Connect on LinkedIn</span
+      {
+        resumeData?.data.header.linkedin && (
+          <div class="space-y-3 pt-2 border-t border-slate-100">
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Social
+            </div>
+            <a
+              href={`https://${resumeData?.data.header.linkedin}`}
+              target="_blank"
+              rel="noreferrer"
+              class="flex items-center justify-between w-full p-4 bg-[#0077b5]/5 border border-[#0077b5]/20 rounded-xl hover:bg-[#0077b5]/10 transition-colors group"
             >
+              <div class="flex items-center gap-3">
+                <Linkedin class="text-[#0077b5]" size={24} />
+                <span class="font-bold text-slate-700 group-hover:text-[#0077b5] transition-colors">
+                  Connect on LinkedIn
+                </span>
+              </div>
+            </a>
           </div>
-        </a>
-      </div>
+        )
+      }
     </div>
   </div>
 </div>
