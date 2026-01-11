@@ -32,11 +32,10 @@ interactive Plotly dashboard.
 
 ## Data & Methodology
 
-- Pulled state-wise case counts from Thejesh GN’s scraped feeds of the Ministry
-  of Health and Family Welfare, validating for missing or sparse regions.
-- Applied a modified Bettencourt & Ribeiro (2008) Bayesian approach with
-  Gaussian process noise to estimate daily Rt values and credible intervals per
-  state.
+- Pulled state-wise case counts from [Thejesh GN’s scraped feeds](https://thejeshgn.com/)
+  of the Ministry of Health and Family Welfare, validating for missing or sparse regions.
+- Applied a modified [Bettencourt & Ribeiro (2008)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0002185) 
+  Bayesian approach with Gaussian process noise to estimate daily Rt values and credible intervals per state.
 - Highlighted model caveats, such as unmodeled states with insufficient data
   and the sensitivity of Rt to reporting anomalies.
 
@@ -58,3 +57,13 @@ interactive Plotly dashboard.
   the Indian context.
 - Demonstrated how small civic-tech efforts can combine open data,
   reproducible modeling, and automation to inform crisis response.
+
+## News Coverage
+
+This work was cited in the below news
+- [How dangerous is COVID-19 in the grand scheme of things](https://www.deccanherald.com/science-and-environment/how-dangerous-is-covid-19-in-the-grand-scheme-of-things-845993.html), [Deccan Herald](https://www.deccanherald.com/)  
+- [Covid slowing in Maharashtra and MP, shows infection rate analysis of govt data](https://theprint.in/health/covid-slowing-in-maharashtra-and-mp-shows-infection-rate-analysis-of-govt-data/436861/), [The Print](https://theprint.in/)
+
+### Credits
+  - This work is based on [Estimating COVID-19's *R<sub>t</sub>* in Real-Time](https://github.com/k-sys/covid-19/blob/master/Realtime%20R0.ipynb) By [Kevin Systrom](https://github.com/k-sys)
+  - Special thanks to [Thejesh GN](https://thejeshgn.com) for collecting and maintaining the State wise COVID-19 data from the [Ministry of Health and Family Welfare, Government of India](https://www.mohfw.gov.in/) website.
