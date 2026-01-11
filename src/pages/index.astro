@@ -179,23 +179,11 @@ const profilePhoto = resumeData?.data.header.photoUrl
       hasProjects && (
         <div class="bg-slate-50 py-20 px-4">
           <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-              <div>
-                <h2 class="text-3xl font-bold text-slate-900">
-                  Featured Projects
-                </h2>
-                <div class="w-20 h-1 bg-indigo-500 mt-4" />
-              </div>
-              <a
-                href="/projects"
-                class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center gap-1 group"
-              >
-                View All Projects{" "}
-                <ChevronRight
-                  size={20}
-                  class="transform group-hover:translate-x-1 transition-transform"
-                />
-              </a>
+            <div class="text-center mb-12">
+              <h2 class="text-3xl font-bold text-slate-900">
+                Featured Projects
+              </h2>
+              <div class="w-20 h-1 bg-indigo-500 mt-4 mx-auto" />
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -223,6 +211,19 @@ const profilePhoto = resumeData?.data.header.photoUrl
                     )}
                   </a>
                 ))}
+            </div>
+
+            <div class="text-center mt-10">
+              <a
+                href="/projects"
+                class="text-indigo-600 font-bold hover:text-indigo-800 inline-flex items-center gap-1 group"
+              >
+                View All Projects{" "}
+                <ChevronRight
+                  size={20}
+                  class="transform group-hover:translate-x-1 transition-transform"
+                />
+              </a>
             </div>
           </div>
         </div>
