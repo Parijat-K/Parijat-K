@@ -7,7 +7,6 @@ tech:
   - Plotly
   - GitHub Actions
   - Bayesian Inference
-  - Netlify
 tags:
   - Epidemiology
   - Data Visualization
