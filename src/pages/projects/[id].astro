@@ -11,14 +11,18 @@ export async function getStaticPaths() {
     return [];
   }
 
-  return collection.map((project) => ({
-    params: { id: project.id },
-    props: { project },
-  }));
+  return Promise.all(
+    collection.map(async (project) => ({
+      params: { id: project.id },
+      props: {
+        project,
+        projectDates: await getProjectTimestamps(project.id),
+      },
+    }))
+  );
 }
 
-const { project } = Astro.props;
-const projectDates = await getProjectTimestamps(project.id);
+const { project, projectDates } = Astro.props;
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
 const formatDate = (date: Date) => dateFormatter.format(date);
 
