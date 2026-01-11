@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { FolderGit, ArrowLeft, Github } from "lucide-astro";
+import { FolderGit, ArrowLeft, Github, Clock } from "lucide-astro";
+import { getProjectTimestamps } from "../../utils/projectFileMetadata";
 
 export async function getStaticPaths() {
   const collection = await getCollection("projects");
@@ -17,6 +18,9 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const projectDates = await getProjectTimestamps(project.id);
+const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
+const formatDate = (date: Date) => dateFormatter.format(date);
 
 const getRelatedProjects = (
   collection: Awaited<ReturnType<typeof getCollection>>,
@@ -53,6 +57,17 @@ const relatedProjects = getRelatedProjects(projects, project.id, project.data.ta
             <div class="flex items-center gap-2 text-slate-300">
               <FolderGit size={20} />
               <span class="font-mono">{project.data.tech.join(', ')}</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-300 text-sm">
+              <Clock size={16} />
+              <span>
+                Published {formatDate(projectDates.publishedAt)}
+              </span>
+              {projectDates.updatedAt.getTime() !== projectDates.publishedAt.getTime() && (
+                <span class="text-slate-400">
+                  · Last edited {formatDate(projectDates.updatedAt)}
+                </span>
+              )}
             </div>
             {
               project.data.link && (
