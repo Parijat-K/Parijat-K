@@ -13,6 +13,21 @@
   --color-bg-base: theme(colors.slate.100);
 }
 
+:root {
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --code-inline-bg: color-mix(in srgb, white 88%, var(--color-projects-primary) 12%);
+  --code-inline-text: color-mix(in srgb, var(--color-projects-primary) 85%, black 15%);
+  --code-inline-border: color-mix(in srgb, #c7d2fe 60%, var(--color-projects-primary) 40%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --code-inline-bg: color-mix(in srgb, #0f172a 70%, white 8%);
+    --code-inline-text: color-mix(in srgb, #f8fafc 90%, #e2e8f0 10%);
+    --code-inline-border: color-mix(in srgb, #475569 65%, transparent);
+  }
+}
+
 /* Base Styles */
 body {
   font-family: var(--font-base);
@@ -71,6 +86,160 @@ h1, h2, h3, h4, h5, h6 {
 
 .fade-in {
   animation: fadeIn 400ms ease-out;
+}
+
+@layer components {
+  .markdown-shell {
+    --markdown-flow-space: clamp(1rem, 0.75rem + 0.8vw, 1.85rem);
+    --markdown-text: color-mix(in srgb, #0f172a 70%, #475569 30%);
+    --markdown-border: color-mix(in srgb, #cbd5f5 80%, #1e293b 20%);
+    --markdown-soft-bg: color-mix(in srgb, white 90%, #e0e7ff 10%);
+    color: var(--markdown-text);
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+  }
+
+  .markdown-shell :where(p, ul, ol, blockquote, pre, table, figure) {
+    margin: 0;
+  }
+
+  .markdown-shell > :where(:not(.not-prose)) + :where(:not(.not-prose)) {
+    margin-top: var(--markdown-flow-space);
+  }
+
+  .markdown-shell h1,
+  .markdown-shell h2,
+  .markdown-shell h3,
+  .markdown-shell h4,
+  .markdown-shell h5,
+  .markdown-shell h6 {
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 0.3em;
+  }
+
+  .markdown-shell h1 {
+    margin-top: calc(var(--markdown-flow-space) * 1.3);
+  }
+
+  .markdown-shell h2 {
+    margin-top: calc(var(--markdown-flow-space) * 1.2);
+  }
+
+  .markdown-shell h3 {
+    margin-top: var(--markdown-flow-space);
+  }
+
+  .markdown-shell p {
+    margin-block: var(--markdown-flow-space);
+    color: color-mix(in srgb, #0f172a 60%, #475569 40%);
+    line-height: 1.65;
+  }
+
+  .markdown-shell ul,
+  .markdown-shell ol {
+    margin-block: var(--markdown-flow-space);
+    padding-inline-start: 1.5rem;
+    line-height: 1.55;
+  }
+
+  .markdown-shell li + li {
+    margin-top: 0.6rem;
+  }
+
+  .markdown-shell blockquote {
+    margin-block: calc(var(--markdown-flow-space) * 1.1);
+    padding: 1.1rem 1.5rem;
+    border-left: 4px solid var(--markdown-border);
+    background: var(--markdown-soft-bg);
+    border-radius: 0.9rem;
+    font-style: italic;
+    color: color-mix(in srgb, #0f172a 65%, #475569 35%);
+  }
+
+  .markdown-shell pre {
+    margin-block: calc(var(--markdown-flow-space) * 1.1);
+    padding: 1.2rem 1.4rem;
+    background: color-mix(in srgb, #0f172a 6%, #e2e8f0 94%);
+    border: 1px solid var(--markdown-border);
+    border-radius: 1rem;
+    font-size: 0.95em;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  .markdown-shell pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    white-space: pre;
+  }
+
+  .markdown-shell a {
+    color: var(--color-projects-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+    font-weight: 600;
+  }
+
+  .markdown-shell hr {
+    margin-block: calc(var(--markdown-flow-space) * 1.4);
+    border: none;
+    border-top: 1px solid var(--markdown-border);
+  }
+
+  .markdown-shell img,
+  .markdown-shell video {
+    display: block;
+    width: 100%;
+    border-radius: 1rem;
+    margin-block: calc(var(--markdown-flow-space) * 1.1);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  .markdown-shell table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-block: calc(var(--markdown-flow-space) * 1.1);
+    font-size: 0.95em;
+  }
+
+  .markdown-shell th,
+  .markdown-shell td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--markdown-border);
+    text-align: left;
+  }
+
+  .markdown-shell th {
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .markdown-shell code {
+    font-family: var(--font-mono);
+  }
+
+  .markdown-shell :not(pre):not(a) > code {
+    font-size: 0.95em;
+    padding: 0.18rem 0.45rem;
+    border-radius: 0.4rem;
+    background: var(--code-inline-bg);
+    color: var(--code-inline-text);
+    border: 1px solid var(--code-inline-border);
+    white-space: normal;
+    word-break: break-word;
+    font-weight: 600;
+  }
+
+  .markdown-shell a > code {
+    color: currentColor;
+    border-color: currentColor;
+    text-decoration: underline;
+  }
 }
 
 /* Print Styles - CV Only */
