@@ -5,7 +5,6 @@ tech:
   - PhoneGap Build
   - Android SDK
   - Java
-  - de.appplant Local Notification
 tags:
   - Background Services
   - SMS Automation
