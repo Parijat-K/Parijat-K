@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Page Not Found" currentPath="/404">
+  <section
+    class="relative isolate flex flex-1 flex-col justify-center overflow-hidden bg-slate-950 text-white px-4 py-24 md:py-32"
+  >
+    <div class="absolute inset-0 opacity-40" aria-hidden="true">
+      <div class="mx-auto h-full max-w-6xl">
+        <div class="hero-texture h-full rounded-[48px] border border-slate-800/40" />
+      </div>
+    </div>
+
+    <div class="relative mx-auto flex max-w-5xl flex-col items-center gap-10 text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-indigo-300">
+        Lost &amp; Found
+      </p>
+      <h1 class="text-4xl font-extrabold leading-tight text-white sm:text-5xl">
+        This page drifted beyond the portfolio nebula.
+      </h1>
+      <p class="max-w-3xl text-lg leading-relaxed text-slate-300">
+        The link you followed doesn’t exist anymore, but the rest of the work,
+        research, and stories are still within orbit. Let’s guide you back.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-full bg-indigo-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-indigo-500/40 transition hover:bg-indigo-400"
+        >
+          Return Home
+        </a>
+        <a
+          href="/projects"
+          class="inline-flex items-center gap-2 rounded-full border border-white/30 px-8 py-3 text-base font-semibold text-white/90 transition hover:border-white hover:text-white"
+        >
+          Explore Projects
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
