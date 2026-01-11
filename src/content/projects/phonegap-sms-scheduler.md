@@ -16,7 +16,7 @@ description: >-
   Delivered a Cordova/PhoneGap plugin that schedules SMS delivery through a
   wake-efficient background listener, allowing clients to queue and cancel
   messages with native precision while staying compatible with PhoneGap Build.
-featured: false
+featured: true
 ---
 
 ## Engagement Overview
