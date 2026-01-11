@@ -101,7 +101,8 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={linkedinUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-contact-link"
+                    class="cv-contact-link cv-contact-link--icon-only"
+                    aria-label={`LinkedIn: ${linkedinDisplay || linkedinUrl.replace(/^https?:\/\//i, "")}`}
                   >
                     <Linkedin size={18} class="cv-icon" />
                     <span>{linkedinDisplay || linkedinUrl.replace(/^https?:\/\//i, "")}</span>
@@ -114,7 +115,8 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-contact-link"
+                    class="cv-contact-link cv-contact-link--icon-only"
+                    aria-label={`GitHub: ${githubDisplay || githubUrl.replace(/^https?:\/\//i, "")}`}
                   >
                     <Github size={18} class="cv-icon" />
                     <span>{githubDisplay || githubUrl.replace(/^https?:\/\//i, "")}</span>
@@ -127,7 +129,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={siteUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-contact-link"
+                    class="cv-contact-link cv-contact-link--site"
                   >
                     <Globe size={18} class="cv-icon" />
                     <span>{siteDisplay || siteUrl.replace(/^https?:\/\//i, "")}</span>
