@@ -11,6 +11,7 @@ tags:
   - Data Anonymization
   - Web Integration
   - Enterprise Systems
+shortDescription: Spring proxy rewrote contact data to attribute leads across microsites.
 description: >-
   Built a rule-driven reverse proxy for SuperPages that rewrote customer
   contact details on the fly to power analytics without altering client-facing

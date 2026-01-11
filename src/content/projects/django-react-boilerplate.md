@@ -13,6 +13,7 @@ tags:
   - CSRF Protection
   - Hybrid Deployment
   - Open Source
+shortDescription: Hybrid Django-React boilerplate with session auth and production-ready builds for teams.
 description: >-
   Open-sourced a Django + React starter kit that bundles backend and frontend
   in a single deployable, featuring session-based auth, CSRF protection, and a

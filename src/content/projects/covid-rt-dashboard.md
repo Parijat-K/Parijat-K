@@ -14,6 +14,7 @@ tags:
   - Automation
   - Open Source
   - Pandemic Response
+shortDescription: Automated Bayesian Rt dashboard tracking every Indian state's COVID-19 transmission trends.
 description: >-
   Built a public dashboard that estimates India’s state-wise COVID-19 effective
   reproduction number (Rt) using Bayesian techniques, refreshed every six hours

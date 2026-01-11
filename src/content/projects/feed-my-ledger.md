@@ -13,6 +13,7 @@ tags:
   - Cloud Integrations
   - CLI Tools
   - Open Source
+shortDescription: Rust CLI turns Sheets or Excel into tamper-evident append-only ledgers.
 description: >-
   Authored a Rust crate and CLI that turns Google Sheets or Excel 365 into an
   immutable, append-only ledger with OAuth-secured access, tamper detection,

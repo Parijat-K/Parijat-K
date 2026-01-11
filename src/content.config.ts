@@ -100,6 +100,7 @@ const projects = defineCollection({
     name: z.string(),
     tech: z.array(z.string()),
     tags: z.array(z.string()),
+    shortDescription: z.string().optional(),
     description: z.string().optional(),
     link: z.string().url().optional(),
     featured: z.boolean().optional().default(false),

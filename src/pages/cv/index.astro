@@ -51,12 +51,12 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
 
 <Layout title="Resume" currentPath="/cv">
   <div
-    class="cv-print-shell bg-white p-4 md:p-8 animate-in slide-in-from-bottom-4 duration-500 print:p-0"
+    class="bg-white p-4 md:p-8 animate-in slide-in-from-bottom-4 duration-500"
   >
     {/* Floating Print Button - Visible only on screen */}
     <button
       onclick="window.print()"
-      class="fixed bottom-24 md:bottom-16 lg:bottom-14 right-8 z-50 flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all transform hover:-translate-y-1 print:hidden font-bold"
+      class="fixed bottom-24 md:bottom-16 lg:bottom-14 right-8 z-50 flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all transform hover:-translate-y-1 font-bold"
       title="Print or Save as PDF"
     >
       <Printer size={20} />
@@ -64,16 +64,13 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
     </button>
 
     <div
-      class="cv-document max-w-[210mm] mx-auto bg-white shadow-2xl overflow-hidden print:shadow-none print:max-w-none print:m-0 flex flex-col min-h-[297mm]"
+      class="max-w-[210mm] mx-auto bg-white shadow-2xl overflow-hidden flex flex-col min-h-[297mm]"
     >
       {/* HEADER */}
       <header
-        class="resume-header bg-slate-900 text-white p-8 md:p-10 print:bg-slate-900 print:text-white"
+      class="resume-header bg-slate-900 text-white p-8 md:p-10"
       >
-        {/* Added print:flex-row to maintain side-by-side layout in print */}
-        <div
-          class="cv-header flex flex-col gap-6 md:flex-row md:items-start print:flex-row print:items-start print:gap-10 justify-between"
-        >
+        <div class="flex flex-col gap-6 md:flex-row md:items-start justify-between">
           <div class="flex-1 min-w-[240px]">
             <h1 class="text-4xl font-bold tracking-tight">
               {resumeData?.data.header.name}
@@ -83,7 +80,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
             </p>
             {
               hasAdditionalTitles && (
-                <p class="text-base text-slate-300 font-medium mt-3 leading-snug cv-print-stack">
+                <p class="text-base text-slate-300 font-medium mt-3 leading-snug">
                   {resumeData?.data.header.additionalTitles?.join(" | ")}
                 </p>
               )
@@ -91,41 +88,39 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
           </div>
 
           <div
-            class="cv-contact flex flex-col gap-2 text-sm text-slate-300 w-full md:w-fit md:self-end md:text-left print:w-fit print:items-start print:text-white print:text-left print:text-xs"
+            class="flex flex-col gap-2 text-sm text-slate-300 w-full md:w-fit md:self-end md:text-left"
           >
             {
               resumeData?.data.header.location && (
-                <div class="flex items-center gap-2 print:text-xs">
+                <div class="flex items-center gap-2">
                   <MapPin size={16} />
                   <span>{resumeData?.data.header.location}</span>
                 </div>
               )
             }
-            <div class="flex items-center gap-2 print:text-xs">
+            <div class="flex items-center gap-2">
               <Mail size={16} />
               <a
                 href={`mailto:${resumeData?.data.header.email}`}
-                class="cv-no-print-link hover:text-white transition-colors"
+                class="hover:text-white transition-colors"
                 >{resumeData?.data.header.email}</a
               >
             </div>
-            <div class="flex items-center gap-2 print:text-xs">
+            <div class="flex items-center gap-2">
               <Phone size={16} />
               <span>{resumeData?.data.header.phone}</span>
             </div>
-            <div
-              class="flex flex-wrap gap-4 mt-2 md:justify-start print:flex-col print:gap-1 print:text-white print:w-full print:items-start"
-            >
+            <div class="flex flex-wrap gap-4 mt-2 md:justify-start">
               {
                 linkedinUrl && (
                   <a
                     href={linkedinUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:hidden"
+                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
                   >
                     <Linkedin size={20} />
-                    <span class="hidden print:inline text-xs font-semibold tracking-wide">
+                    <span class="text-xs font-semibold tracking-wide">
                       {linkedinDisplay ||
                         linkedinUrl.replace(/^https?:\/\//i, "")}
                     </span>
@@ -138,10 +133,10 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="cv-no-print-link text-slate-300 hover:text-white transition-colors flex items-center gap-1 print:hidden"
+                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
                   >
                     <Github size={20} />
-                    <span class="hidden print:inline text-xs font-semibold tracking-wide">
+                    <span class="text-xs font-semibold tracking-wide">
                       {githubDisplay || githubUrl.replace(/^https?:\/\//i, "")}
                     </span>
                   </a>
@@ -153,10 +148,10 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     href={siteUrl}
                     target="_blank"
                     rel="noreferrer"
-                    class="hidden print:flex cv-no-print-link text-slate-300 hover:text-white transition-colors gap-1 print:w-full"
+                    class="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
                   >
                     <Globe size={20} />
-                    <span class="hidden print:inline text-xs font-semibold tracking-wide">
+                    <span class="text-xs font-semibold tracking-wide">
                       {siteDisplay || siteUrl.replace(/^https?:\/\//i, "")}
                     </span>
                   </a>
@@ -178,13 +173,11 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
       </header>
 
       {/* MAIN BODY: Experience (Left) & Skills (Right) */}
-      {/* Added print:flex-row to prevent stacking in print */}
-      <div class="flex flex-col md:flex-row print:flex-row grow">
-        {/* LEFT COLUMN: Experience ONLY */}
-        {/* Added print:w-2/3 to maintain width */}
-        <div
-          class="w-full md:w-2/3 print:w-2/3 p-8 md:p-10 pr-4 md:pr-12 bg-white print:pb-6"
-        >
+        <div class="flex flex-col md:flex-row grow">
+          {/* LEFT COLUMN: Experience ONLY */}
+          <div
+            class="w-full md:w-2/3 p-8 md:p-10 pr-4 md:pr-12 bg-white"
+          >
           <section>
             <h2
               class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2"
@@ -203,9 +196,9 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                     <div class="space-y-6">
                       {companyData.roles.map((role) => (
                         <div class="relative">
-                          <div class="absolute -left-5.25 top-3 print:top-2 w-2.5 h-2.5 rounded-full bg-slate-400 border-2 border-white" />
+                          <div class="absolute -left-5.25 top-3 w-2.5 h-2.5 rounded-full bg-slate-400 border-2 border-white" />
                           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                            <h3 class="cv-role-title text-lg font-bold text-slate-800">
+                            <h3 class="text-lg font-bold text-slate-800">
                               {role.title}
                             </h3>
                             <span class="text-sm font-medium text-slate-500">
@@ -228,10 +221,9 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
         </div>
 
         {/* RIGHT COLUMN: Skills ONLY */}
-        {/* Added print:w-1/3 to maintain width */}
-        <div
-          class="skills-panel w-full md:w-1/3 print:w-1/3 bg-slate-50 p-8 md:p-10 md:border-l md:border-slate-200 print:py-6"
-        >
+          <div
+            class="w-full md:w-1/3 bg-slate-50 p-8 md:p-10 md:border-l md:border-slate-200"
+          >
           <section>
             <h2
               class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-8 flex items-center gap-2"
@@ -267,38 +259,38 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
             <h2 class="text-xl font-bold text-slate-900 border-b-2 border-slate-300 pb-2 mb-6 flex items-center gap-2">
               <FolderGit size={20} class="text-slate-700" /> Key Projects
             </h2>
-            {/* Added print:grid-cols-3 to keep 3 columns in print */}
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               {projects
                 .filter((p: any) => p.data.featured)
                 .slice(0, 3)
                 .map((project: any) => (
                   <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-slate-400 transition-colors">
                     <div class="flex justify-between items-start mb-2">
-                      <h3 class="font-bold text-slate-900">{project.name}</h3>
-                      {project.link && (
+                      <h3 class="font-bold text-slate-900">{project.data.name}</h3>
+                      {project.data.link && (
                         <a
                           href={
-                            project.link.startsWith("http")
-                              ? project.link
-                              : `https://${project.link}`
+                            project.data.link.startsWith("http")
+                              ? project.data.link
+                              : `https://${project.data.link}`
                           }
                           target="_blank"
                           rel="noreferrer"
-                          class="text-slate-600 hover:text-slate-900 print:hidden"
+                          class="text-slate-600 hover:text-slate-900"
                         >
                           <ExternalLink size={16} />
                         </a>
                       )}
                     </div>
-                    <p class="text-xs font-bold text-slate-700 font-mono mb-2">
-                      {project.tech}
-                    </p>
-                    {project.description && (
+                    {project.data.shortDescription ? (
                       <p class="text-sm text-slate-600 leading-snug">
-                        {project.description}
+                        {project.data.shortDescription}
                       </p>
-                    )}
+                    ) : project.data.description ? (
+                      <p class="text-sm text-slate-600 leading-snug">
+                        {project.data.description}
+                      </p>
+                    ) : null}
                   </div>
                 ))}
             </div>
@@ -319,7 +311,7 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                 .filter((p: any) => p.data.featured)
                 .slice(0, 3)
                 .map((pub: any) => (
-                  <div class="flex flex-col md:flex-row print:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
+                  <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-slate-100 last:border-0 pb-3 last:pb-0 hover:bg-slate-50 transition-colors p-2 rounded">
                     <div class="grow">
                       <a
                         href={`https://${pub.link}`}
@@ -347,11 +339,9 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
 
       {/* FOOTER SECTION: Education & Certifications */}
       <div class="bg-slate-50 p-8 md:p-10 border-t border-slate-200">
-        {/* Added print:grid-cols-12 to maintain grid layout */}
-        <div class="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* EDUCATION */}
-          {/* Added print:col-span-4 */}
-          <div class="md:col-span-4 print:col-span-4">
+          <div class="md:col-span-4">
             <h2
               class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2"
             >
@@ -377,17 +367,13 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
           </div>
 
           {/* CERTIFICATIONS */}
-          {/* Added print:col-span-8 */}
-          <div class="md:col-span-8 print:col-span-8">
+          <div class="md:col-span-8">
             <h2
               class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2"
             >
               <Award size={20} class="text-slate-700" /> Certifications
             </h2>
-            {/* Added print:grid-cols-2 */}
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 print:grid-cols-2 gap-x-8 gap-y-4"
-            >
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
               {
                 resumeData?.data.certificates?.map((cert) => (
                   <div class="flex flex-col text-sm border-l-2 border-slate-300 pl-3 hover:border-slate-500 transition-colors">

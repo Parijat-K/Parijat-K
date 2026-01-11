@@ -11,6 +11,7 @@ tags:
   - Cordova Plugin
   - Mobile Architecture
   - Freelance
+shortDescription: PhoneGap plugin schedules native Android SMS via battery-friendly alarms for apps.
 description: >-
   Delivered a Cordova/PhoneGap plugin that schedules SMS delivery through a
   wake-efficient background listener, allowing clients to queue and cancel
