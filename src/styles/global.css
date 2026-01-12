@@ -38,7 +38,6 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-base);
   font-weight: 700;
 }
 
@@ -461,10 +460,7 @@ html {
   text-decoration: none;
 }
 
-.cv-contact-link--icon-only span {
-  display: none;
-}
-
+.cv-contact-link--icon-only span,
 .cv-contact-link--site {
   display: none;
 }
@@ -551,9 +547,17 @@ html {
 .cv-publication__details a,
 .cv-cert a,
 .cv-award h3,
-.cv-education-item h3 {
+.cv-education-item h3,
+.cv-role__title {
   font-weight: 700;
   color: var(--cv-strong);
+}
+
+.cv-project-card__title,
+.cv-education-item h3,
+.cv-role__title {
+  margin: 0;
+  font-size: 1rem;
 }
 
 .cv-timeline {
@@ -601,13 +605,6 @@ html {
     justify-content: space-between;
     align-items: baseline;
   }
-}
-
-.cv-role__title {
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0;
-  color: var(--cv-strong);
 }
 
 .cv-role__period {
@@ -694,11 +691,6 @@ html {
   gap: 0.5rem;
 }
 
-.cv-project-card__title {
-  margin: 0;
-  font-size: 1rem;
-}
-
 .cv-project-card__link {
   color: var(--cv-accent);
 }
@@ -780,11 +772,6 @@ html {
   gap: 1rem;
 }
 
-.cv-education-item h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
 .cv-education__institution,
 .cv-education__period {
   margin: 0.2rem 0 0;
@@ -802,8 +789,13 @@ html {
   }
 }
 
-.cv-cert {
+
+.cv-cert,
+.cv-award {
   border-left: 3px solid var(--cv-border);
+}
+
+.cv-cert {
   padding-left: 0.85rem;
 }
 
@@ -831,7 +823,6 @@ html {
 
 .cv-award {
   padding: 0.5rem 0.75rem;
-  border-left: 3px solid var(--cv-border);
 }
 
 .cv-award h3 {
