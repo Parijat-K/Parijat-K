@@ -312,6 +312,7 @@ html {
   --cv-border: #e2e8f0;
   --cv-soft-bg: #f8fafc;
   --cv-muted: #94a3b8;
+  --cv-strong: #0f172a;
   background: var(--cv-bg);
   padding: clamp(1rem, 2.5vw, 2.75rem);
   min-height: 100vh;
@@ -538,11 +539,21 @@ html {
   padding-bottom: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #0f172a;
+  color: var(--cv-strong);
 }
 
 .cv-section-title .cv-icon {
   color: var(--cv-accent);
+}
+
+.cv-company,
+.cv-project-card__title,
+.cv-publication__details a,
+.cv-cert a,
+.cv-award h3,
+.cv-education-item h3 {
+  font-weight: 700;
+  color: var(--cv-strong);
 }
 
 .cv-timeline {
@@ -571,8 +582,6 @@ html {
 
 .cv-company {
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #0f172a;
   margin-bottom: 0.75rem;
 }
 
@@ -598,7 +607,7 @@ html {
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
-  color: #0f172a;
+  color: var(--cv-strong);
 }
 
 .cv-role__period {
@@ -653,7 +662,7 @@ html {
   border-radius: 0.5rem;
   background: #fff;
   border: 1px solid var(--cv-border);
-  color: #0f172a;
+  color: var(--cv-strong);
 }
 
 .cv-card-grid {
@@ -688,8 +697,6 @@ html {
 .cv-project-card__title {
   margin: 0;
   font-size: 1rem;
-  font-weight: 700;
-  color: #0f172a;
 }
 
 .cv-project-card__link {
@@ -726,8 +733,6 @@ html {
 }
 
 .cv-publication__details a {
-  font-weight: 700;
-  color: #0f172a;
   text-decoration: none;
   border-bottom: 1px solid transparent;
 }
@@ -778,7 +783,6 @@ html {
 .cv-education-item h3 {
   margin: 0;
   font-size: 1rem;
-  font-weight: 700;
 }
 
 .cv-education__institution,
@@ -804,8 +808,6 @@ html {
 }
 
 .cv-cert a {
-  font-weight: 700;
-  color: #0f172a;
   text-decoration: none;
 }
 
@@ -835,7 +837,6 @@ html {
 .cv-award h3 {
   margin: 0;
   font-size: 0.95rem;
-  font-weight: 700;
 }
 
 .cv-award p {
