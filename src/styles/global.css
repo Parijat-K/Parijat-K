@@ -565,9 +565,8 @@ html {
   border-radius: 999px;
   border: 2px solid #fff;
   background: var(--cv-accent);
-  left: -0.65rem;
+  left: -0.40rem;
   top: 0.4rem;
-  box-shadow: 0 0 0 3px #fff;
 }
 
 .cv-company {
