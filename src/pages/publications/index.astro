@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { Search, ExternalLink, BookOpen } from "lucide-astro";
+import { Search, BookOpen } from "lucide-astro";
 
 const publications = await getCollection("publications");
 ---
@@ -55,17 +55,6 @@ const publications = await getCollection("publications");
                     >
                       {pub.data.title}
                     </a>
-                    {pub.data.link && (
-                      <a
-                        href={`https://${pub.data.link}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        class="text-slate-300 group-hover:text-indigo-400 shrink-0 ml-2"
-                        aria-label="External link"
-                      >
-                        <ExternalLink size={18} />
-                      </a>
-                    )}
                   </div>
                   <p class="text-slate-600 italic mb-4 flex items-center gap-2 text-sm">
                     <BookOpen size={16} class="shrink-0" /> {pub.data.publisher}

@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { FolderGit, ExternalLink, Search, Tag } from "lucide-astro";
+import { FolderGit, Search, Tag } from "lucide-astro";
 import { getProjectTimestamps } from "../../utils/projectFileMetadata";
 
 const projectEntries = await getCollection("projects");
@@ -71,9 +71,6 @@ projects.sort(
                     size={32}
                     class="text-slate-700 group-hover:text-indigo-600 transition-colors"
                   />
-                  <span class="p-2 bg-slate-50 rounded-full text-slate-400">
-                    <ExternalLink size={20} />
-                  </span>
                 </div>
                 <h3 class="font-bold text-slate-900 text-xl mb-2 group-hover:text-indigo-600 transition-colors">
                   {project.data.name}

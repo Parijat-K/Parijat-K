@@ -12,7 +12,6 @@ import {
   Briefcase,
   Cpu,
   FolderGit,
-  ExternalLink,
   BookOpen,
   GraduationCap,
   Award,
@@ -222,21 +221,6 @@ const siteDisplay = formatUrlForDisplay(siteUrl);
                   <article class="cv-project-card">
                     <div class="cv-project-card__header">
                       <h3 class="cv-project-card__title">{project.data.name}</h3>
-                      {project.data.link && (
-                        <a
-                          href={
-                            project.data.link.startsWith("http")
-                              ? project.data.link
-                              : `https://${project.data.link}`
-                          }
-                          target="_blank"
-                          rel="noreferrer"
-                          class="cv-project-card__link"
-                          title="Open project"
-                        >
-                          <ExternalLink size={16} class="cv-icon" />
-                        </a>
-                      )}
                     </div>
                     {project.data.shortDescription ? (
                       <p>{project.data.shortDescription}</p>
