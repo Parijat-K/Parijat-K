@@ -862,6 +862,10 @@ html {
   }
 }
 
+@page {
+  margin: 0;
+}
+
 @media print {
   body {
     background: #fff !important;
@@ -890,6 +894,7 @@ html {
     border-radius: 0;
     min-height: auto;
     width: 100%;
+    overflow: visible;
   }
 
   .cv-print-button,
@@ -916,6 +921,26 @@ html {
 
   .cv-contact-link--icon-only {
     display: none !important;
+  }
+
+  .cv-header {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .cv-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 200vw;
+    transform: translateX(-50%);
+    background: inherit;
+    z-index: -1;
+    pointer-events: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .cv-header__top {
