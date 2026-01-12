@@ -312,6 +312,7 @@ html {
   --cv-soft-bg: #f8fafc;
   --cv-muted: #94a3b8;
   --cv-strong: #0f172a;
+  --cv-text-secondary: var(--cv-accent);
   background: var(--cv-bg);
   padding: clamp(1rem, 2.5vw, 2.75rem);
   min-height: 100vh;
@@ -542,6 +543,15 @@ html {
   color: var(--cv-accent);
 }
 
+.cv-project-card p,
+.cv-publication__details p,
+.cv-education__institution,
+.cv-education__period,
+.cv-cert p,
+.cv-award p {
+  color: var(--cv-text-secondary, #475569);
+}
+
 .cv-company,
 .cv-project-card__title,
 .cv-publication__details a,
@@ -698,7 +708,6 @@ html {
 .cv-project-card p {
   margin: 0;
   font-size: 0.9rem;
-  color: #475569;
   line-height: 1.4;
 }
 
@@ -736,7 +745,6 @@ html {
 .cv-publication__details p {
   margin: 0.25rem 0 0;
   font-size: 0.9rem;
-  color: #475569;
   font-style: italic;
 }
 
@@ -776,7 +784,6 @@ html {
 .cv-education__period {
   margin: 0.2rem 0 0;
   font-size: 0.85rem;
-  color: #475569;
 }
 
 .cv-cert-grid {
@@ -806,7 +813,6 @@ html {
 .cv-cert p {
   margin: 0.35rem 0 0;
   font-size: 0.85rem;
-  color: #475569;
   display: flex;
   gap: 0.35rem;
 }
@@ -833,7 +839,6 @@ html {
 .cv-award p {
   margin: 0.15rem 0 0;
   font-size: 0.85rem;
-  color: #475569;
 }
 
 .cv-award span {
