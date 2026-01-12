@@ -500,11 +500,11 @@ html {
 }
 
 .cv-main-column {
-  flex: 1.4;
+  flex: 2;
 }
 
 .cv-sidebar {
-  flex: 0.9;
+  flex: 1;
   background: var(--cv-soft-bg);
   border: 1px solid var(--cv-border);
   border-radius: 1.1rem;
@@ -619,6 +619,12 @@ html {
   color: #334155;
 }
 
+.cv-skill-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .cv-skill-group {
   display: flex;
   flex-direction: column;
@@ -649,7 +655,6 @@ html {
   background: #fff;
   border: 1px solid var(--cv-border);
   color: #0f172a;
-  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08);
 }
 
 .cv-card-grid {
@@ -752,8 +757,16 @@ html {
 
 @media (min-width: 900px) {
   .cv-education {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 3rem;
+  }
+
+  .cv-education > :first-child {
+    grid-column: span 1;
+  }
+
+  .cv-education > :nth-child(2) {
+    grid-column: span 2;
   }
 }
 
@@ -777,7 +790,13 @@ html {
 }
 
 .cv-cert-grid {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .cv-cert-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .cv-cert {
@@ -811,8 +830,7 @@ html {
 
 .cv-award {
   padding: 0.5rem 0.75rem;
-  border-left: 3px solid var(--cv-accent);
-  background: rgba(99, 102, 241, 0.06);
+  border-left: 3px solid var(--cv-border);
 }
 
 .cv-award h3 {

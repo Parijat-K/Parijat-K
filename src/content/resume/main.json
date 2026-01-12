@@ -16,19 +16,16 @@
     {
       "category": "AI & Agent Systems",
       "items": [
-        "Agent Dev (Pydantic)",
         "LLMs & RAG",
         "LangChain",
+        "Agent Dev (Pydantic)",
         "Vector Databases",
-        "OpenAI API",
         "Semantic Kernel"
       ]
     },
     {
-      "category": "Algorithmic Optimization",
+      "category": "Operations Research",
       "items": [
-        "Constraint Programming",
-        "Discrete Optimization",
         "Google OR-Tools",
         "OptaPlanner"
       ]
