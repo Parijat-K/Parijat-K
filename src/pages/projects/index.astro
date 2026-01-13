@@ -5,6 +5,38 @@ import { FolderGit, Search, Tag } from "lucide-astro";
 import { getProjectTimestamps } from "../../utils/projectFileMetadata";
 
 const projectEntries = await getCollection("projects");
+const siteOrigin = Astro.site?.origin ?? "https://parijatkhan.in";
+const totalProjects = projectEntries.length;
+const projectDescription = `Engineering portfolio with ${totalProjects} build${
+  totalProjects === 1 ? "" : "s"
+} covering cloud modernization, platform tooling, and developer productivity.`;
+const projectStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteOrigin,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: `${siteOrigin}/projects`,
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Projects",
+    description: projectDescription,
+    url: `${siteOrigin}/projects`,
+  },
+];
 
 type ProjectWithDates = CollectionEntry<"projects"> & {
   publishedAt: Date;
@@ -26,7 +58,13 @@ projects.sort(
 );
 ---
 
-<Layout title="Projects" currentPath="/projects">
+<Layout
+  title="Projects"
+  currentPath="/projects"
+  description={projectDescription}
+  canonicalUrl={`${siteOrigin}/projects`}
+  additionalStructuredData={projectStructuredData}
+>
   <div
     class="min-h-screen bg-slate-50 animate-in fade-in duration-500 py-12 px-4 md:px-8"
   >

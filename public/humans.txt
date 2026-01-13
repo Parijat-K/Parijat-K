@@ -1,0 +1,8 @@
+/* TEAM */
+Developer: Parijat Khan
+Website: https://parijatkhan.in
+From: Wellington, New Zealand
+
+/* SITE */
+Standards: Astro 5, Tailwind CSS 4, Pagefind
+Components: Cloudflare Pages, @vite-pwa, Satori OG images

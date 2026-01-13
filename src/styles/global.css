@@ -492,6 +492,24 @@ html {
   color: var(--cv-header-body);
 }
 
+.cv-header__summary-links {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.cv-summary-link {
+  color: var(--color-projects-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cv-summary-link:hover {
+  text-decoration: underline;
+}
+
 .cv-body {
   display: flex;
   flex-direction: column;

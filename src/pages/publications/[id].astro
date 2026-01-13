@@ -22,7 +22,45 @@ export async function getStaticPaths() {
   }));
 }
 
+const siteOrigin = Astro.site?.origin ?? "https://parijatkhan.in";
 const { publication } = Astro.props;
+const canonicalUrl = `${siteOrigin}/research/${publication.id}`;
+const articleDescription = publication.data.abstract ?? publication.data.title;
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    headline: publication.data.title,
+    abstract: publication.data.abstract,
+    datePublished: publication.data.year?.toString(),
+    author: publication.data.authors?.map((author: string) => ({
+      "@type": "Person",
+      name: author,
+    })),
+    keywords: publication.data.tags,
+    publisher: publication.data.publisher,
+    url: canonicalUrl,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteOrigin },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Research",
+        item: `${siteOrigin}/research`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: publication.data.title,
+        item: canonicalUrl,
+      },
+    ],
+  },
+];
 
 const getRelatedPublications = (
   collection: Awaited<ReturnType<typeof getCollection>>,
@@ -45,7 +83,14 @@ const relatedPubs = getRelatedPublications(
 );
 ---
 
-<Layout title={publication.data.title} currentPath="/research">
+<Layout
+  title={publication.data.title}
+  currentPath="/research"
+  description={articleDescription}
+  canonicalUrl={canonicalUrl}
+  ogType="article"
+  additionalStructuredData={structuredData}
+>
   <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
     {/* Header */}
     <div class="bg-slate-900 text-white pt-12 pb-24 px-4">

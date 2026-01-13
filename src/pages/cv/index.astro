@@ -46,9 +46,28 @@ const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "";
 const linkedinDisplay = formatUrlForDisplay(linkedinUrl);
 const githubDisplay = formatUrlForDisplay(githubUrl);
 const siteDisplay = formatUrlForDisplay(siteUrl);
+
+const siteOrigin = Astro.site?.origin ?? "https://parijatkhan.in";
+const resumeDescription = `${resumeData?.data.header.name ?? "Solution Designer"} CV summarizing enterprise architecture, platform modernization, and research highlights.`;
+const resumeStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: `${resumeData?.data.header.name ?? "Parijat Khan"} Resume`,
+    url: `${siteOrigin}/cv`,
+    about: resumeData?.data.header.summary,
+  },
+];
 ---
 
-<Layout title="Resume" currentPath="/cv">
+<Layout
+  title="Resume"
+  currentPath="/cv"
+  description={resumeDescription}
+  canonicalUrl={`${siteOrigin}/cv`}
+  additionalStructuredData={resumeStructuredData}
+  robots="index,follow"
+>
   <div class="cv-shell">
     <button
       onclick="window.print()"

@@ -1,0 +1,4 @@
+Contact: mailto:khanparijat@gmail.com
+Encryption: https://parijatkhan.in/pgp.txt
+Acknowledgments: https://parijatkhan.in/humans.txt
+Policy: https://parijatkhan.in/security

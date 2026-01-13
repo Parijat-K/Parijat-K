@@ -22,7 +22,46 @@ export async function getStaticPaths() {
   );
 }
 
+const siteOrigin = Astro.site?.origin ?? "https://parijatkhan.in";
 const { project, projectDates } = Astro.props;
+const canonicalUrl = `${siteOrigin}/projects/${project.id}`;
+const projectDescription =
+  project.data.shortDescription ?? project.data.description ?? project.data.name;
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.data.name,
+    description: projectDescription,
+    url: canonicalUrl,
+    datePublished: projectDates.publishedAt.toISOString(),
+    dateModified: projectDates.updatedAt.toISOString(),
+    keywords: project.data.tags,
+    author: {
+      "@type": "Person",
+      name: project.data.owner ?? "Parijat Khan",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteOrigin },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: `${siteOrigin}/projects`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.data.name,
+        item: canonicalUrl,
+      },
+    ],
+  },
+];
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
 const formatDate = (date: Date) => dateFormatter.format(date);
 
@@ -43,7 +82,14 @@ const projects = await getCollection("projects");
 const relatedProjects = getRelatedProjects(projects, project.id, project.data.tags);
 ---
 
-<Layout title={project.data.name} currentPath="/projects">
+<Layout
+  title={project.data.name}
+  currentPath="/projects"
+  description={projectDescription}
+  canonicalUrl={canonicalUrl}
+  ogType="article"
+  additionalStructuredData={structuredData}
+>
   <div class="min-h-screen bg-slate-50 animate-in fade-in duration-500 pb-20">
     {/* Header */}
     <div class="bg-slate-900 text-white pt-12 pb-24 px-4">
@@ -103,9 +149,12 @@ const relatedProjects = getRelatedProjects(projects, project.id, project.data.ta
           <div class="flex flex-wrap gap-2 mb-8">
             {
               project.data.tags.map((tag) => (
-                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                <a
+                  href={`/research?tag=${encodeURIComponent(tag)}`}
+                  class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-indigo-50 hover:text-indigo-700"
+                >
                   {tag}
-                </span>
+                </a>
               ))
             }
           </div>

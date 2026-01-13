@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://parijatkhan.in/sitemap-index.xml
+
+# Security.txt and humans info
+Contact: mailto:khanparijat@gmail.com

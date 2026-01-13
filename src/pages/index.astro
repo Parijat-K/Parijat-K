@@ -19,6 +19,32 @@ import { getProjectTimestamps } from "../utils/projectFileMetadata";
 const resumeData = await getEntry("resume", "main");
 const projectEntries = await getCollection("projects");
 const publications = await getCollection("publications");
+const siteOrigin = Astro.site?.origin ?? "https://parijatkhan.in";
+const homeDescription =
+  resumeData?.data.header.summary ??
+  "Solution Designer and full-stack engineer building resilient systems.";
+const homepageStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: `${resumeData?.data.header.name ?? "Parijat Khan"} Portfolio`,
+    url: siteOrigin,
+    description: homeDescription,
+    about: resumeData?.data.header.specialization,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteOrigin,
+      },
+    ],
+  },
+];
 
 type ProjectWithDates = CollectionEntry<"projects"> & {
   publishedAt: Date;
@@ -58,7 +84,12 @@ const profilePhoto = resumeData?.data.header.photoUrl
   : null;
 ---
 
-<Layout title="Home" currentPath="/">
+<Layout
+  title="Home"
+  currentPath="/"
+  description={homeDescription}
+  additionalStructuredData={homepageStructuredData}
+>
   <div class="animate-in fade-in duration-500">
     {/* Hero Section */}
     <div class="bg-slate-900 text-white pt-20 pb-24 md:pt-32 md:pb-40 px-4">

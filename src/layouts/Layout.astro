@@ -9,11 +9,78 @@ import Search from "../components/Search.astro";
 interface Props {
   title: string;
   currentPath: string;
+  description?: string;
+  canonicalUrl?: string;
+  image?: string;
+  ogType?: string;
+  robots?: string;
+  additionalStructuredData?: Array<Record<string, unknown>>;
 }
 
-const { title, currentPath } = Astro.props;
+const defaultSite = "https://parijatkhan.in";
+
+const {
+  title,
+  currentPath,
+  description,
+  canonicalUrl,
+  image,
+  ogType = "website",
+  robots,
+  additionalStructuredData = [],
+} = Astro.props;
 
 const resumeData = await getEntry("resume", "main");
+
+const siteOrigin = Astro.site?.origin ?? defaultSite;
+const canonical = canonicalUrl ?? new URL(currentPath || "/", siteOrigin).toString();
+const fallbackDescription =
+  description ??
+  resumeData?.data.header.summary ??
+  "Solution Designer and full-stack engineer building resilient systems.";
+const pageDescription = fallbackDescription;
+const encodedTitle = encodeURIComponent(`${title} | ${resumeData?.data.header.name ?? "Portfolio"}`);
+const imageUrl = image ?? `${siteOrigin}/api/og.png?title=${encodedTitle}`;
+const robotsContent = robots ?? "index,follow";
+const ownerName = resumeData?.data.header.name ?? "Parijat Khan";
+const sameAs = [
+  resumeData?.data.header.linkedin,
+  resumeData?.data.header.github,
+]
+  .filter(Boolean)
+  .map((url) => url as string);
+
+const personSchema: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: ownerName,
+  jobTitle: resumeData?.data.header.title,
+  description: pageDescription,
+  url: siteOrigin,
+  image: `${siteOrigin}/favicon.svg`,
+};
+
+if (sameAs.length) {
+  personSchema.sameAs = sameAs;
+}
+
+const websiteSchema: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: `${ownerName} Portfolio`,
+  url: siteOrigin,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${siteOrigin}/?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const structuredData = [
+  personSchema,
+  websiteSchema,
+  ...additionalStructuredData.filter(Boolean),
+];
 ---
 
 <!doctype html>
@@ -24,6 +91,28 @@ const resumeData = await getEntry("resume", "main");
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | {resumeData?.data.header.name}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content={ownerName} />
+    <link rel="canonical" href={canonical} />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa-192x192.png" />
+    <meta name="application-name" content={ownerName} />
+    <meta name="theme-color" content="#0f172a" />
+    <meta property="og:title" content={`${title} | ${ownerName}`} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:site_name" content={`${ownerName} Portfolio`} />
+    <meta property="og:locale" content="en_NZ" />
+    <meta property="og:image:alt" content={`${title} | ${ownerName}`} />
+    {structuredData.length > 0 && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(structuredData)}
+      />
+    )}
   </head>
   <body class="min-h-screen bg-white font-sans text-slate-900 flex flex-col">
     <!-- Navbar -->

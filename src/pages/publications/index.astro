@@ -4,9 +4,47 @@ import Layout from "../../layouts/Layout.astro";
 import { Search, BookOpen } from "lucide-astro";
 
 const publications = await getCollection("publications");
+const siteOrigin = Astro.site?.origin ?? "https://parijatkhan.in";
+const publicationCount = publications.length;
+const researchDescription = `Portfolio of ${publicationCount} research contribution${
+  publicationCount === 1 ? "" : "s"
+} spanning distributed systems, software architecture, and cloud engineering.`;
+const researchStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteOrigin,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Research",
+        item: `${siteOrigin}/research`,
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Research",
+    description: researchDescription,
+    url: `${siteOrigin}/research`,
+  },
+];
 ---
 
-<Layout title="Research" currentPath="/research">
+<Layout
+  title="Research"
+  currentPath="/research"
+  description={researchDescription}
+  canonicalUrl={`${siteOrigin}/research`}
+  additionalStructuredData={researchStructuredData}
+>
   <div
     class="min-h-screen bg-slate-50 animate-in fade-in duration-500 py-12 px-4 md:px-8"
   >
@@ -64,16 +102,35 @@ const publications = await getCollection("publications");
                   </p>
                   <div class="flex flex-wrap gap-2 mt-auto">
                     {pub.data.tags.slice(0, 4).map((tag) => (
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded font-medium border border-slate-200">
+                      <a
+                        href={`/projects?tag=${encodeURIComponent(tag)}`}
+                        class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded font-medium border border-slate-200 hover:bg-indigo-50 hover:text-indigo-700"
+                      >
                         {tag}
-                      </span>
+                      </a>
                     ))}
                     {pub.data.tags.length > 4 && (
-                    <span class="px-2 py-1 text-slate-400 text-xs font-medium">
-                      +{pub.data.tags.length - 4}
-                    </span>
-                  )}
-                </div>
+                      <span class="px-2 py-1 text-slate-400 text-xs font-medium">
+                        +{pub.data.tags.length - 4}
+                      </span>
+                    )}
+                  </div>
+                  <div class="mt-4 flex flex-wrap gap-4 text-sm">
+                    <a
+                      href={`/research/${pub.id}`}
+                      class="text-indigo-600 font-semibold hover:text-indigo-800 inline-flex items-center gap-1"
+                    >
+                      Dive deeper
+                    </a>
+                    <a
+                      href={`/projects?tag=${encodeURIComponent(
+                        pub.data.tags[0]
+                      )}`}
+                      class="text-slate-500 hover:text-slate-700"
+                    >
+                      Related projects
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
