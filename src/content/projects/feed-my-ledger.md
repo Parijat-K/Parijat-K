@@ -4,15 +4,9 @@ tech:
   - Rust
   - Google Sheets API
   - Microsoft Graph Excel
-  - OAuth2
-  - CSV Pipelines
-  - GitHub Actions
 tags:
-  - Fintech
+  - Personal Finance
   - Append-Only Ledger
-  - Cloud Integrations
-  - CLI Tools
-  - Open Source
 shortDescription: Rust CLI turns Sheets or Excel into tamper-evident append-only ledgers.
 description: >-
   Authored a Rust crate and CLI that turns Google Sheets or Excel 365 into an

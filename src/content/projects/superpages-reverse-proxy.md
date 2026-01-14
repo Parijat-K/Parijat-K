@@ -1,8 +1,8 @@
 ---
 name: "SuperPages Reverse Proxy Middleware"
 tech:
-  - Spring Framework
-  - Hibernate ORM
+  - Spring
+  - Hibernate
   - Apache Struts
   - Java
 tags:

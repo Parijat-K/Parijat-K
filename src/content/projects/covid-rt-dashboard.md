@@ -8,12 +8,8 @@ tech:
   - GitHub Actions
   - Bayesian Inference
 tags:
-  - Epidemiology
   - Data Visualization
   - Public Health
-  - Automation
-  - Open Source
-  - Pandemic Response
 shortDescription: Automated Bayesian Rt dashboard tracking every Indian state's COVID-19 transmission trends.
 description: >-
   Built a public dashboard that estimates India’s state-wise COVID-19 effective

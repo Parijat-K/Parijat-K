@@ -2,15 +2,11 @@
 name: "PhoneGap SMS Scheduler Plugin"
 tech:
   - Apache Cordova
-  - PhoneGap Build
-  - Android SDK
+  - PhoneGap
+  - Android
   - Java
 tags:
-  - Background Services
-  - SMS Automation
   - Cordova Plugin
-  - Mobile Architecture
-  - Freelance
 shortDescription: PhoneGap plugin schedules native Android SMS via battery-friendly alarms for apps.
 description: >-
   Delivered a Cordova/PhoneGap plugin that schedules SMS delivery through a

@@ -11,7 +11,6 @@ tags:
   - Traveling Salesman
   - Graph Coloring
   - Sentiment Analysis
-  - Freelance
 shortDescription: Stabilized massive Java solvers and Turkish sentiment classifier for deadlines.
 description: >-
   Partnered with a researcher to stabilize large-scale Java solvers for

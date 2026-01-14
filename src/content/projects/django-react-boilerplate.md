@@ -1,18 +1,11 @@
 ---
 name: "Django + React Hybrid Boilerplate"
 tech:
-  - Django 2.2
-  - React 16
-  - Django REST Framework
-  - Material UI
-  - Waitress
-  - Webpack
+  - Django
+  - React
 tags:
   - Full-Stack Template
-  - Session Auth
-  - CSRF Protection
   - Hybrid Deployment
-  - Open Source
 shortDescription: Hybrid Django-React boilerplate with session auth and production-ready builds for teams.
 description: >-
   Open-sourced a Django + React starter kit that bundles backend and frontend

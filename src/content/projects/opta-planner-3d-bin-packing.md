@@ -6,9 +6,9 @@ tech:
 tags:
   - Logistics Optimization
   - 3D Bin Packing
-  - Custom Moves
   - Constraint Solvers
   - Combinatorial Search
+  - Operational Research
 shortDescription: Custom heuristics and move factories let OptaPlanner solve dense 3D bin packing workloads.
 description: >-
   Built a production-ready OptaPlanner workload that handles industrial 3D bin
