@@ -144,6 +144,12 @@ const structuredData = [
         mobileMenu?.classList.toggle("hidden");
         menuIcon?.classList.toggle("hidden");
         closeIcon?.classList.toggle("hidden");
+        const expanded = mobileBtn.getAttribute("aria-expanded") === "true";
+        mobileBtn.setAttribute("aria-expanded", (!expanded).toString());
+        mobileBtn.setAttribute(
+          "aria-label",
+          expanded ? "Open navigation menu" : "Close navigation menu"
+        );
       });
 
       // --- Contact Modal ---
@@ -151,20 +157,31 @@ const structuredData = [
       const closeContactBtn = document.getElementById("close-contact");
       const copyEmailBtn = document.getElementById("copy-email-btn");
 
-      const openContact = () =>
-        contactModal?.classList.replace("hidden", "flex");
-      const closeContact = () =>
-        contactModal?.classList.replace("flex", "hidden");
+      const toggleContactTriggers = (expanded) => {
+        document
+          .querySelectorAll('[data-contact-trigger]')
+          .forEach((button) => {
+            button.setAttribute("aria-expanded", expanded.toString());
+          });
+      };
 
-      document
-        .getElementById("contact-trigger")
-        ?.addEventListener("click", openContact);
-      document
-        .getElementById("mobile-contact-trigger")
-        ?.addEventListener("click", () => {
+      const openContact = () => {
+        contactModal?.classList.replace("hidden", "flex");
+        toggleContactTriggers(true);
+        document.getElementById("contact-modal")?.focus();
+      };
+
+      const closeContact = () => {
+        contactModal?.classList.replace("flex", "hidden");
+        toggleContactTriggers(false);
+      };
+
+      document.querySelectorAll('[data-contact-trigger]').forEach((button) => {
+        button.addEventListener("click", () => {
           openContact();
-          mobileMenu?.classList.add("hidden"); // Close menu
+          mobileMenu?.classList.add("hidden");
         });
+      });
       document
         .getElementById("footer-contact-trigger")
         ?.addEventListener("click", openContact);

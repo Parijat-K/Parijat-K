@@ -6,7 +6,7 @@ const resumeData = await getEntry("resume", "main");
 ---
 
 <footer
-  class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 print:hidden mt-auto"
+  class="bg-slate-950 text-slate-300 py-6 border-t border-slate-800 print:hidden mt-auto"
 >
   <div
     class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4"
@@ -38,8 +38,13 @@ const resumeData = await getEntry("resume", "main");
       )}
       <button
         id="footer-contact-trigger"
-        class="hover:text-white transition-colors"><Mail size={18} /></button
+        type="button"
+        class="hover:text-white transition-colors"
+        aria-label="Open contact modal"
+        aria-haspopup="dialog"
       >
+        <Mail size={18} />
+      </button>
     </div>
   </div>
 </footer>

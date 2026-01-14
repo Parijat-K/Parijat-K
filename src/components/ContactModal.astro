@@ -8,6 +8,10 @@ const resumeData = await getEntry("resume", "main");
 <div
   id="contact-modal"
   class="fixed inset-0 z-70 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="contact-modal-title"
+  aria-describedby="contact-modal-description"
 >
   <div
     class="bg-white w-full max-w-md rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
@@ -15,16 +19,18 @@ const resumeData = await getEntry("resume", "main");
     <div
       class="flex justify-between items-center p-6 border-b border-slate-100"
     >
-      <h2 class="text-xl font-bold text-slate-900">Get in Touch</h2>
+      <h2 id="contact-modal-title" class="text-xl font-bold text-slate-900">Get in Touch</h2>
       <button
         id="close-contact"
+        type="button"
         class="text-slate-400 hover:text-slate-600 transition-colors"
+        aria-label="Close contact modal"
       >
         <X size={20} />
       </button>
     </div>
     <div class="p-6 space-y-6">
-      <p class="text-slate-600 text-sm">
+      <p class="text-slate-600 text-sm" id="contact-modal-description">
         I'm always open to discussing new opportunities, research
         collaborations, or just chatting about distributed systems.
       </p>
@@ -42,7 +48,9 @@ const resumeData = await getEntry("resume", "main");
           </div>
           <button
             id="copy-email-btn"
+            type="button"
             class="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-medium transition-all cursor-pointer"
+            aria-live="polite"
           >
             <Copy size={18} class="copy-icon" />
             <Check size={18} class="check-icon hidden" />
@@ -70,6 +78,7 @@ const resumeData = await getEntry("resume", "main");
               target="_blank"
               rel="noreferrer"
               class="flex items-center justify-between w-full p-4 bg-[#0077b5]/5 border border-[#0077b5]/20 rounded-xl hover:bg-[#0077b5]/10 transition-colors group"
+              aria-label="Visit LinkedIn profile"
             >
               <div class="flex items-center gap-3">
                 <Linkedin class="text-[#0077b5]" size={24} />

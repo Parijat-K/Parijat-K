@@ -36,9 +36,9 @@ const visibleNavItems = navItems.filter((item) => item.show);
           height="32"
           loading="lazy"
         />
-        <span class="font-bold text-xl tracking-tight"
-          >{resumeData?.data.header.name}</span
-        >
+        <span class="font-bold text-xl tracking-tight">
+          {resumeData?.data.header.name}
+        </span>
       </a>
 
       <div class="flex items-center gap-4">
@@ -59,15 +59,26 @@ const visibleNavItems = navItems.filter((item) => item.show);
         <div class="flex items-center gap-3">
           <button
             id="search-trigger"
-            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-all cursor-pointer"
+            type="button"
+            class="p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-300"
             title="Search (Cmd+K)"
+            aria-label="Open search dialog"
+            aria-haspopup="dialog"
+            aria-controls="search-modal"
+            aria-expanded="false"
           >
             <Search size={20} />
           </button>
 
           <button
             id="contact-trigger"
-            class="hidden md:block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors cursor-pointer"
+            type="button"
+            class="hidden md:block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Open contact modal"
+            aria-haspopup="dialog"
+            aria-controls="contact-modal"
+            aria-expanded="false"
+            data-contact-trigger
           >
             Contact
           </button>
@@ -75,7 +86,11 @@ const visibleNavItems = navItems.filter((item) => item.show);
           <div class="md:hidden">
             <button
               id="mobile-menu-btn"
-              class="text-slate-300 hover:text-white"
+              type="button"
+              class="text-slate-200 hover:text-white focus-visible:ring-2 focus-visible:ring-white rounded"
+              aria-label="Open navigation menu"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
             >
               <Menu size={24} id="menu-icon" />
               <X size={24} id="close-icon" class="hidden" />
@@ -104,7 +119,13 @@ const visibleNavItems = navItems.filter((item) => item.show);
       }
       <button
         id="mobile-contact-trigger"
-        class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-400 hover:bg-slate-700 hover:text-white"
+        type="button"
+        class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-300 hover:bg-slate-700 hover:text-white"
+        aria-label="Open contact modal"
+        aria-haspopup="dialog"
+        aria-controls="contact-modal"
+        aria-expanded="false"
+        data-contact-trigger
       >
         Contact Me
       </button>

@@ -19,9 +19,14 @@ import { Search as SearchIcon, X } from "lucide-astro";
         placeholder="Search projects, research, blogs, skills..."
         class="grow outline-none text-lg text-slate-800 placeholder:text-slate-400"
       />
-      <button id="close-search" class="text-slate-400 hover:text-slate-600"
-        ><X size={20} /></button
+      <button
+        id="close-search"
+        type="button"
+        class="text-slate-400 hover:text-slate-600"
+        aria-label="Close search dialog"
       >
+        <X size={20} />
+      </button>
     </div>
     <div
       id="search-results"

@@ -125,7 +125,13 @@ const profilePhoto = resumeData?.data.header.photoUrl
           </a>
           <button
             id="home-contact-trigger"
+            type="button"
             class="px-8 py-4 bg-transparent border-2 border-slate-600 hover:border-white text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
+            aria-label="Open contact modal"
+            aria-haspopup="dialog"
+            aria-controls="contact-modal"
+            aria-expanded="false"
+            data-contact-trigger
           >
             Get In Touch <Mail size={20} />
           </button>
@@ -382,12 +388,13 @@ const profilePhoto = resumeData?.data.header.photoUrl
   </div>
 
   <script>
-    // Trigger contact modal from home hero
     document
       .getElementById("home-contact-trigger")
       ?.addEventListener("click", () => {
-        const modal = document.getElementById("contact-modal");
-        if (modal) modal.classList.replace("hidden", "flex");
+        document
+          .querySelectorAll('[data-contact-trigger]')
+          .forEach((button) => button.setAttribute("aria-expanded", "true"));
+        document.getElementById("contact-modal")?.classList.replace("hidden", "flex");
       });
   </script>
 </Layout>
